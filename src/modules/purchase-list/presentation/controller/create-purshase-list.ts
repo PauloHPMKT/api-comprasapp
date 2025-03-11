@@ -14,5 +14,12 @@ export class CreatePurchaseListController {
         body: new Error('Missing param: listName'),
       };
     }
+
+    if (!httpRequest.body.items) {
+      return {
+        statusCode: 400,
+        body: new Error('Missing param: items'),
+      };
+    }
   }
 }
