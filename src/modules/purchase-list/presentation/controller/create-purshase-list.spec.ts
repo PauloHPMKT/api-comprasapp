@@ -34,4 +34,16 @@ describe('CreatePurchaseListController', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new Error('Missing param: listName'));
   });
+
+  it('should return 400 if no items is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        listName: 'any_name',
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new Error('Missing param: items'));
+  });
 });
