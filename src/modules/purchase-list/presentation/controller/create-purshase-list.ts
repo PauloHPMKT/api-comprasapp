@@ -21,5 +21,12 @@ export class CreatePurchaseListController {
         body: new Error('Missing param: items'),
       };
     }
+
+    if (!httpRequest.body.items[0].quantity) {
+      return {
+        statusCode: 400,
+        body: new Error('Missing param: quantity'),
+      };
+    }
   }
 }
