@@ -8,25 +8,29 @@ interface HttpRequest {
 
 export class CreatePurchaseListController {
   async handle(httpRequest: HttpRequest): Promise<any> {
-    if (!httpRequest.body.listName) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: listName'),
-      };
-    }
+    const requiredFields = ['listName', 'items'];
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return {
+          statusCode: 400,
+          body: new Error(`Missing param: ${field}`),
+        };
+      }
 
-    if (!httpRequest.body.items) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: items'),
-      };
-    }
-
-    if (!httpRequest.body.items[0].quantity) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param: quantity'),
-      };
+      if (field === 'items') {
+        const items = httpRequest.body.items;
+        for (const item of items) {
+          const requiredItemFields = ['quantity'];
+          for (const itemField of requiredItemFields) {
+            if (!item[itemField]) {
+              return {
+                statusCode: 400,
+                body: new Error(`Missing param: ${itemField}`),
+              };
+            }
+          }
+        }
+      }
     }
   }
 }
