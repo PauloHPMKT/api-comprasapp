@@ -1,12 +1,7 @@
-interface HttpRequest {
-  body?: any;
-  headers?: any;
-  params?: any;
-  query?: any;
-  file?: any;
-}
+import { Controller } from '../../../shared/presentation/protocol/controller';
+import { HttpRequest } from '../../../shared/presentation/protocol/http';
 
-export class CreatePurchaseListController {
+export class CreatePurchaseListController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<any> {
     const requiredFields = ['listName', 'items'];
     for (const field of requiredFields) {

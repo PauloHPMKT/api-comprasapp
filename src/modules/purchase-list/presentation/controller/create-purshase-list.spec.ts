@@ -1,6 +1,7 @@
+import { Controller } from '../../../shared/presentation/protocol/controller';
 import { CreatePurchaseListController } from './create-purshase-list';
 
-const makeSut = () => {
+const makeSut = (): Controller => {
   return new CreatePurchaseListController();
 };
 
