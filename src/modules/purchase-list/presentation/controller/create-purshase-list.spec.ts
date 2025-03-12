@@ -18,14 +18,10 @@ describe('CreatePurchaseListController', () => {
           {
             product_id: 'any_id',
             quantity: 3,
-            price: 10,
-            totalPricePerProduct: 30,
           },
           {
             product_id: 'any_id',
             quantity: 2,
-            price: 5,
-            totalPricePerProduct: 10,
           },
         ],
       },
@@ -55,8 +51,6 @@ describe('CreatePurchaseListController', () => {
         items: [
           {
             product_id: 'any_id',
-            price: 10,
-            totalPricePerProduct: 30,
           },
         ],
       },
@@ -64,5 +58,22 @@ describe('CreatePurchaseListController', () => {
     const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new Error('Missing param: quantity'));
+  });
+
+  it('should return 400 if no product_id is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        listName: 'any_name',
+        items: [
+          {
+            quantity: 3,
+          },
+        ],
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new Error('Missing param: product_id'));
   });
 });
