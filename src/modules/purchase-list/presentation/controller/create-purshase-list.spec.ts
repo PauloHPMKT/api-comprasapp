@@ -46,4 +46,23 @@ describe('CreatePurchaseListController', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new Error('Missing param: items'));
   });
+
+  it('should return 400 if no quantity is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        listName: 'any_name',
+        items: [
+          {
+            product_id: 'any_id',
+            price: 10,
+            totalPricePerProduct: 30,
+          },
+        ],
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual(new Error('Missing param: quantity'));
+  });
 });
