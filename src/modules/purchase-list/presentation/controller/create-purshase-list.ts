@@ -20,7 +20,7 @@ export class CreatePurchaseListController {
       if (field === 'items') {
         const items = httpRequest.body.items;
         for (const item of items) {
-          const requiredItemFields = ['quantity'];
+          const requiredItemFields = ['product_id', 'quantity'];
           for (const itemField of requiredItemFields) {
             if (!item[itemField]) {
               return {
