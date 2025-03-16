@@ -2,12 +2,12 @@ import { User } from '@/modules/user/domain/entities/User';
 import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
 import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
-import { VerifyAccountRepository } from '../protocols/verify-account-repository';
+import { VerifyUserRepository } from '../protocols/verify-user-repository';
 
 export class AddAccountUseCase extends AddAccount {
   constructor(
     private readonly encrypter: Encrypter,
-    private readonly verifyAccountRepository: VerifyAccountRepository,
+    private readonly verifyAccountRepository: VerifyUserRepository,
   ) {
     super();
   }
@@ -18,10 +18,11 @@ export class AddAccountUseCase extends AddAccount {
       return passwordError;
     }
 
-    const accountExist = await this.verifyAccountRepository.verify(
+    const userExists = await this.verifyAccountRepository.verify(
       accountData.email,
     );
-    if (accountExist) {
+    // TODO: Verify account status to call account module to send email to reabilitate account
+    if (userExists) {
       throw new Error('Account already exist');
     }
 
