@@ -6,12 +6,11 @@ import {
 import { SignupController } from './signup';
 import { EmailValidator } from '../protocols/email-validator';
 import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
+import { SignupDto } from '../../data/dto/signup-dto';
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(
-      accountData: AddAccountModel.Params,
-    ): Promise<AddAccountModel.Result> {
+    async add(accountData: SignupDto): Promise<AddAccountModel.Result> {
       return new Promise((resolve) =>
         resolve({
           id: 'valid_id',
