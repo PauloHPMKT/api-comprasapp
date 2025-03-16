@@ -7,6 +7,9 @@ const config = {
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
   ],
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   coverageDirectory: 'coverage',
   roots: ['<rootDir>/src'],
   testEnvironment: 'node',
