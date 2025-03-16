@@ -14,6 +14,7 @@ import {
 import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { EmailValidator } from '../protocols/email-validator';
 import { AddAccount } from '../../domain/usecases/add-account';
+import { SignupDto } from '../../data/dto/signup-dto';
 
 export class SignupController extends Controller {
   constructor(
@@ -38,20 +39,19 @@ export class SignupController extends Controller {
         return badRequest(new MissingParamsError(hasError));
       }
 
-      if (password !== passwordConfirmation) {
-        return badRequest(new InvalidParamError('passwordConfirmation'));
-      }
+      const signupDto = new SignupDto({
+        name,
+        email,
+        password,
+        passwordConfirmation,
+      });
 
       const isEmailValid = this.emailValidator.isValid(email);
       if (!isEmailValid) {
         return badRequest(new InvalidParamError('email'));
       }
 
-      const account = await this.addAccount.add({
-        name,
-        email,
-        password,
-      });
+      const account = await this.addAccount.add(signupDto);
       return created(account);
     } catch (error) {
       console.error(error);
