@@ -5,8 +5,8 @@ import {
 import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { badRequest } from '@/modules/shared/presentation/helpers/http-responses';
-import { EmailValidator } from '../protocols/email-validator';
 import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
+import { EmailValidator } from '../protocols/email-validator';
 
 export class SignupController extends Controller {
   constructor(private readonly emailValidator: EmailValidator) {
