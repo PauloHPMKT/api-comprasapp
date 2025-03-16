@@ -3,11 +3,13 @@ import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
 import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
 import { VerifyUserRepository } from '../protocols/verify-user-repository';
+import { CreateUserRepository } from '../protocols/create-user-repository';
 
 export class AddAccountUseCase extends AddAccount {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly verifyAccountRepository: VerifyUserRepository,
+    private readonly createUserRepository: CreateUserRepository,
   ) {
     super();
   }
@@ -32,6 +34,7 @@ export class AddAccountUseCase extends AddAccount {
       email: accountData.email,
       password: hashedPassword,
     });
+    await this.createUserRepository.create(user);
 
     return new Promise((resolve) =>
       resolve({
