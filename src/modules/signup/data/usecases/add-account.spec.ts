@@ -2,6 +2,16 @@ import { InvalidParamError } from '@/modules/shared/presentation/errors';
 import { AddAccountUseCase } from './add-account';
 import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
+import { VerifyAccountRepository } from '../protocols/verify-account-repository';
+
+const makeVerifyAccountRepository = (): VerifyAccountRepository => {
+  class VerifyAccountRepositoryStub implements VerifyAccountRepository {
+    async verify(value: string): Promise<boolean> {
+      return new Promise((resolve) => resolve(false));
+    }
+  }
+  return new VerifyAccountRepositoryStub();
+};
 
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
@@ -13,17 +23,20 @@ const makeEncrypter = (): Encrypter => {
 };
 
 const makeSut = (): SutTypes => {
+  const verifyAccountRepositoryStub = makeVerifyAccountRepository();
   const encrypterStub = makeEncrypter();
-  const sut = new AddAccountUseCase(encrypterStub);
+  const sut = new AddAccountUseCase(encrypterStub, verifyAccountRepositoryStub);
   return {
     sut,
     encrypterStub,
+    verifyAccountRepositoryStub,
   };
 };
 
 interface SutTypes {
   sut: AddAccountUseCase;
   encrypterStub: Encrypter;
+  verifyAccountRepositoryStub: VerifyAccountRepository;
 }
 
 describe('AddAccount', () => {
@@ -42,6 +55,22 @@ describe('AddAccount', () => {
     });
     const response = await sut.add(accountData);
     expect(response).toEqual(new InvalidParamError('passwordConfirmation'));
+  });
+
+  it('should throw if a account already exists', async () => {
+    const { sut, verifyAccountRepositoryStub } = makeSut();
+    jest
+      .spyOn(verifyAccountRepositoryStub, 'verify')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
+    const accountData = new SignupDto({
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'hashed_password',
+      passwordConfirmation: 'hashed_password',
+    });
+    const promise = sut.add(accountData);
+    await expect(promise).rejects.toThrow();
+    expect(promise).rejects.toThrow(new Error('Account already exist'));
   });
 
   it('should call Encrypter with correct password', async () => {
