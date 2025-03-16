@@ -5,6 +5,7 @@ export class User {
   public name: string;
   public email: string;
   public password: string;
+  public avatar?: string;
   public createdAt?: Date;
 
   constructor(props: Omit<User, 'id'>, id?: string) {
@@ -12,5 +13,6 @@ export class User {
 
     this.id = id || randomBytes(12).toString('hex');
     this.createdAt = props.createdAt ?? new Date();
+    this.avatar = props.avatar ?? null;
   }
 }
