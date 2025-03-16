@@ -6,6 +6,7 @@ import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { badRequest } from '@/modules/shared/presentation/helpers/http-responses';
 import { EmailValidator } from '../protocols/email-validator';
+import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
 
 export class SignupController extends Controller {
   constructor(private readonly emailValidator: EmailValidator) {
@@ -27,12 +28,12 @@ export class SignupController extends Controller {
     }
 
     if (password !== passwordConfirmation) {
-      return badRequest(new Error('Invalid param passwordConfirmation'));
+      return badRequest(new InvalidParamError('passwordConfirmation'));
     }
 
     const isEmailValid = this.emailValidator.isValid(email);
     if (!isEmailValid) {
-      return badRequest(new Error('Invalid param email'));
+      return badRequest(new InvalidParamError('email'));
     }
   }
 }

@@ -1,6 +1,7 @@
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { SignupController } from './signup';
 import { EmailValidator } from '../protocols/email-validator';
+import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
 
 const makeEmailValidator = () => {
   class EmailValidatorStub implements EmailValidator {
@@ -102,7 +103,7 @@ describe('SignupController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(
-      new Error('Invalid param passwordConfirmation'),
+      new InvalidParamError('passwordConfirmation'),
     );
   });
 
@@ -119,6 +120,6 @@ describe('SignupController', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new Error('Invalid param email'));
+    expect(httpResponse.body).toEqual(new InvalidParamError('email'));
   });
 });
