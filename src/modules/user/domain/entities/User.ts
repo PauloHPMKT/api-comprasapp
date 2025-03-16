@@ -8,7 +8,7 @@ export class User {
   public avatar?: string;
   public createdAt?: Date;
 
-  constructor(props: Omit<User, 'id'>, id?: string) {
+  constructor(props: User.Construct, id?: string) {
     Object.assign(this, props);
 
     this.id = id || this.generateId();
@@ -19,4 +19,12 @@ export class User {
   private generateId(): string {
     return randomBytes(12).toString('hex');
   }
+
+  updateAvatar(avatar: string): void {
+    this.avatar = avatar;
+  }
+}
+
+namespace User {
+  export type Construct = Omit<User, 'id' | 'updateAvatar'>;
 }
