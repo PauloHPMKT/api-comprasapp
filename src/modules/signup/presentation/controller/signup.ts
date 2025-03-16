@@ -3,6 +3,7 @@ import {
   HttpResponse,
 } from '@/modules/shared/presentation/protocols/http';
 import { Controller } from '@/modules/shared/presentation/protocols/controller';
+import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 
 export class SignupController extends Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -16,7 +17,7 @@ export class SignupController extends Controller {
       if (!httpRequest.body[field]) {
         return {
           statusCode: 400,
-          body: new Error(`Missing params ${field}`),
+          body: new MissingParamsError(field),
         };
       }
     }
