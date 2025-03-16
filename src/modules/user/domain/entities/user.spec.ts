@@ -37,4 +37,11 @@ describe('User', () => {
     expect(sut.email).toBe('anyemail@mail.com');
     expect(sut.password).toBe('anypassword');
   });
+
+  it('should call updateAvatar with correct values', () => {
+    const sut = makeSut();
+    const avatar = 'anyavatar';
+    sut.updateAvatar(avatar);
+    expect(sut.avatar).toEqual(avatar);
+  });
 });
