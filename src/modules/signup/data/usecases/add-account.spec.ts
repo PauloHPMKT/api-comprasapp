@@ -1,19 +1,39 @@
 import { InvalidParamError } from '@/modules/shared/presentation/errors';
 import { AddAccountUseCase } from './add-account';
 import { SignupDto } from '../dto/signup-dto';
+import { Encrypter } from '../protocols/encypter';
 
-const makeSut = (): AddAccountUseCase => {
-  return new AddAccountUseCase();
+const makeEncrypter = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async encrypt(value: string): Promise<string> {
+      return 'hashed_password';
+    }
+  }
+  return new EncrypterStub();
 };
+
+const makeSut = (): SutTypes => {
+  const encrypterStub = makeEncrypter();
+  const sut = new AddAccountUseCase(encrypterStub);
+  return {
+    sut,
+    encrypterStub,
+  };
+};
+
+interface SutTypes {
+  sut: AddAccountUseCase;
+  encrypterStub: Encrypter;
+}
 
 describe('AddAccount', () => {
   it('should be defined', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     expect(sut).toBeDefined();
   });
 
   it('should return an error if password not match', async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const accountData = new SignupDto({
       name: 'anyname',
       email: 'anyemail@mail.com',
@@ -22,5 +42,18 @@ describe('AddAccount', () => {
     });
     const response = await sut.add(accountData);
     expect(response).toEqual(new InvalidParamError('passwordConfirmation'));
+  });
+
+  it('should call Encrypter with correct password', async () => {
+    const { sut, encrypterStub } = makeSut();
+    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt');
+    const accountData = new SignupDto({
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'hashed_password',
+      passwordConfirmation: 'hashed_password',
+    });
+    await sut.add(accountData);
+    expect(encryptSpy).toHaveBeenCalledWith('hashed_password');
   });
 });
