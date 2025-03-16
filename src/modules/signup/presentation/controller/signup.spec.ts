@@ -1,9 +1,21 @@
-import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { SignupController } from './signup';
 import { EmailValidator } from '../protocols/email-validator';
 import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
+import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
+import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
 
-const makeEmailValidator = () => {
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    async add(
+      account: AddAccountModel.Params,
+    ): Promise<AddAccountModel.Result> {
+      return new Promise((resolve) => resolve(null));
+    }
+  }
+  return new AddAccountStub();
+};
+
+const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
       return true;
@@ -13,17 +25,20 @@ const makeEmailValidator = () => {
 };
 
 const makeSut = (): SutTypes => {
+  const addAccountStub = makeAddAccount();
   const emailValidatorStub = makeEmailValidator();
-  const sut = new SignupController(emailValidatorStub);
+  const sut = new SignupController(emailValidatorStub, addAccountStub);
   return {
     sut,
     emailValidatorStub,
+    addAccountStub,
   };
 };
 
 interface SutTypes {
   sut: SignupController;
   emailValidatorStub: EmailValidator;
+  addAccountStub: AddAccount;
 }
 
 describe('SignupController', () => {
@@ -136,5 +151,25 @@ describe('SignupController', () => {
     };
     await sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith('anyemail@mail.com');
+  });
+
+  it('should return 500 if AddAccount throws', async () => {
+    const { sut, addAccountStub } = makeSut();
+    jest
+      .spyOn(addAccountStub, 'add')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new Error('Internal server error'));
   });
 });
