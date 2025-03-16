@@ -11,8 +11,12 @@ export class User {
   constructor(props: Omit<User, 'id'>, id?: string) {
     Object.assign(this, props);
 
-    this.id = id || randomBytes(12).toString('hex');
+    this.id = id || this.generateId();
     this.createdAt = props.createdAt ?? new Date();
     this.avatar = props.avatar ?? null;
+  }
+
+  private generateId(): string {
+    return randomBytes(12).toString('hex');
   }
 }
