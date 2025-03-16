@@ -3,6 +3,7 @@ import { EmailValidator } from '../protocols/email-validator';
 import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
+import { ServerError } from '@/modules/shared/presentation/errors/server-error';
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -176,7 +177,7 @@ describe('SignupController', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new Error('Internal server error'));
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 
   it('should return 201 if an account is created on success', async () => {

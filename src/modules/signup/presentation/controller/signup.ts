@@ -7,6 +7,7 @@ import { MissingParamsError } from '@/modules/shared/presentation/errors/missing
 import {
   badRequest,
   created,
+  serverError,
 } from '@/modules/shared/presentation/helpers/http-responses';
 import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
 import { EmailValidator } from '../protocols/email-validator';
@@ -52,10 +53,7 @@ export class SignupController extends Controller {
       return created(account);
     } catch (error) {
       console.error(error);
-      return {
-        statusCode: 500,
-        body: new Error('Internal server error'),
-      };
+      return serverError();
     }
   }
 }
