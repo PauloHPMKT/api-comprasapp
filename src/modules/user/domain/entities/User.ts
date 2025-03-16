@@ -11,5 +11,6 @@ export class User {
     Object.assign(this, props);
 
     this.id = id || randomBytes(12).toString('hex');
+    this.createdAt = props.createdAt ?? new Date();
   }
 }
