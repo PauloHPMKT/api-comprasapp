@@ -1,11 +1,11 @@
 import {
+  InvalidParamError,
+  MissingParamsError,
+} from '@/modules/shared/presentation/errors';
+import {
   HttpRequest,
   HttpResponse,
 } from '@/modules/shared/presentation/protocols/http';
-import {
-  MissingParamsError,
-  InvalidParamError,
-} from '@/modules/shared/presentation/errors';
 import {
   badRequest,
   created,
@@ -32,10 +32,10 @@ export class SignupController extends Controller {
         'password',
         'passwordConfirmation',
       ];
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return badRequest(new MissingParamsError(field));
-        }
+
+      const hasError = this.validateRequiredFields(httpRequest, requiredFields);
+      if (hasError) {
+        return badRequest(new MissingParamsError(hasError));
       }
 
       if (password !== passwordConfirmation) {
