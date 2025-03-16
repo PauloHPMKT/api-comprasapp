@@ -5,25 +5,14 @@ interface HttpRequest {
 
 export class SignupController {
   async handle(httpRequest: any): Promise<HttpRequest> {
-    if (!httpRequest.body.name) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing params name'),
-      };
-    }
-
-    if (!httpRequest.body.email) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing params email'),
-      };
-    }
-
-    if (!httpRequest.body.password) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing params password'),
-      };
+    const requiredFields = ['name', 'email', 'password'];
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return {
+          statusCode: 400,
+          body: new Error(`Missing params ${field}`),
+        };
+      }
     }
   }
 }
