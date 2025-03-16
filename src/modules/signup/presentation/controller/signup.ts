@@ -5,7 +5,12 @@ interface HttpRequest {
 
 export class SignupController {
   async handle(httpRequest: any): Promise<HttpRequest> {
-    const requiredFields = ['name', 'email', 'password'];
+    const requiredFields = [
+      'name',
+      'email',
+      'password',
+      'passwordConfirmation',
+    ];
     for (const field of requiredFields) {
       if (!httpRequest.body[field]) {
         return {
