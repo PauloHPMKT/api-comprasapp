@@ -1,10 +1,10 @@
-interface HttpRequest {
-  statusCode: number;
-  body: any;
-}
+import {
+  HttpRequest,
+  HttpResponse,
+} from '@/modules/shared/presentation/protocols/http';
 
 export class SignupController {
-  async handle(httpRequest: any): Promise<HttpRequest> {
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredFields = [
       'name',
       'email',
