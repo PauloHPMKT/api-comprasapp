@@ -19,4 +19,10 @@ describe('User', () => {
     expect(sut.id).toBeDefined();
     expect(sut.id).not.toBeNull();
   });
+
+  it('should create a user with valid date', () => {
+    const sut = makeSut();
+    expect(sut.createdAt).toBeDefined();
+    expect(sut.createdAt).toBeInstanceOf(Date);
+  });
 });
