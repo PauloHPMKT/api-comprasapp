@@ -30,4 +30,11 @@ describe('User', () => {
     const sut = makeSut();
     expect(sut.avatar).toBeNull();
   });
+
+  it('should create a user correctly with all default properties', () => {
+    const sut = makeSut();
+    expect(sut.name).toBe('anyname');
+    expect(sut.email).toBe('anyemail@mail.com');
+    expect(sut.password).toBe('anypassword');
+  });
 });
