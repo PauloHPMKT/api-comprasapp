@@ -4,12 +4,15 @@ import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
 import { VerifyUserRepository } from '../protocols/verify-user-repository';
 import { CreateUserRepository } from '../protocols/create-user-repository';
+import { Account } from '@/modules/account/domain/enities/Account';
+import { AddAccountRepository } from '../protocols/add-account-repository';
 
 export class AddAccountUseCase extends AddAccount {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly verifyAccountRepository: VerifyUserRepository,
     private readonly createUserRepository: CreateUserRepository,
+    private readonly addAccountRepository: AddAccountRepository,
   ) {
     super();
   }
@@ -35,6 +38,9 @@ export class AddAccountUseCase extends AddAccount {
       password: hashedPassword,
     });
     await this.createUserRepository.create(user);
+
+    const account = new Account({ userId: user.id });
+    await this.addAccountRepository.add(account);
 
     return new Promise((resolve) =>
       resolve({
