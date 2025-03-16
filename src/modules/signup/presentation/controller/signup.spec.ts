@@ -9,7 +9,13 @@ const makeAddAccount = (): AddAccount => {
     async add(
       account: AddAccountModel.Params,
     ): Promise<AddAccountModel.Result> {
-      return new Promise((resolve) => resolve(null));
+      return new Promise((resolve) =>
+        resolve({
+          id: 'valid_id',
+          name: 'validname',
+          email: 'validemail@mail.com',
+        }),
+      );
     }
   }
   return new AddAccountStub();
@@ -171,5 +177,24 @@ describe('SignupController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new Error('Internal server error'));
+  });
+
+  it('should return 201 if an account is created on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: 'validname',
+      email: 'validemail@mail.com',
+    });
   });
 });
