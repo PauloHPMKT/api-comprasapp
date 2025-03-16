@@ -4,6 +4,7 @@ import {
 } from '@/modules/shared/presentation/protocols/http';
 import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
+import { badRequest } from '@/modules/shared/presentation/helpers/http-responses';
 import { EmailValidator } from '../protocols/email-validator';
 
 export class SignupController extends Controller {
@@ -21,26 +22,17 @@ export class SignupController extends Controller {
     ];
     for (const field of requiredFields) {
       if (!httpRequest.body[field]) {
-        return {
-          statusCode: 400,
-          body: new MissingParamsError(field),
-        };
+        return badRequest(new MissingParamsError(field));
       }
     }
 
     if (password !== passwordConfirmation) {
-      return {
-        statusCode: 400,
-        body: new Error('Invalid param passwordConfirmation'),
-      };
+      return badRequest(new Error('Invalid param passwordConfirmation'));
     }
 
     const isEmailValid = this.emailValidator.isValid(email);
     if (!isEmailValid) {
-      return {
-        statusCode: 400,
-        body: new Error('Invalid param email'),
-      };
+      return badRequest(new Error('Invalid param email'));
     }
   }
 }
