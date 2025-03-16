@@ -2,14 +2,16 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@/modules/shared/presentation/protocols/http';
-import { Controller } from '@/modules/shared/presentation/protocols/controller';
-import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
+import {
+  MissingParamsError,
+  InvalidParamError,
+} from '@/modules/shared/presentation/errors';
 import {
   badRequest,
   created,
   serverError,
 } from '@/modules/shared/presentation/helpers/http-responses';
-import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
+import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { EmailValidator } from '../protocols/email-validator';
 import { AddAccount } from '../../domain/usecases/add-account';
 

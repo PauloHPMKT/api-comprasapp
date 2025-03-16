@@ -1,9 +1,11 @@
+import {
+  InvalidParamError,
+  MissingParamsError,
+  ServerError,
+} from '@/modules/shared/presentation/errors';
 import { SignupController } from './signup';
 import { EmailValidator } from '../protocols/email-validator';
-import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
-import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
 import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
-import { ServerError } from '@/modules/shared/presentation/errors/server-error';
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
