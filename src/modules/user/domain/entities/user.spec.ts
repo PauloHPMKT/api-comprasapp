@@ -25,4 +25,9 @@ describe('User', () => {
     expect(sut.createdAt).toBeDefined();
     expect(sut.createdAt).toBeInstanceOf(Date);
   });
+
+  it('should be able to create a user with null avatar', () => {
+    const sut = makeSut();
+    expect(sut.avatar).toBeNull();
+  });
 });
