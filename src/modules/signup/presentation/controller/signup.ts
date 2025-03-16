@@ -2,8 +2,9 @@ import {
   HttpRequest,
   HttpResponse,
 } from '@/modules/shared/presentation/protocols/http';
+import { Controller } from '@/modules/shared/presentation/protocols/controller';
 
-export class SignupController {
+export class SignupController extends Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     const requiredFields = [
       'name',
