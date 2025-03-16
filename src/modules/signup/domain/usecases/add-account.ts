@@ -14,6 +14,6 @@ export namespace AddAccountModel {
 
 export abstract class AddAccount {
   abstract add(
-    account: AddAccountModel.Params,
+    accountData: AddAccountModel.Params,
   ): Promise<AddAccountModel.Result>;
 }

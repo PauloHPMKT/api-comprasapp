@@ -10,7 +10,7 @@ import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(
-      account: AddAccountModel.Params,
+      accountData: AddAccountModel.Params,
     ): Promise<AddAccountModel.Result> {
       return new Promise((resolve) =>
         resolve({
