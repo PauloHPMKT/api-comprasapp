@@ -163,4 +163,22 @@ describe('AddAccount', () => {
       createdAt: expect.any(Date),
     });
   });
+
+  it('should throw if CreateUserRepository throws', async () => {
+    const { sut, createUserRepositoryStub } = makeSut();
+    jest.spyOn(createUserRepositoryStub, 'create').mockImplementationOnce(
+      () =>
+        new Promise((resolve, reject) => {
+          reject(new Error());
+        }),
+    );
+    const accountData = new SignupDto({
+      name: 'validname',
+      email: 'validemail@mail.com',
+      password: 'password',
+      passwordConfirmation: 'password',
+    });
+    const promise = sut.add(accountData);
+    await expect(promise).rejects.toThrow();
+  });
 });
