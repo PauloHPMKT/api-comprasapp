@@ -4,7 +4,10 @@ import {
 } from '@/modules/shared/presentation/protocols/http';
 import { Controller } from '@/modules/shared/presentation/protocols/controller';
 import { MissingParamsError } from '@/modules/shared/presentation/errors/missing-params-error';
-import { badRequest } from '@/modules/shared/presentation/helpers/http-responses';
+import {
+  badRequest,
+  created,
+} from '@/modules/shared/presentation/helpers/http-responses';
 import { InvalidParamError } from '@/modules/shared/presentation/errors/invalid-param-error';
 import { EmailValidator } from '../protocols/email-validator';
 import { AddAccount } from '../../domain/usecases/add-account';
@@ -46,10 +49,7 @@ export class SignupController extends Controller {
         email,
         password,
       });
-      return {
-        statusCode: 201,
-        body: account,
-      };
+      return created(account);
     } catch (error) {
       console.error(error);
       return {
