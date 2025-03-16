@@ -2,10 +2,10 @@ import { InvalidParamError } from '@/modules/shared/presentation/errors';
 import { AddAccountUseCase } from './add-account';
 import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
-import { VerifyAccountRepository } from '../protocols/verify-account-repository';
+import { VerifyUserRepository } from '../protocols/verify-user-repository';
 
-const makeVerifyAccountRepository = (): VerifyAccountRepository => {
-  class VerifyAccountRepositoryStub implements VerifyAccountRepository {
+const makeVerifyAccountRepository = (): VerifyUserRepository => {
+  class VerifyAccountRepositoryStub implements VerifyUserRepository {
     async verify(value: string): Promise<boolean> {
       return new Promise((resolve) => resolve(false));
     }
@@ -23,20 +23,20 @@ const makeEncrypter = (): Encrypter => {
 };
 
 const makeSut = (): SutTypes => {
-  const verifyAccountRepositoryStub = makeVerifyAccountRepository();
+  const verifyUserExistStub = makeVerifyAccountRepository();
   const encrypterStub = makeEncrypter();
-  const sut = new AddAccountUseCase(encrypterStub, verifyAccountRepositoryStub);
+  const sut = new AddAccountUseCase(encrypterStub, verifyUserExistStub);
   return {
     sut,
     encrypterStub,
-    verifyAccountRepositoryStub,
+    verifyUserExistStub,
   };
 };
 
 interface SutTypes {
   sut: AddAccountUseCase;
   encrypterStub: Encrypter;
-  verifyAccountRepositoryStub: VerifyAccountRepository;
+  verifyUserExistStub: VerifyUserRepository;
 }
 
 describe('AddAccount', () => {
@@ -57,10 +57,10 @@ describe('AddAccount', () => {
     expect(response).toEqual(new InvalidParamError('passwordConfirmation'));
   });
 
-  it('should throw if a account already exists', async () => {
-    const { sut, verifyAccountRepositoryStub } = makeSut();
+  it('should throw if a user already exists', async () => {
+    const { sut, verifyUserExistStub } = makeSut();
     jest
-      .spyOn(verifyAccountRepositoryStub, 'verify')
+      .spyOn(verifyUserExistStub, 'verify')
       .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
     const accountData = new SignupDto({
       name: 'valid_name',
