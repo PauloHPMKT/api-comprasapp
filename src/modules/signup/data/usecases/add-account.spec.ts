@@ -73,4 +73,20 @@ describe('AddAccount', () => {
     const promise = sut.add(accountData);
     await expect(promise).rejects.toThrow();
   });
+
+  it('should create an User instance on success', async () => {
+    const { sut } = makeSut();
+    const accountData = new SignupDto({
+      name: 'valid_name',
+      email: 'valid_email',
+      password: 'hashed_password',
+      passwordConfirmation: 'hashed_password',
+    });
+    const response = await sut.add(accountData);
+    expect(response).toEqual({
+      id: 'valid_id',
+      name: 'validname',
+      email: 'validemail@mail.com',
+    });
+  });
 });
