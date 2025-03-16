@@ -28,6 +28,13 @@ export class SignupController extends Controller {
       }
     }
 
+    if (password !== passwordConfirmation) {
+      return {
+        statusCode: 400,
+        body: new Error('Invalid param passwordConfirmation'),
+      };
+    }
+
     const isEmailValid = this.emailValidator.isValid(email);
     if (!isEmailValid) {
       return {
