@@ -4,6 +4,24 @@ import { SignupDto } from '../dto/signup-dto';
 import { Encrypter } from '../protocols/encypter';
 import { VerifyUserRepository } from '../protocols/verify-user-repository';
 import { CreateUserRepository } from '../protocols/create-user-repository';
+import { AddAccountRepository } from '../protocols/add-account-repository';
+
+const makeAddAccountRepository = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async add(account: any): Promise<any> {
+      return new Promise((resolve) =>
+        resolve({
+          id: 'valid_id',
+          userId: 'valid_id',
+          status: 'valid_status',
+          plan: 'valid_plan',
+          createdAt: new Date('2025-12-25'),
+        }),
+      );
+    }
+  }
+  return new AddAccountRepositoryStub();
+};
 
 const makeCreateUserRepository = (): CreateUserRepository => {
   class CreateUserRepositoryStub implements CreateUserRepository {
@@ -41,6 +59,7 @@ const makeEncrypter = (): Encrypter => {
 };
 
 const makeSut = (): SutTypes => {
+  const addAccountRepository = makeAddAccountRepository();
   const createUserRepositoryStub = makeCreateUserRepository();
   const verifyUserExistStub = makeVerifyAccountRepository();
   const encrypterStub = makeEncrypter();
@@ -48,12 +67,14 @@ const makeSut = (): SutTypes => {
     encrypterStub,
     verifyUserExistStub,
     createUserRepositoryStub,
+    addAccountRepository,
   );
   return {
     sut,
     encrypterStub,
     verifyUserExistStub,
     createUserRepositoryStub,
+    addAccountRepository,
   };
 };
 
@@ -62,6 +83,7 @@ interface SutTypes {
   encrypterStub: Encrypter;
   verifyUserExistStub: VerifyUserRepository;
   createUserRepositoryStub: CreateUserRepository;
+  addAccountRepository: AddAccountRepository;
 }
 
 describe('AddAccount', () => {
@@ -180,5 +202,25 @@ describe('AddAccount', () => {
     });
     const promise = sut.add(accountData);
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepository } = makeSut();
+    const addSpy = jest.spyOn(addAccountRepository, 'add');
+    const accountData = new SignupDto({
+      name: 'validname',
+      email: 'validemail@mail.com',
+      password: 'password',
+      passwordConfirmation: 'password',
+    });
+    await sut.add(accountData);
+    expect(addSpy).toHaveBeenCalledWith({
+      id: expect.any(String),
+      userId: expect.any(String),
+      status: 'active',
+      plan: 'free',
+      createdAt: expect.any(Date),
+      updatedAt: null,
+    });
   });
 });
