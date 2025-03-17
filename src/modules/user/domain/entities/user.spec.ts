@@ -26,6 +26,16 @@ describe('User entity', () => {
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 
+  it('shoul create a user with createdAt', () => {
+    const sut = makeSut();
+    const createdAt = new Date();
+    sut.props.createdAt = createdAt;
+
+    expect(sut.props).toMatchObject({
+      createdAt,
+    });
+  });
+
   it('should validate if id is not null', () => {
     const sut = makeSut();
     expect(sut.id).not.toBeNull();
