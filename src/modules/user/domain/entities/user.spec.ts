@@ -20,4 +20,9 @@ describe('User entity', () => {
     const sut = makeSut();
     expect(sut.props.avatar).toBeNull();
   });
+
+  it('should create a user with a valid Date', () => {
+    const sut = makeSut();
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
 });
