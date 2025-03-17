@@ -10,7 +10,7 @@ import { AddAccountRepository } from '../protocols/add-account-repository';
 export class AddAccountUseCase extends AddAccount {
   constructor(
     private readonly encrypter: Encrypter,
-    private readonly verifyAccountRepository: VerifyUserRepository,
+    private readonly verifyUserRepository: VerifyUserRepository,
     private readonly createUserRepository: CreateUserRepository,
     private readonly addAccountRepository: AddAccountRepository,
   ) {
@@ -23,7 +23,7 @@ export class AddAccountUseCase extends AddAccount {
       return passwordError;
     }
 
-    const userExists = await this.verifyAccountRepository.verify(
+    const userExists = await this.verifyUserRepository.verify(
       accountData.email,
     );
     // TODO: Verify account status to call account module to send email to reabilitate account
@@ -37,17 +37,18 @@ export class AddAccountUseCase extends AddAccount {
       email: accountData.email,
       password: hashedPassword,
     });
-    await this.createUserRepository.create(user);
 
     const account = new Account({ userId: user.id });
     await this.addAccountRepository.add(account);
 
-    return new Promise((resolve) =>
-      resolve({
-        id: 'valid_id',
-        name: 'validname',
-        email: 'validemail@mail.com',
-      }),
-    );
+    user.assignAccountId(account.id);
+    await this.createUserRepository.create(user);
+
+    return {
+      id: account.id,
+      name: user.name,
+      email: user.email,
+      accountId: user.accountId,
+    };
   }
 }

@@ -5,6 +5,7 @@ export namespace AddAccountModel {
     id: string;
     name: string;
     email: string;
+    accountId: string;
   };
 }
 
