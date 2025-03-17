@@ -44,4 +44,12 @@ describe('User', () => {
     sut.updateAvatar(avatar);
     expect(sut.avatar).toEqual(avatar);
   });
+
+  it('should call assignAccountId with correct values', () => {
+    const sut = makeSut();
+    const accountId = 'anyaccountid';
+    sut.assignAccountId(accountId);
+    expect(sut.accountId).toEqual(accountId);
+    expect(sut.accountId).toBeTruthy();
+  });
 });
