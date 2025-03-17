@@ -1,12 +1,12 @@
 import { User } from './User';
 
-const makeSut = (): User => {
+const makeSut = (id?: string): User => {
   const userProps = {
     name: 'anyemail',
     email: 'anyemail@mail.com',
     password: 'anypassword',
   };
-  return new User(userProps);
+  return new User(userProps, id);
 };
 
 describe('User entity', () => {
@@ -39,6 +39,12 @@ describe('User entity', () => {
   it('should validate if id is not null', () => {
     const sut = makeSut();
     expect(sut.id).not.toBeNull();
+    expect(sut.id).toBeTruthy();
+  });
+
+  it('should validate id is generated even undefined', () => {
+    const sut = makeSut(undefined);
+    expect(sut.id).not.toBeUndefined();
     expect(sut.id).toBeTruthy();
   });
 });
