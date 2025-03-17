@@ -16,6 +16,7 @@ const makeAddAccount = (): AddAccount => {
           id: 'valid_id',
           name: 'validname',
           email: 'validemail@mail.com',
+          accountId: 'valid_account_id',
         }),
       );
     }
@@ -180,6 +181,7 @@ describe('SignupController', () => {
       id: 'valid_id',
       name: 'validname',
       email: 'validemail@mail.com',
+      accountId: 'valid_account_id',
     });
   });
 });

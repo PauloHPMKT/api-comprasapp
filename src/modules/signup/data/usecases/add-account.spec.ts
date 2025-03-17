@@ -16,6 +16,7 @@ const makeAddAccountRepository = (): AddAccountRepository => {
           status: 'valid_status',
           plan: 'valid_plan',
           createdAt: new Date('2025-12-25'),
+          updatedAt: null,
         }),
       );
     }
@@ -28,11 +29,13 @@ const makeCreateUserRepository = (): CreateUserRepository => {
     async create(data: any): Promise<any> {
       return new Promise((resolve) =>
         resolve({
-          id: 'valid_id',
+          id: expect.any(String),
           name: 'validname',
           email: 'validemail@mail.com',
+          password: 'hashed_password',
+          accountId: expect.any(String),
           avatar: null,
-          createdAt: new Date('2025-12-25'),
+          createdAt: expect.any(Date),
         }),
       );
     }
@@ -110,8 +113,8 @@ describe('AddAccount', () => {
       .spyOn(verifyUserExistStub, 'verify')
       .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
     const accountData = new SignupDto({
-      name: 'valid_name',
-      email: 'valid_email',
+      name: 'validname',
+      email: 'validemail@mail.com',
       password: 'hashed_password',
       passwordConfirmation: 'hashed_password',
     });
@@ -124,8 +127,8 @@ describe('AddAccount', () => {
     const { sut, encrypterStub } = makeSut();
     const encryptSpy = jest.spyOn(encrypterStub, 'encrypt');
     const accountData = new SignupDto({
-      name: 'valid_name',
-      email: 'valid_email',
+      name: 'validname',
+      email: 'validemail@mail.com',
       password: 'hashed_password',
       passwordConfirmation: 'hashed_password',
     });
@@ -141,8 +144,8 @@ describe('AddAccount', () => {
         new Promise((resolve, reject) => reject(new Error())),
       );
     const accountData = new SignupDto({
-      name: 'valid_name',
-      email: 'valid_email',
+      name: 'validname',
+      email: 'validemail@mail.com',
       password: 'hashed_password',
       passwordConfirmation: 'hashed_password',
     });
@@ -150,19 +153,20 @@ describe('AddAccount', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it('should create an User instance on success', async () => {
+  it('should create an user account on success', async () => {
     const { sut } = makeSut();
     const accountData = new SignupDto({
-      name: 'valid_name',
-      email: 'valid_email',
+      name: 'validname',
+      email: 'validemail@mail.com',
       password: 'hashed_password',
       passwordConfirmation: 'hashed_password',
     });
     const response = await sut.add(accountData);
     expect(response).toEqual({
-      id: 'valid_id',
+      id: expect.any(String),
       name: 'validname',
       email: 'validemail@mail.com',
+      accountId: expect.any(String),
     });
   });
 
@@ -170,7 +174,7 @@ describe('AddAccount', () => {
     const { sut, createUserRepositoryStub } = makeSut();
     const createSpy = jest.spyOn(createUserRepositoryStub, 'create');
     const accountData = new SignupDto({
-      name: 'valid_name',
+      name: 'validname',
       email: 'validemail@mail.com',
       password: 'hashed_password',
       passwordConfirmation: 'hashed_password',
@@ -178,9 +182,10 @@ describe('AddAccount', () => {
     await sut.add(accountData);
     expect(createSpy).toHaveBeenCalledWith({
       id: expect.any(String),
-      name: 'valid_name',
+      name: 'validname',
       email: 'validemail@mail.com',
       password: 'hashed_password',
+      accountId: expect.any(String),
       avatar: null,
       createdAt: expect.any(Date),
     });
