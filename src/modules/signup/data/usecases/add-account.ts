@@ -1,11 +1,13 @@
-import { User } from '@/modules/user/domain/entities/User';
+import {
+  Encrypter,
+  VerifyUserRepository,
+  CreateUserRepository,
+  AddAccountRepository,
+} from '../protocols';
 import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account';
+import { User } from '@/modules/user/domain/entities/User';
 import { SignupDto } from '../dto/signup-dto';
-import { Encrypter } from '../protocols/encypter';
-import { VerifyUserRepository } from '../protocols/verify-user-repository';
-import { CreateUserRepository } from '../protocols/create-user-repository';
 import { Account } from '@/modules/account/domain/enities/Account';
-import { AddAccountRepository } from '../protocols/add-account-repository';
 
 export class AddAccountUseCase extends AddAccount {
   constructor(
