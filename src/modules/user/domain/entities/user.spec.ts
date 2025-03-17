@@ -25,4 +25,10 @@ describe('User entity', () => {
     const sut = makeSut();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
+
+  it('should validate if id is not null', () => {
+    const sut = makeSut();
+    expect(sut.id).not.toBeNull();
+    expect(sut.id).toBeTruthy();
+  });
 });
