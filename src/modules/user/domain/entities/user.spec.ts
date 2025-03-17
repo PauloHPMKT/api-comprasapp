@@ -1,7 +1,12 @@
 import { User } from './User';
 
 const makeSut = (): User => {
-  return new User();
+  const userProps = {
+    name: 'anyemail',
+    email: 'anyemail@mail.com',
+    password: 'anypassword',
+  };
+  return new User(userProps);
 };
 
 describe('User entity', () => {
@@ -9,5 +14,10 @@ describe('User entity', () => {
     const sut = makeSut();
     expect(sut).toBeTruthy();
     expect(sut).toBeDefined();
+  });
+
+  it('should create a user with no avatar', () => {
+    const sut = makeSut();
+    expect(sut.props.avatar).toBeNull();
   });
 });
