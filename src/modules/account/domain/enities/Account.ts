@@ -15,6 +15,7 @@ export class Account {
     this.status = props.status ?? 'active';
     this.plan = props.plan ?? 'free';
     this.createdAt = props.createdAt ?? new Date();
+    this.updatedAt = props.updatedAt ?? null;
   }
 
   private generateId(): string {
