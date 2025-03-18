@@ -1,21 +1,24 @@
 import { randomBytes } from 'crypto';
 
-interface UserProps {
-  name: string;
-  email: string;
-  password: string;
-  avatar?: string;
-  createdAt?: Date;
-}
-
 export class User {
   public readonly id: string;
-  constructor(
-    public readonly props: UserProps,
-    id?: string,
-  ) {
+  public name: string;
+  public email: string;
+  public password: string;
+  public avatar?: string;
+  public createdAt?: Date;
+
+  constructor(props: Omit<User, 'id'>, id?: string) {
     this.id = id || randomBytes(12).toString('hex');
-    this.props.avatar = props.avatar ?? null;
-    this.props.createdAt = props.createdAt ?? new Date();
+    this.avatar = props.avatar ?? null;
+    this.createdAt = props.createdAt ?? new Date();
   }
 }
+
+console.log(
+  new User({
+    name: 'anyemail',
+    email: 'anyemail@mail.com',
+    password: 'anypassword',
+  }),
+);

@@ -18,20 +18,20 @@ describe('User entity', () => {
 
   it('should create a user with no avatar', () => {
     const sut = makeSut();
-    expect(sut.props.avatar).toBeNull();
+    expect(sut.avatar).toBeNull();
   });
 
   it('should create a user with a valid Date', () => {
     const sut = makeSut();
-    expect(sut.props.createdAt).toBeInstanceOf(Date);
+    expect(sut.createdAt).toBeInstanceOf(Date);
   });
 
   it('shoul create a user with createdAt', () => {
     const sut = makeSut();
     const createdAt = new Date();
-    sut.props.createdAt = createdAt;
+    sut.createdAt = createdAt;
 
-    expect(sut.props).toMatchObject({
+    expect(sut).toMatchObject({
       createdAt,
     });
   });
