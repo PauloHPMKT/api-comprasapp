@@ -32,6 +32,10 @@ export class User {
     return this.props.password;
   }
 
+  get avatar(): string | null {
+    return this.props.avatar;
+  }
+
   assignAccountId(accountId: string) {
     return (this.props.accountId = accountId);
   }
