@@ -88,4 +88,13 @@ describe('User Entity', () => {
       expect(sut.avatar).toEqual(avatar);
     });
   });
+
+  describe('User Entity Setters', () => {
+    it('should set the User avatar', () => {
+      const sut = makeSut();
+      const avatar = 'anyavatar.jpg';
+      sut['avatar'] = avatar;
+      expect(sut['avatar']).toEqual(avatar);
+    });
+  });
 });
