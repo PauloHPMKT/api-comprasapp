@@ -75,5 +75,10 @@ describe('User Entity', () => {
       const sut = makeSut();
       expect(sut.password).toEqual('anypassword');
     });
+
+    it('should get the User avatar when its null', () => {
+      const sut = makeSut();
+      expect(sut.avatar).toBeNull();
+    });
   });
 });
