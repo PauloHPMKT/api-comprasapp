@@ -16,7 +16,7 @@ export class User {
     id?: UniqueEntityId,
   ) {
     this.id = id || new UniqueEntityId();
-    this.props.avatar = props.avatar ?? null;
+    this.avatar = this.props.avatar;
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
@@ -34,6 +34,10 @@ export class User {
 
   get avatar(): string | null {
     return this.props.avatar;
+  }
+
+  private set avatar(avatar: string | null) {
+    this.props.avatar = avatar ?? null;
   }
 
   assignAccountId(accountId: string) {
