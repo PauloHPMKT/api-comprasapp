@@ -1,16 +1,16 @@
 import { randomBytes } from 'crypto';
 import { UniqueEntityIdError } from '../../errors/unique-entity-id-error';
+import { ValueObject } from './value-object';
 
-export class UniqueEntityId {
-  private readonly id: string;
+export class UniqueEntityId extends ValueObject<string> {
   constructor(id?: string) {
-    this.id = id || randomBytes(12).toString('hex');
+    super(id || randomBytes(12).toString('hex'));
     this.validate();
   }
 
   private validate() {
     const idRegex = /^[0-9a-fA-F]{24}$/;
-    if (!idRegex.test(this.id)) {
+    if (!idRegex.test(this.value)) {
       throw new UniqueEntityIdError();
     }
   }
