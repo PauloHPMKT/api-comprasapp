@@ -70,5 +70,10 @@ describe('User Entity', () => {
       const sut = makeSut();
       expect(sut.email).toEqual('anyemail@mail.com');
     });
+
+    it('should get the User password', () => {
+      const sut = makeSut();
+      expect(sut.password).toEqual('anypassword');
+    });
   });
 });
