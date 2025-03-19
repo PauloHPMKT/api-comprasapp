@@ -43,6 +43,12 @@ describe('User Entity', () => {
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 
+  it('should create a new User with a valid id', () => {
+    const sut = makeSut();
+    expect(sut.id).not.toBeUndefined();
+    expect(sut.id).not.toBeNull();
+  });
+
   it('should create a new User with an accountId', () => {
     const sut = makeSut();
     const accountId = 'anyaccountid';
