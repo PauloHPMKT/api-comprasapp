@@ -32,4 +32,9 @@ describe('User Entity', () => {
     expect(sut.props.password).not.toBeUndefined();
     expect(sut.props.password).toEqual('anypassword');
   });
+
+  it('should create a new User with avatar null', () => {
+    const sut = makeSut();
+    expect(sut.props.avatar).toBeNull();
+  });
 });
