@@ -1,4 +1,3 @@
-import { randomBytes } from 'crypto';
 import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
 
 export type UserProps = {
@@ -21,7 +20,19 @@ export class User {
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
+  get name(): string {
+    return this.props.name;
+  }
+
   assignAccountId(accountId: string) {
     return (this.props.accountId = accountId);
   }
 }
+
+console.log(
+  new User({
+    name: 'John Doe',
+    email: 'anyemail@mail.com',
+    password: 'anypassword',
+  }),
+);
