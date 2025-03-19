@@ -59,4 +59,11 @@ describe('User Entity', () => {
     const generatedAccountId = sut.assignAccountId(accountId);
     expect(sut.props.accountId).toEqual(generatedAccountId);
   });
+
+  describe('User Entity Getters', () => {
+    it('should get the User name', () => {
+      const sut = makeSut();
+      expect(sut.name).toBe('John Doe');
+    });
+  });
 });
