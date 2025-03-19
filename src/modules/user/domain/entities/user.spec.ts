@@ -80,5 +80,12 @@ describe('User Entity', () => {
       const sut = makeSut();
       expect(sut.avatar).toBeNull();
     });
+
+    it('should get the User avatar when its not null', () => {
+      const sut = makeSut();
+      const avatar = 'anyavatar';
+      sut.props.avatar = avatar;
+      expect(sut.avatar).toEqual(avatar);
+    });
   });
 });
