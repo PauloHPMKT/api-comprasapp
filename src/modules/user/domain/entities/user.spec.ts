@@ -42,4 +42,11 @@ describe('User Entity', () => {
     const sut = makeSut();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
+
+  it('should create a new User with an accountId', () => {
+    const sut = makeSut();
+    const accountId = 'anyaccountid';
+    const generatedAccountId = sut.assignAccountId(accountId);
+    expect(sut.props.accountId).toEqual(generatedAccountId);
+  });
 });
