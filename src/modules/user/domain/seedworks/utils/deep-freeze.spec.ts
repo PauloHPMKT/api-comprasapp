@@ -10,4 +10,9 @@ describe('Object utils', () => {
     const num = deepFreeze(1);
     expect(typeof num).toBe('number');
   });
+
+  it('should not freeze a scalar boolean value if true', () => {
+    const bool = deepFreeze(true);
+    expect(typeof bool).toBe('boolean');
+  });
 });
