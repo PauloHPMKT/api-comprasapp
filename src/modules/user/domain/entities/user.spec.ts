@@ -1,12 +1,13 @@
+import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
 import { User, UserProps } from './User';
 
-const makeSut = (): User => {
+const makeSut = (id?: UniqueEntityId): User => {
   const userProps: UserProps = {
     name: 'John Doe',
     email: 'anyemail@mail.com',
     password: 'anypassword',
   };
-  return new User(userProps);
+  return new User(userProps, id);
 };
 
 describe('User Entity', () => {
@@ -44,9 +45,12 @@ describe('User Entity', () => {
   });
 
   it('should create a new User with a valid id', () => {
-    const sut = makeSut();
+    const id = new UniqueEntityId('5c84559c9ea984bd9b1f2bc6');
+    const sut = makeSut(id);
     expect(sut.id).not.toBeUndefined();
     expect(sut.id).not.toBeNull();
+    expect(sut.id).toEqual(id);
+    expect(sut.id).toBeInstanceOf(UniqueEntityId);
   });
 
   it('should create a new User with an accountId', () => {
