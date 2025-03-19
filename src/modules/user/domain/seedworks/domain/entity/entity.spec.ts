@@ -24,4 +24,13 @@ describe('Entity abstraction', () => {
     expect(entity.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
     expect(entity.id).toBe(uniqueEntityId.value);
   });
+
+  it('should convert an entity to a JavaScript Object', () => {
+    const uniqueEntityId = new UniqueEntityId();
+    const sut = makeSut({ prop1: 'prop1 value', prop2: 10 }, uniqueEntityId);
+    expect(sut.toJSON()).toStrictEqual({
+      id: sut.id,
+      ...sut.props,
+    });
+  });
 });
