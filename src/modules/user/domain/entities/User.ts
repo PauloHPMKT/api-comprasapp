@@ -24,6 +24,10 @@ export class User {
     return this.props.name;
   }
 
+  get email(): string {
+    return this.props.email;
+  }
+
   assignAccountId(accountId: string) {
     return (this.props.accountId = accountId);
   }

@@ -65,5 +65,10 @@ describe('User Entity', () => {
       const sut = makeSut();
       expect(sut.name).toBe('John Doe');
     });
+
+    it('should get the User email', () => {
+      const sut = makeSut();
+      expect(sut.email).toEqual('anyemail@mail.com');
+    });
   });
 });
