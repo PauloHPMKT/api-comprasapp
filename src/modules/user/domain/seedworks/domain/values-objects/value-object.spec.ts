@@ -37,4 +37,23 @@ describe('Value Object Base Class', () => {
       expect(vo + '').toBe(value.expected);
     });
   });
+
+  it('should be a immutable object', () => {
+    const obj = {
+      prop1: 'value1',
+      deep: { prop2: 'value2', prop3: new Date() },
+    };
+    const sut = makeSut(obj);
+    expect(() => {
+      (sut as any).value.prop1 = 'test';
+    }).toThrow(
+      "Cannot assign to read only property 'prop1' of object '#<Object>'",
+    );
+    expect(() => {
+      (sut as any).value.deep.prop2 = 'test';
+    }).toThrow(
+      "Cannot assign to read only property 'prop2' of object '#<Object>'",
+    );
+    expect(sut.value.deep.prop3).toBeInstanceOf(Date);
+  });
 });
