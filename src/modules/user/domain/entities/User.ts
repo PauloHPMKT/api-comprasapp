@@ -1,3 +1,4 @@
+import Entity from '../seedworks/domain/entity/entity';
 import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
 
 export type UserProps = {
@@ -9,13 +10,12 @@ export type UserProps = {
   createdAt?: Date;
 };
 
-export class User {
-  public readonly id: UniqueEntityId;
+export class User extends Entity<UserProps> {
   constructor(
     public readonly props: UserProps,
     id?: UniqueEntityId,
   ) {
-    this.id = id || new UniqueEntityId();
+    super(props, id);
     this.avatar = this.props.avatar;
     this.props.createdAt = props.createdAt ?? new Date();
   }

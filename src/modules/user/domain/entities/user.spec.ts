@@ -49,8 +49,8 @@ describe('User Entity', () => {
     const sut = makeSut(id);
     expect(sut.id).not.toBeUndefined();
     expect(sut.id).not.toBeNull();
-    expect(sut.id).toEqual(id);
-    expect(sut.id).toBeInstanceOf(UniqueEntityId);
+    expect(sut.id).toEqual(id.value);
+    expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 
   it('should create a new User with an accountId', () => {
