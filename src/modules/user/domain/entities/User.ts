@@ -11,13 +11,17 @@ export type UserProps = {
 };
 
 export class User extends Entity<UserProps> {
-  constructor(
+  private constructor(
     public readonly props: UserProps,
     id?: UniqueEntityId,
   ) {
     super(props, id);
     this.avatar = this.props.avatar;
     this.props.createdAt = props.createdAt ?? new Date();
+  }
+
+  static create(props: UserProps, id?: UniqueEntityId): User {
+    return new User(props, id);
   }
 
   get name(): string {
@@ -44,11 +48,3 @@ export class User extends Entity<UserProps> {
     return (this.props.accountId = accountId);
   }
 }
-
-console.log(
-  new User({
-    name: 'John Doe',
-    email: 'anyemail@mail.com',
-    password: 'anypassword',
-  }).toJSON(),
-);

@@ -7,7 +7,7 @@ const makeSut = (id?: UniqueEntityId): User => {
     email: 'anyemail@mail.com',
     password: 'anypassword',
   };
-  return new User(userProps, id);
+  return User.create(userProps, id);
 };
 
 describe('User Entity', () => {
