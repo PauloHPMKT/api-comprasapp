@@ -23,4 +23,9 @@ describe('UniqueEntityId Value Object', () => {
     expect(validateSpy).toHaveBeenCalled();
     expect(validateSpy).toHaveBeenCalledTimes(1);
   });
+
+  it('should check if validate method is not called', () => {
+    const validateSpy = jest.spyOn(UniqueEntityId.prototype as any, 'validate');
+    expect(validateSpy).not.toHaveBeenCalled();
+  });
 });
