@@ -3,7 +3,7 @@ import { UniqueEntityIdError } from '../../errors/unique-entity-id-error';
 
 export class UniqueEntityId {
   private readonly id: string;
-  constructor(id: string) {
+  constructor(id?: string) {
     this.id = id || randomBytes(12).toString('hex');
     this.validate();
   }

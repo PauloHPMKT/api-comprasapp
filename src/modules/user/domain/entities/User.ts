@@ -1,4 +1,5 @@
 import { randomBytes } from 'crypto';
+import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
 
 export type UserProps = {
   name: string;
@@ -10,12 +11,12 @@ export type UserProps = {
 };
 
 export class User {
-  public readonly id: string;
+  public readonly id: UniqueEntityId;
   constructor(
     public readonly props: UserProps,
-    id?: string,
+    id?: UniqueEntityId,
   ) {
-    this.id = id ?? randomBytes(12).toString('hex');
+    this.id = id || new UniqueEntityId();
     this.props.avatar = props.avatar ?? null;
     this.props.createdAt = props.createdAt ?? new Date();
   }
