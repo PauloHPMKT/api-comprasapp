@@ -1,4 +1,5 @@
 import { randomBytes } from 'crypto';
+import { UniqueEntityIdError } from '../../errors/unique-entity-id-error';
 
 export class UniqueEntityId {
   private readonly id: string;
@@ -10,7 +11,7 @@ export class UniqueEntityId {
   private validate() {
     const idRegex = /^[0-9a-fA-F]{24}$/;
     if (!idRegex.test(this.id)) {
-      throw new Error('Invalid id');
+      throw new UniqueEntityIdError();
     }
   }
 }

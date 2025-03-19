@@ -13,6 +13,6 @@ describe('UniqueEntityId Value Object', () => {
   });
 
   it('should throw error if id is invalid', () => {
-    expect(() => makeSut('invalid_id')).toThrow('Invalid id');
+    expect(() => makeSut('invalid_id')).toThrow('ID must be valid');
   });
 });
