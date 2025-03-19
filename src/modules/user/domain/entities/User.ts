@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 export type UserProps = {
   name: string;
   email: string;
@@ -8,7 +10,12 @@ export type UserProps = {
 };
 
 export class User {
-  constructor(public readonly props: UserProps) {
+  public readonly id: string;
+  constructor(
+    public readonly props: UserProps,
+    id?: string,
+  ) {
+    this.id = id ?? randomBytes(12).toString('hex');
     this.props.avatar = props.avatar ?? null;
     this.props.createdAt = props.createdAt ?? new Date();
   }
