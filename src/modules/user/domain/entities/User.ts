@@ -50,5 +50,5 @@ console.log(
     name: 'John Doe',
     email: 'anyemail@mail.com',
     password: 'anypassword',
-  }),
+  }).toJSON(),
 );

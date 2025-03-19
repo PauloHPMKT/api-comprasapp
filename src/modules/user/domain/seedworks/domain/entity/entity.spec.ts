@@ -16,4 +16,12 @@ describe('Entity abstraction', () => {
     expect(sut.props).toStrictEqual({ prop1: 'prop1 value', prop2: 10 });
     expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
+
+  it('should accept a valid id', () => {
+    const uniqueEntityId = new UniqueEntityId();
+    const sut = makeSut({ prop1: 'prop1 value', prop2: 10 }, uniqueEntityId);
+    const entity = sut;
+    expect(entity.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
+    expect(entity.id).toBe(uniqueEntityId.value);
+  });
 });
