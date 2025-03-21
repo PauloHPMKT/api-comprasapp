@@ -1,7 +1,10 @@
-import { Account } from './Acount';
+import { Account, AccountProps } from './Acount';
 
 const makeSut = (): Account => {
-  return Account;
+  const accountProps: AccountProps = {
+    userId: 'anyuserid',
+  };
+  return new Account(accountProps);
 };
 
 describe('Account Entity', () => {
@@ -9,5 +12,11 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut).toBeDefined();
     expect(sut).toBeTruthy();
+  });
+
+  it('shoud create a new Account with a valid userId', () => {
+    const sut = makeSut();
+    expect(sut.props.userId).not.toBeUndefined();
+    expect(sut.props.userId).not.toBeNull();
   });
 });
