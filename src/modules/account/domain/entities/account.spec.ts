@@ -3,8 +3,6 @@ import { Account, AccountProps } from './Acount';
 const makeSut = (): Account => {
   const accountProps: AccountProps = {
     userId: 'anyuserid',
-    isActive: true,
-    plan: 'free',
   };
   return new Account(accountProps);
 };
@@ -34,5 +32,10 @@ describe('Account Entity', () => {
     expect(sut.props.plan).toEqual('free');
     expect(sut.props.plan).not.toBeUndefined();
     expect(sut.props.plan).not.toBeNull();
+  });
+
+  it('should create a new User with a valid date', () => {
+    const sut = makeSut();
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 });
