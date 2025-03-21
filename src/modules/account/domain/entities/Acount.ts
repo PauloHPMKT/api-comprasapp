@@ -1,7 +1,7 @@
 export type AccountProps = {
   userId: string;
   isActive?: boolean;
-  plan: Account.Plan;
+  plan?: Account.Plan;
 };
 
 export namespace Account {
