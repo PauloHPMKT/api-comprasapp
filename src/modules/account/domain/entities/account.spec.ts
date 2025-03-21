@@ -3,6 +3,7 @@ import { Account, AccountProps } from './Acount';
 const makeSut = (): Account => {
   const accountProps: AccountProps = {
     userId: 'anyuserid',
+    isActive: true,
   };
   return new Account(accountProps);
 };
@@ -18,5 +19,12 @@ describe('Account Entity', () => {
     const sut = makeSut();
     expect(sut.props.userId).not.toBeUndefined();
     expect(sut.props.userId).not.toBeNull();
+  });
+
+  it('should create a new Account active as default', () => {
+    const sut = makeSut();
+    expect(sut.props.isActive).toBeTruthy();
+    expect(sut.props.isActive).not.toBeFalsy();
+    expect(sut.props.isActive).toEqual(true);
   });
 });
