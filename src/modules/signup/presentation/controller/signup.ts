@@ -1,36 +1,31 @@
+interface HttpRequest {
+  body?: any;
+  headers?: any;
+  params?: any;
+  query?: any;
+  file?: any;
+}
+
 interface HttpResponse {
   statusCode: number;
   body: any;
 }
 
 export class SignupController {
-  async handle(httpRequest: any): Promise<HttpResponse> {
-    if (!httpRequest.body.name) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param name'),
-      };
-    }
-
-    if (!httpRequest.body.email) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param email'),
-      };
-    }
-
-    if (!httpRequest.body.password) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param password'),
-      };
-    }
-
-    if (!httpRequest.body.passwordConfirmation) {
-      return {
-        statusCode: 400,
-        body: new Error('Missing param passwordConfirmation'),
-      };
+  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    const requiredFields = [
+      'name',
+      'email',
+      'password',
+      'passwordConfirmation',
+    ];
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return {
+          statusCode: 400,
+          body: new Error(`Missing param ${field}`),
+        };
+      }
     }
   }
 }
