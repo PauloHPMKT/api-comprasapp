@@ -30,4 +30,8 @@ export class Account extends Entity<AccountProps> {
   get plan(): Account.Plan {
     return this.props.plan;
   }
+
+  get createdAt(): Date {
+    return this.props.createdAt;
+  }
 }
