@@ -3,7 +3,7 @@ import { Account, AccountProps } from './Acount';
 
 const makeSut = (id?: UniqueEntityId): Account => {
   const accountProps: AccountProps = {
-    userId: 'anyuserid',
+    userId: 'anyuserId',
   };
   return Account.create(accountProps, id);
 };
@@ -83,10 +83,22 @@ describe('Account Entity', () => {
 
     it('should create a new Account with all default values', () => {
       const sut = makeSut();
-      expect(sut.props.userId).toEqual('anyuserid');
+      expect(sut.props.userId).toEqual('anyuserId');
       expect(sut.props.isActive).toBeTruthy();
       expect(sut.props.plan).toEqual('free');
       expect(sut.props.createdAt).toBeInstanceOf(Date);
+    });
+
+    it('should handle a new Account in json format', () => {
+      const sut = makeSut();
+      const json = sut.toJSON();
+      expect(json).toEqual({
+        id: sut.id,
+        userId: 'anyuserId',
+        isActive: true,
+        plan: 'free',
+        createdAt: sut.createdAt,
+      });
     });
   });
 });
