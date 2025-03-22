@@ -143,4 +143,27 @@ describe('Signup Controller', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new Error('Internal server error'));
   });
+
+  it('should return 201 if a user and an account is created on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+      avatar: 'null',
+      accountId: 'any_account_id',
+      createdAt: new Date('2025-12-10'),
+    });
+  });
 });
