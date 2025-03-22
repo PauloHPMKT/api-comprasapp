@@ -1,20 +1,51 @@
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { SignupController } from './signup';
+import { SignupModel } from '../../data/models/add-signup';
+import { AddSignup } from '../../domain/usecases/add-signup';
 
-const makeSut = (): SignupController => {
-  return new SignupController();
+const makeSignUp = (): AddSignup => {
+  class AddSignupStub implements AddSignup {
+    async add(params: SignupModel.Params): Promise<SignupModel.Result> {
+      return new Promise((resolve) =>
+        resolve({
+          id: 'any_id',
+          name: 'any_name',
+          email: 'any_email@mail.com',
+          password: 'any_password',
+          avatar: 'null',
+          accountId: 'any_account_id',
+          createdAt: new Date('2025-12-10'),
+        }),
+      );
+    }
+  }
+  return new AddSignupStub();
+};
+
+const makeSut = (): SutTypes => {
+  const addSignupStub = makeSignUp();
+  const sut = new SignupController(addSignupStub);
+  return {
+    sut,
+    addSignupStub,
+  };
+};
+
+type SutTypes = {
+  sut: SignupController;
+  addSignupStub: AddSignup;
 };
 
 describe('Signup Controller', () => {
   it('should be defined', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(SignupController);
     expect(sut).toBeTruthy();
   });
 
   it('should return 400 if no name is provided', async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: undefined,
@@ -29,7 +60,7 @@ describe('Signup Controller', () => {
   });
 
   it('should return 400 if no email is provided', async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: 'anyname',
@@ -44,7 +75,7 @@ describe('Signup Controller', () => {
   });
 
   it('should return 400 if no password is provided', async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: 'anyname',
@@ -59,7 +90,7 @@ describe('Signup Controller', () => {
   });
 
   it('should return 400 if no passwordConformation is provided', async () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const httpRequest = {
       body: {
         name: 'anyname',
@@ -73,5 +104,25 @@ describe('Signup Controller', () => {
     expect(httpResponse.body).toEqual(
       new MissingParamError('passwordConfirmation'),
     );
+  });
+
+  it('should call AddSignup with correct values', async () => {
+    const { sut, addSignupStub } = makeSut();
+    const addSpy = jest.spyOn(addSignupStub, 'add');
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword',
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    });
   });
 });
