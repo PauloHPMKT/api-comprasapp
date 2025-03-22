@@ -26,4 +26,8 @@ export class Account extends Entity<AccountProps> {
   get isActive(): boolean {
     return this.props.isActive;
   }
+
+  get plan(): Account.Plan {
+    return this.props.plan;
+  }
 }
