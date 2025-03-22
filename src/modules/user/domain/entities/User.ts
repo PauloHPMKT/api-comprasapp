@@ -1,5 +1,5 @@
-import Entity from '../seedworks/domain/entity/entity';
-import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
+import Entity from '../../../../shared/seedworks/domain/entity/entity';
+import { UniqueEntityId } from '../../../../shared/seedworks/domain/values-objects/unique-entity-id.vo';
 
 export type UserProps = {
   name: string;

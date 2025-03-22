@@ -1,4 +1,4 @@
-import { UniqueEntityId } from '../seedworks/domain/values-objects/unique-entity-id.vo';
+import { UniqueEntityId } from '@/shared/seedworks/domain/values-objects/unique-entity-id.vo';
 import { User, UserProps } from './User';
 
 const makeSut = (id?: UniqueEntityId): User => {
