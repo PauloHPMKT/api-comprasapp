@@ -22,4 +22,8 @@ export class Account extends Entity<AccountProps> {
     this.props.plan = props.plan ?? 'free';
     this.props.createdAt = props.createdAt ?? new Date();
   }
+
+  get isActive(): boolean {
+    return this.props.isActive;
+  }
 }
