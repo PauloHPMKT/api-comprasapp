@@ -1,10 +1,11 @@
+import { UniqueEntityId } from '@/shared/seedworks/domain/values-objects/unique-entity-id.vo';
 import { Account, AccountProps } from './Acount';
 
-const makeSut = (): Account => {
+const makeSut = (id?: UniqueEntityId): Account => {
   const accountProps: AccountProps = {
     userId: 'anyuserid',
   };
-  return new Account(accountProps);
+  return new Account(accountProps, id);
 };
 
 describe('Account Entity', () => {
@@ -37,5 +38,14 @@ describe('Account Entity', () => {
   it('should create a new User with a valid date', () => {
     const sut = makeSut();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
+
+  it('should create a new Account with a valid id', () => {
+    const id = new UniqueEntityId('12cbe98261477fe78941e730');
+    const sut = makeSut(id);
+    expect(sut.id).not.toBeUndefined();
+    expect(sut.id).not.toBeNull();
+    expect(sut.id).toEqual(id.value);
+    expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 });
