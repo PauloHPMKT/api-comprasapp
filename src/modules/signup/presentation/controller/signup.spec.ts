@@ -8,12 +8,12 @@ const makeSignUp = (): AddSignup => {
     async add(params: SignupModel.Params): Promise<SignupModel.Result> {
       return new Promise((resolve) =>
         resolve({
-          id: 'any_id',
-          name: 'any_name',
-          email: 'any_email@mail.com',
-          password: 'any_password',
-          avatar: 'null',
-          accountId: 'any_account_id',
+          id: 'valid_id',
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'valid_password',
+          avatar: null,
+          accountId: 'valid_account_id',
           createdAt: new Date('2025-12-10'),
         }),
       );
@@ -157,12 +157,12 @@ describe('Signup Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(201);
     expect(httpResponse.body).toEqual({
-      id: 'any_id',
-      name: 'any_name',
-      email: 'any_email@mail.com',
-      password: 'any_password',
-      avatar: 'null',
-      accountId: 'any_account_id',
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+      avatar: null,
+      accountId: 'valid_account_id',
       createdAt: new Date('2025-12-10'),
     });
   });
