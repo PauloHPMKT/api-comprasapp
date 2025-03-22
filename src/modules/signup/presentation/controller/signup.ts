@@ -1,7 +1,10 @@
+import { AccountModel } from '@/shared/data/models/add-account';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 
 export class SignupController {
-  async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle(
+    httpRequest: HttpRequest<AccountModel.Params>,
+  ): Promise<HttpResponse> {
     const requiredFields = [
       'name',
       'email',

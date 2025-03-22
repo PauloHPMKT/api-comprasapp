@@ -1,3 +1,4 @@
+import { HttpRequest } from '@/shared/presentation/types/http';
 import { SignupController } from './signup';
 
 const makeSut = (): SignupController => {
@@ -16,6 +17,7 @@ describe('Signup Controller', () => {
     const sut = makeSut();
     const httpRequest = {
       body: {
+        name: undefined,
         email: 'antemail@mail.com',
         password: 'anypassword',
         passwordConfirmation: 'anypassword',
@@ -31,6 +33,7 @@ describe('Signup Controller', () => {
     const httpRequest = {
       body: {
         name: 'anyname',
+        email: undefined,
         password: 'anypassword',
         passwordConfirmation: 'anypassword',
       },
@@ -46,6 +49,7 @@ describe('Signup Controller', () => {
       body: {
         name: 'anyname',
         email: 'antemail@mail.com',
+        password: undefined,
         passwordConfirmation: 'anypassword',
       },
     };
@@ -61,6 +65,7 @@ describe('Signup Controller', () => {
         name: 'anyname',
         email: 'antemail@mail.com',
         password: 'anypassword',
+        passwordConfirmation: undefined,
       },
     };
     const httpResponse = await sut.handle(httpRequest);
