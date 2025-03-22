@@ -66,5 +66,12 @@ describe('Account Entity', () => {
       expect(sut.createdAt).not.toBeUndefined();
       expect(sut.createdAt).not.toBeNull();
     });
+
+    it('should set a new isActive status', () => {
+      const sut = makeSut();
+      sut['isActive'] = false;
+      expect(sut['isActive']).toBeFalsy();
+      expect(sut['isActive']).toEqual(false);
+    });
   });
 });
