@@ -3,7 +3,11 @@ import { MissingParamError } from '@/shared/presentation/errors/missing-param-er
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 
-export class SignupController implements Controller<AccountModel.Params> {
+export class SignupController extends Controller<AccountModel.Params> {
+  constructor() {
+    super();
+  }
+
   async handle(
     httpRequest: HttpRequest<AccountModel.Params>,
   ): Promise<HttpResponse> {
@@ -13,13 +17,12 @@ export class SignupController implements Controller<AccountModel.Params> {
       'password',
       'passwordConfirmation',
     ];
-    for (const field of requiredFields) {
-      if (!httpRequest.body[field]) {
-        return {
-          statusCode: 400,
-          body: new MissingParamError(field),
-        };
-      }
+    const error = this.validateRequiredFields(httpRequest, requiredFields);
+    if (error) {
+      return {
+        statusCode: 400,
+        body: new MissingParamError(error),
+      };
     }
   }
 }
