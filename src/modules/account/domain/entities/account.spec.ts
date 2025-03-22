@@ -59,5 +59,12 @@ describe('Account Entity', () => {
       const sut = makeSut();
       expect(sut.plan).toEqual('free');
     });
+
+    it('should get createdAt', () => {
+      const sut = makeSut();
+      expect(sut.createdAt).toBeInstanceOf(Date);
+      expect(sut.createdAt).not.toBeUndefined();
+      expect(sut.createdAt).not.toBeNull();
+    });
   });
 });
