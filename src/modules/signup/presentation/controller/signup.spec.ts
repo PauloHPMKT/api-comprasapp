@@ -1,8 +1,7 @@
-import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
+import { MissingParamError, ServerError } from '@/shared/presentation/errors';
 import { SignupController } from './signup';
 import { SignupModel } from '../../data/models/add-signup';
 import { AddSignup } from '../../domain/usecases/add-signup';
-import { ServerError } from '@/shared/presentation/errors/server-error';
 
 const makeSignUp = (): AddSignup => {
   class AddSignupStub implements AddSignup {
