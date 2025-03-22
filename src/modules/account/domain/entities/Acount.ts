@@ -18,8 +18,8 @@ export class Account extends Entity<AccountProps> {
     id?: UniqueEntityId,
   ) {
     super(props, id);
-    this.props.isActive = props.isActive ?? true;
-    this.props.plan = props.plan ?? 'free';
+    this.isActive = props.isActive ?? true;
+    this.plan = props.plan ?? 'free';
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
@@ -37,5 +37,9 @@ export class Account extends Entity<AccountProps> {
 
   private set isActive(status: boolean) {
     this.props.isActive = status;
+  }
+
+  private set plan(plan: Account.Plan) {
+    this.props.plan = plan;
   }
 }
