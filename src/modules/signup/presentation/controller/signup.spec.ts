@@ -2,6 +2,7 @@ import { MissingParamError } from '@/shared/presentation/errors/missing-param-er
 import { SignupController } from './signup';
 import { SignupModel } from '../../data/models/add-signup';
 import { AddSignup } from '../../domain/usecases/add-signup';
+import { ServerError } from '@/shared/presentation/errors/server-error';
 
 const makeSignUp = (): AddSignup => {
   class AddSignupStub implements AddSignup {
@@ -141,7 +142,7 @@ describe('Signup Controller', () => {
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
-    expect(httpResponse.body).toEqual(new Error('Internal server error'));
+    expect(httpResponse.body).toEqual(new ServerError('Internal server error'));
   });
 
   it('should return 201 if a user and an account is created on success', async () => {
