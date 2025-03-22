@@ -125,4 +125,22 @@ describe('Signup Controller', () => {
       passwordConfirmation: 'anypassword',
     });
   });
+
+  it('should return 500 if AddSignup throws', async () => {
+    const { sut, addSignupStub } = makeSut();
+    jest.spyOn(addSignupStub, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        passwordConfirmation: 'anypassword',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new Error('Internal server error'));
+  });
 });
