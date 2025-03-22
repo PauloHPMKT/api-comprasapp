@@ -48,4 +48,11 @@ describe('Account Entity', () => {
     expect(sut.id).toEqual(id.value);
     expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
+
+  describe('Getters and Setters', () => {
+    it('should get activate status', () => {
+      const sut = makeSut();
+      expect(sut.isActive).toBeTruthy();
+    });
+  });
 });
