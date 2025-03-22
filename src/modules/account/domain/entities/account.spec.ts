@@ -73,5 +73,12 @@ describe('Account Entity', () => {
       expect(sut['isActive']).toBeFalsy();
       expect(sut['isActive']).toEqual(false);
     });
+
+    it('should set a new plan', () => {
+      const sut = makeSut();
+      sut['plan'] = 'premium';
+      expect(sut['plan']).toEqual('premium');
+      expect(sut['plan']).not.toEqual('free');
+    });
   });
 });
