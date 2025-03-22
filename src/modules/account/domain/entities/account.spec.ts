@@ -5,7 +5,7 @@ const makeSut = (id?: UniqueEntityId): Account => {
   const accountProps: AccountProps = {
     userId: 'anyuserid',
   };
-  return new Account(accountProps, id);
+  return Account.create(accountProps, id);
 };
 
 describe('Account Entity', () => {
@@ -79,6 +79,14 @@ describe('Account Entity', () => {
       sut['plan'] = 'premium';
       expect(sut['plan']).toEqual('premium');
       expect(sut['plan']).not.toEqual('free');
+    });
+
+    it('should create a new Account with all default values', () => {
+      const sut = makeSut();
+      expect(sut.props.userId).toEqual('anyuserid');
+      expect(sut.props.isActive).toBeTruthy();
+      expect(sut.props.plan).toEqual('free');
+      expect(sut.props.createdAt).toBeInstanceOf(Date);
     });
   });
 });

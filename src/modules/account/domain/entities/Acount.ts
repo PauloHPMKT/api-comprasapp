@@ -13,7 +13,7 @@ export namespace Account {
 }
 
 export class Account extends Entity<AccountProps> {
-  constructor(
+  private constructor(
     public readonly props: AccountProps,
     id?: UniqueEntityId,
   ) {
@@ -21,6 +21,10 @@ export class Account extends Entity<AccountProps> {
     this.isActive = props.isActive ?? true;
     this.plan = props.plan ?? 'free';
     this.props.createdAt = props.createdAt ?? new Date();
+  }
+
+  static create(props: AccountProps, id?: UniqueEntityId): Account {
+    return new Account(props, id);
   }
 
   get isActive(): boolean {
