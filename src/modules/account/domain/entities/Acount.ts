@@ -34,4 +34,8 @@ export class Account extends Entity<AccountProps> {
   get createdAt(): Date {
     return this.props.createdAt;
   }
+
+  private set isActive(status: boolean) {
+    this.props.isActive = status;
+  }
 }
