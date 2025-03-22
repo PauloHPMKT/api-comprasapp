@@ -12,28 +12,36 @@ export class SignupController extends Controller<SignupModel.Params> {
   async handle(
     httpRequest: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse> {
-    const { name, email, password, passwordConfirmation } = httpRequest.body;
-    const requiredFields = [
-      'name',
-      'email',
-      'password',
-      'passwordConfirmation',
-    ];
-    const error = this.validateRequiredFields(httpRequest, requiredFields);
-    if (error) {
+    try {
+      const { name, email, password, passwordConfirmation } = httpRequest.body;
+      const requiredFields = [
+        'name',
+        'email',
+        'password',
+        'passwordConfirmation',
+      ];
+      const error = this.validateRequiredFields(httpRequest, requiredFields);
+      if (error) {
+        return {
+          statusCode: 400,
+          body: new MissingParamError(error),
+        };
+      }
+
+      await this.addSignup.add({
+        name,
+        email,
+        password,
+        passwordConfirmation,
+      });
+
+      // enviar para o usecase
+    } catch (error) {
+      console.error(error);
       return {
-        statusCode: 400,
-        body: new MissingParamError(error),
+        statusCode: 500,
+        body: new Error('Internal server error'),
       };
     }
-
-    await this.addSignup.add({
-      name,
-      email,
-      password,
-      passwordConfirmation,
-    });
-
-    // enviar para o usecase
   }
 }
