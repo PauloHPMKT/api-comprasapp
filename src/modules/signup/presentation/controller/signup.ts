@@ -1,8 +1,9 @@
-import { AccountModel } from '@/shared/data/models/add-account';
+import { AccountModel } from '@/modules/signup/data/models/add-account';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
+import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 
-export class SignupController {
+export class SignupController implements Controller<AccountModel.Params> {
   async handle(
     httpRequest: HttpRequest<AccountModel.Params>,
   ): Promise<HttpResponse> {
