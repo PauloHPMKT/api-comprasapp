@@ -1,15 +1,4 @@
-interface HttpRequest {
-  body?: any;
-  headers?: any;
-  params?: any;
-  query?: any;
-  file?: any;
-}
-
-interface HttpResponse {
-  statusCode: number;
-  body: any;
-}
+import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 
 export class SignupController {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
