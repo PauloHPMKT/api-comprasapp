@@ -28,14 +28,17 @@ export class SignupController extends Controller<SignupModel.Params> {
         };
       }
 
-      await this.addSignup.add({
+      const user = await this.addSignup.add({
         name,
         email,
         password,
         passwordConfirmation,
       });
 
-      // enviar para o usecase
+      return {
+        statusCode: 201,
+        body: user,
+      };
     } catch (error) {
       console.error(error);
       return {
