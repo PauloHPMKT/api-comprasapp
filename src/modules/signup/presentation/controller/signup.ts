@@ -1,16 +1,18 @@
-import { AccountModel } from '@/modules/signup/data/models/add-account';
+import { SignupModel } from '@/modules/signup/data/models/add-signup';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
+import { AddSignup } from '../../domain/usecases/add-signup';
 
-export class SignupController extends Controller<AccountModel.Params> {
-  constructor() {
+export class SignupController extends Controller<SignupModel.Params> {
+  constructor(private readonly addSignup: AddSignup) {
     super();
   }
 
   async handle(
-    httpRequest: HttpRequest<AccountModel.Params>,
+    httpRequest: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse> {
+    const { name, email, password, passwordConfirmation } = httpRequest.body;
     const requiredFields = [
       'name',
       'email',
@@ -24,5 +26,14 @@ export class SignupController extends Controller<AccountModel.Params> {
         body: new MissingParamError(error),
       };
     }
+
+    await this.addSignup.add({
+      name,
+      email,
+      password,
+      passwordConfirmation,
+    });
+
+    // enviar para o usecase
   }
 }
