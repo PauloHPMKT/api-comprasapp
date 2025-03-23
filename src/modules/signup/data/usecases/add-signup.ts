@@ -1,15 +1,17 @@
+import { User } from '@/modules/user/domain/entities/User';
+import { Account } from '@/modules/account/domain/entities/Acount';
 import { InvalidParamError } from '@/shared/presentation/errors';
+import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
 import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
-import { User } from '@/modules/user/domain/entities/User';
-import { Account } from '@/modules/account/domain/entities/Acount';
 
 export class AddSignupUseCase implements AddSignup {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly verifyEmailRepository: VerifyEmailRepository,
+    private readonly addUserRepository: AddUserRepository,
   ) {}
 
   async add(params: SignupModel.Params): Promise<SignupModel.Result> {
@@ -23,10 +25,16 @@ export class AddSignupUseCase implements AddSignup {
     }
 
     const hashedPassword = await this.encrypter.encrypt(params.password);
+    const userData = {
+      name: params.name,
+      email: params.email,
+      password: hashedPassword,
+    } as SignupModel.Params;
 
-    const { user, account } = this.createUserAccount(params, hashedPassword);
+    const { user, account } = this.createUserAccount(userData);
 
-    // salvar no banco de dados
+    // chamar as camadas repository para salvar o usuário e a conta
+    await this.addUserRepository.create(user);
 
     // retornar o usuário
     return new Promise((resolve) =>
@@ -42,14 +50,11 @@ export class AddSignupUseCase implements AddSignup {
     );
   }
 
-  private createUserAccount(
-    params: SignupModel.Params,
-    hashedPassword: string,
-  ) {
+  private createUserAccount(params: SignupModel.Params) {
     const createUser = User.create({
       name: params.name,
       email: params.email,
-      password: hashedPassword,
+      password: params.password,
     });
     const account = Account.create({ userId: createUser.id }).toJSON();
     createUser.assignAccountId(account.id);
