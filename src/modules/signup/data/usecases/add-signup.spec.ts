@@ -2,6 +2,27 @@ import { Account } from '@/modules/account/domain/entities/Acount';
 import { Encrypter } from '../protocols/encrypter';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
 import { AddSignupUseCase } from './add-signup';
+import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
+import { UserModel } from '@/modules/user/domain/models/user-model';
+
+const makeAddUser = (): AddUserRepository => {
+  class AddSignupRepositoryStub implements AddUserRepository {
+    async create(data: UserModel.Params): Promise<UserModel.Params> {
+      return new Promise((resolve) =>
+        resolve({
+          id: 'valid_id',
+          name: 'valid_name',
+          email: 'valid_email@mail.com',
+          password: 'valid_password',
+          avatar: null,
+          accountId: 'valid_account_id',
+          createdAt: new Date('2025-12-10'),
+        }),
+      );
+    }
+  }
+  return new AddSignupRepositoryStub();
+};
 
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
@@ -22,13 +43,19 @@ const makeVerifyEmail = (): VerifyEmailRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const addUserRepositoryStub = makeAddUser();
   const verifyEmailRepositoryStub = makeVerifyEmail();
   const encrypterStub = makeEncrypter();
-  const sut = new AddSignupUseCase(encrypterStub, verifyEmailRepositoryStub);
+  const sut = new AddSignupUseCase(
+    encrypterStub,
+    verifyEmailRepositoryStub,
+    addUserRepositoryStub,
+  );
   return {
     sut,
     encrypterStub,
     verifyEmailRepositoryStub,
+    addUserRepositoryStub,
   };
 };
 
@@ -36,6 +63,7 @@ type SutTypes = {
   sut: AddSignupUseCase;
   encrypterStub: Encrypter;
   verifyEmailRepositoryStub: VerifyEmailRepository;
+  addUserRepositoryStub: AddUserRepository;
 };
 
 describe('AddSignupUseCase', () => {
@@ -121,5 +149,26 @@ describe('AddSignupUseCase', () => {
         userId: expect.any(String),
       }),
     );
+  });
+
+  it('should call AddUserRepository with correct values', async () => {
+    const { sut, addUserRepositoryStub } = makeSut();
+    const createUserSpy = jest.spyOn(addUserRepositoryStub, 'create');
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    await sut.add(params);
+    expect(createUserSpy).toHaveBeenCalledWith({
+      id: expect.any(String),
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'hashed_password',
+      avatar: null,
+      accountId: expect.any(String),
+      createdAt: expect.any(Date),
+    });
   });
 });
