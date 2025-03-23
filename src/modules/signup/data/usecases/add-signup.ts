@@ -1,13 +1,16 @@
 import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../models/add-signup';
+import { Encrypter } from '../protocols/encrypter';
 
 export class AddSignupUseCase implements AddSignup {
+  constructor(private readonly encrypter: Encrypter) {}
+
   async add(params: SignupModel.Params): Promise<SignupModel.Result> {
     if (params.password !== params.passwordConfirmation) {
       throw new Error('Invalid Param: passwordConfirmation');
     }
 
-    // comparar as senhas
+    await this.encrypter.encrypt(params.password);
 
     // verificar se o email já existe
 
