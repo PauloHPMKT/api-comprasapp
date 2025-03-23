@@ -20,4 +20,10 @@ describe('Bcrypt', () => {
     await sut.encrypt('any_value');
     expect(hashSpy).toHaveBeenCalledWith('any_value', salt);
   });
+
+  it('Should return a hash on success', async () => {
+    const sut = makeSut();
+    const hash = await sut.encrypt('any_value');
+    expect(hash).toBe('hash');
+  });
 });
