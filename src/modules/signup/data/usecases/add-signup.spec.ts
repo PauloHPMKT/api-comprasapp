@@ -55,7 +55,7 @@ describe('AddSignupUseCase', () => {
     };
     const promise = sut.add(params);
     await expect(promise).rejects.toThrow(
-      'Invalid Param: passwordConfirmation',
+      'Invalid param: passwordConfirmation',
     );
   });
 

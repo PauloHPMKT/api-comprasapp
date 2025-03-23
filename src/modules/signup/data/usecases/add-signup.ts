@@ -1,3 +1,4 @@
+import { InvalidParamError } from '@/shared/presentation/errors';
 import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
@@ -11,7 +12,7 @@ export class AddSignupUseCase implements AddSignup {
 
   async add(params: SignupModel.Params): Promise<SignupModel.Result> {
     if (params.password !== params.passwordConfirmation) {
-      throw new Error('Invalid Param: passwordConfirmation');
+      throw new InvalidParamError('passwordConfirmation');
     }
 
     const isUser = await this.verifyEmailRepository.verify(params.email);
