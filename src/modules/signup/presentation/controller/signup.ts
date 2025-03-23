@@ -1,4 +1,4 @@
-import { SignupModel } from '@/modules/signup/data/models/add-signup';
+import { SignupModel } from '@/modules/signup/domain/models/add-signup';
 import { MissingParamError } from '@/shared/presentation/errors/missing-param-error';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
