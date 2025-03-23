@@ -1,4 +1,5 @@
 import { Encrypter } from '../protocols/encrypter';
+import { VerifyEmailRepository } from '../protocols/verify-email-repository';
 import { AddSignupUseCase } from './add-signup';
 
 const makeEncrypter = (): Encrypter => {
@@ -10,18 +11,30 @@ const makeEncrypter = (): Encrypter => {
   return new EncrypterStub();
 };
 
+const makeVerifyEmail = (): VerifyEmailRepository => {
+  class VerifyEmailRepositoryStub implements VerifyEmailRepository {
+    async verify(email: string): Promise<boolean> {
+      return new Promise((resolve) => resolve(false));
+    }
+  }
+  return new VerifyEmailRepositoryStub();
+};
+
 const makeSut = (): SutTypes => {
+  const verifyEmailRepositoryStub = makeVerifyEmail();
   const encrypterStub = makeEncrypter();
-  const sut = new AddSignupUseCase(encrypterStub);
+  const sut = new AddSignupUseCase(encrypterStub, verifyEmailRepositoryStub);
   return {
     sut,
     encrypterStub,
+    verifyEmailRepositoryStub,
   };
 };
 
 type SutTypes = {
   sut: AddSignupUseCase;
   encrypterStub: Encrypter;
+  verifyEmailRepositoryStub: VerifyEmailRepository;
 };
 
 describe('AddSignupUseCase', () => {
@@ -44,6 +57,21 @@ describe('AddSignupUseCase', () => {
     await expect(promise).rejects.toThrow(
       'Invalid Param: passwordConfirmation',
     );
+  });
+
+  it('should thorw if VerifyEmailRepository returns true', async () => {
+    const { sut, verifyEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(verifyEmailRepositoryStub, 'verify')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    const promise = sut.add(params);
+    await expect(promise).rejects.toThrow('Email already exists');
   });
 
   it('should call Encrypter with correct password', async () => {
