@@ -6,7 +6,7 @@ export type UserProps = {
   email: string;
   password: string;
   avatar?: string | null;
-  accountId?: string;
+  accountId?: string | null;
   createdAt?: Date;
 };
 
@@ -17,6 +17,7 @@ export class User extends Entity<UserProps> {
   ) {
     super(props, id);
     this.avatar = this.props.avatar;
+    this.props.accountId = this.accountId;
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
@@ -40,11 +41,15 @@ export class User extends Entity<UserProps> {
     return this.props.avatar;
   }
 
+  get accountId(): string | null {
+    return this.props.accountId;
+  }
+
   private set avatar(avatar: string | null) {
     this.props.avatar = avatar ?? null;
   }
 
-  assignAccountId(accountId: string) {
-    return (this.props.accountId = accountId);
+  static assignAccountId(accountId: string) {
+    this['porps'].accountId = accountId;
   }
 }
