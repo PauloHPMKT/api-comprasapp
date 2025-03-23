@@ -2,6 +2,7 @@ import { User } from '@/modules/user/domain/entities/User';
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { InvalidParamError } from '@/shared/presentation/errors';
 import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
+import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
 import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
@@ -12,6 +13,7 @@ export class AddSignupUseCase implements AddSignup {
     private readonly encrypter: Encrypter,
     private readonly verifyEmailRepository: VerifyEmailRepository,
     private readonly addUserRepository: AddUserRepository,
+    private readonly addAccountRepository: AddAccountRepository,
   ) {}
 
   async add(params: SignupModel.Params): Promise<SignupModel.Result> {
@@ -33,10 +35,9 @@ export class AddSignupUseCase implements AddSignup {
 
     const { user, account } = this.createUserAccount(userData);
 
-    // chamar as camadas repository para salvar o usuário e a conta
     await this.addUserRepository.create(user);
+    await this.addAccountRepository.add(account);
 
-    // retornar o usuário
     return new Promise((resolve) =>
       resolve({
         id: 'valid_id',
