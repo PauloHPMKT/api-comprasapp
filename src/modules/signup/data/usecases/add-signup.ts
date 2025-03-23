@@ -3,6 +3,8 @@ import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
+import { User } from '@/modules/user/domain/entities/User';
+import { Account } from '@/modules/account/domain/entities/Acount';
 
 export class AddSignupUseCase implements AddSignup {
   constructor(
@@ -20,11 +22,15 @@ export class AddSignupUseCase implements AddSignup {
       throw new Error('Email already exists');
     }
 
-    await this.encrypter.encrypt(params.password);
-
-    // criptografar a senha
+    const hashedPassword = await this.encrypter.encrypt(params.password);
 
     // criar um novo usuário
+    const user = User.create({
+      name: params.name,
+      email: params.email,
+      password: hashedPassword,
+    });
+    const account = Account.create({ userId: user.id });
 
     // criar uma conta para o usuário e vincular ao usuário
 
