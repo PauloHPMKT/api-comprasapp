@@ -1,3 +1,4 @@
+import { Account } from '@/modules/account/domain/entities/Acount';
 import { Encrypter } from '../protocols/encrypter';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
 import { AddSignupUseCase } from './add-signup';
@@ -102,5 +103,23 @@ describe('AddSignupUseCase', () => {
     };
     const promise = sut.add(params);
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should create an account if all data is correct', async () => {
+    const { sut } = makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+
+    const accountSpy = jest.spyOn(Account, 'create');
+    await sut.add(params);
+    expect(accountSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: expect.any(String),
+      }),
+    );
   });
 });
