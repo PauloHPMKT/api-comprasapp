@@ -86,4 +86,21 @@ describe('AddSignupUseCase', () => {
     await sut.add(params);
     expect(encryptSpy).toHaveBeenCalledWith('anypassword');
   });
+
+  it('should throw if Encrypter throws', async () => {
+    const { sut, encrypterStub } = makeSut();
+    jest
+      .spyOn(encrypterStub, 'encrypt')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    const promise = sut.add(params);
+    await expect(promise).rejects.toThrow();
+  });
 });
