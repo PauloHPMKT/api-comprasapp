@@ -24,15 +24,7 @@ export class AddSignupUseCase implements AddSignup {
 
     const hashedPassword = await this.encrypter.encrypt(params.password);
 
-    // criar um novo usuário
-    const user = User.create({
-      name: params.name,
-      email: params.email,
-      password: hashedPassword,
-    });
-    const account = Account.create({ userId: user.id });
-
-    // criar uma conta para o usuário e vincular ao usuário
+    const { user, account } = this.createUserAccount(params, hashedPassword);
 
     // salvar no banco de dados
 
@@ -48,5 +40,24 @@ export class AddSignupUseCase implements AddSignup {
         createdAt: new Date('2025-12-10'),
       }),
     );
+  }
+
+  private createUserAccount(
+    params: SignupModel.Params,
+    hashedPassword: string,
+  ) {
+    const createUser = User.create({
+      name: params.name,
+      email: params.email,
+      password: hashedPassword,
+    });
+    const account = Account.create({ userId: createUser.id }).toJSON();
+    createUser.assignAccountId(account.id);
+
+    const user = createUser.toJSON();
+    return {
+      user,
+      account,
+    };
   }
 }

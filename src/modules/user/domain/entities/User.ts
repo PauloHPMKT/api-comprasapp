@@ -17,7 +17,7 @@ export class User extends Entity<UserProps> {
   ) {
     super(props, id);
     this.avatar = this.props.avatar;
-    this.props.accountId = this.accountId;
+    this.props.accountId = props.accountId ?? null;
     this.props.createdAt = props.createdAt ?? new Date();
   }
 
@@ -49,7 +49,7 @@ export class User extends Entity<UserProps> {
     this.props.avatar = avatar ?? null;
   }
 
-  static assignAccountId(accountId: string) {
-    this['porps'].accountId = accountId;
+  assignAccountId(accountId: string) {
+    this.props.accountId = accountId;
   }
 }
