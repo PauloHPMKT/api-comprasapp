@@ -1,9 +1,19 @@
 import { Account } from '@/modules/account/domain/entities/Acount';
-import { Encrypter } from '../protocols/encrypter';
-import { VerifyEmailRepository } from '../protocols/verify-email-repository';
-import { AddSignupUseCase } from './add-signup';
-import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
 import { UserModel } from '@/modules/user/domain/models/user-model';
+import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
+import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
+import { Encrypter } from '../protocols/encrypter';
+import { AddSignupUseCase } from './add-signup';
+import { VerifyEmailRepository } from '../protocols/verify-email-repository';
+
+const makeAddAccount = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async add(data: any): Promise<any> {
+      return new Promise((resolve) => resolve({}));
+    }
+  }
+  return new AddAccountRepositoryStub();
+};
 
 const makeAddUser = (): AddUserRepository => {
   class AddSignupRepositoryStub implements AddUserRepository {
@@ -43,6 +53,7 @@ const makeVerifyEmail = (): VerifyEmailRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const addAccountRepositoryStub = makeAddAccount();
   const addUserRepositoryStub = makeAddUser();
   const verifyEmailRepositoryStub = makeVerifyEmail();
   const encrypterStub = makeEncrypter();
@@ -50,12 +61,14 @@ const makeSut = (): SutTypes => {
     encrypterStub,
     verifyEmailRepositoryStub,
     addUserRepositoryStub,
+    addAccountRepositoryStub,
   );
   return {
     sut,
     encrypterStub,
     verifyEmailRepositoryStub,
     addUserRepositoryStub,
+    addAccountRepositoryStub,
   };
 };
 
@@ -64,6 +77,7 @@ type SutTypes = {
   encrypterStub: Encrypter;
   verifyEmailRepositoryStub: VerifyEmailRepository;
   addUserRepositoryStub: AddUserRepository;
+  addAccountRepositoryStub: AddAccountRepository;
 };
 
 describe('AddSignupUseCase', () => {
@@ -187,5 +201,24 @@ describe('AddSignupUseCase', () => {
     };
     const promise = sut.add(params);
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add');
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    await sut.add(params);
+    expect(addAccountSpy).toHaveBeenCalledWith({
+      id: expect.any(String),
+      userId: expect.any(String),
+      isActive: true,
+      plan: 'free',
+      createdAt: expect.any(Date),
+    });
   });
 });
