@@ -35,20 +35,10 @@ export class AddSignupUseCase implements AddSignup {
 
     const { user, account } = this.createUserAccount(userData);
 
-    await this.addUserRepository.create(user);
+    const userAccount = await this.addUserRepository.create(user);
     await this.addAccountRepository.add(account);
 
-    return new Promise((resolve) =>
-      resolve({
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@mail.com',
-        password: 'valid_password',
-        avatar: null,
-        accountId: 'valid_account_id',
-        createdAt: new Date('2025-12-10'),
-      }),
-    );
+    return userAccount;
   }
 
   private createUserAccount(params: SignupModel.Params) {
