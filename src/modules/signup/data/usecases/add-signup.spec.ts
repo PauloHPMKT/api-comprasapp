@@ -171,4 +171,21 @@ describe('AddSignupUseCase', () => {
       createdAt: expect.any(Date),
     });
   });
+
+  it('should throw if AddUserRepository throws', async () => {
+    const { sut, addUserRepositoryStub } = makeSut();
+    jest
+      .spyOn(addUserRepositoryStub, 'create')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    const promise = sut.add(params);
+    await expect(promise).rejects.toThrow();
+  });
 });
