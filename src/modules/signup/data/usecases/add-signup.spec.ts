@@ -238,4 +238,24 @@ describe('AddSignupUseCase', () => {
     const promise = sut.add(params);
     await expect(promise).rejects.toThrow();
   });
+
+  it('should return a user if all data is correct', async () => {
+    const { sut } = makeSut();
+    const params = {
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      passwordConfirmation: 'anypassword',
+    };
+    const user = await sut.add(params);
+    expect(user).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+      avatar: null,
+      accountId: 'valid_account_id',
+      createdAt: new Date('2025-12-10'),
+    });
+  });
 });
