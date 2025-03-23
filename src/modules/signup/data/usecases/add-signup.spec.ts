@@ -5,11 +5,12 @@ import { AddAccountRepository } from '@/modules/account/data/protocols/add-accou
 import { Encrypter } from '../protocols/encrypter';
 import { AddSignupUseCase } from './add-signup';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
+import { AddAccountModel } from '@/modules/account/domain/models/add-account-model';
 
 const makeAddAccount = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(data: any): Promise<any> {
-      return new Promise((resolve) => resolve({}));
+    async add(data: AddAccountModel.Params): Promise<void> {
+      return new Promise((resolve) => resolve());
     }
   }
   return new AddAccountRepositoryStub();

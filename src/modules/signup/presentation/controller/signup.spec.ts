@@ -1,6 +1,6 @@
 import { MissingParamError, ServerError } from '@/shared/presentation/errors';
 import { SignupController } from './signup';
-import { SignupModel } from '../../data/models/add-signup';
+import { SignupModel } from '../../domain/models/add-signup';
 import { AddSignup } from '../../domain/usecases/add-signup';
 
 const makeSignUp = (): AddSignup => {

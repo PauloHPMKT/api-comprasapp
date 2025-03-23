@@ -4,7 +4,7 @@ import { InvalidParamError } from '@/shared/presentation/errors';
 import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
 import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
 import { AddSignup } from '../../domain/usecases/add-signup';
-import { SignupModel } from '../models/add-signup';
+import { SignupModel } from '../../domain/models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
 import { VerifyEmailRepository } from '../protocols/verify-email-repository';
 
