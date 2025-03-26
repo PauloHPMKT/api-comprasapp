@@ -9,20 +9,20 @@ export class MongoUserRepository
   implements VerifyEmailRepository, AddUserRepository
 {
   async verify(email: string): Promise<boolean> {
-    const getCollection = MongoHelper.getCollection('users');
-    const isUser = await getCollection.findOne({ email });
+    const userCollection = MongoHelper.getCollection('users');
+    const isUser = await userCollection.findOne({ email });
     return !!isUser;
   }
 
   async create(data: UserModel.Params): Promise<UserModel.Params> {
     const userCollection = MongoHelper.getCollection('users');
     const { insertedId } = await userCollection.insertOne({
-      _id: data.id,
+      _id: MongoHelper.toObjectId(data.id),
       name: data.name,
       email: data.email,
       password: data.password,
       avatar: data.avatar,
-      accountId: data.accountId,
+      accountId: MongoHelper.toObjectId(data.accountId),
       createdAt: data.createdAt,
     });
 
