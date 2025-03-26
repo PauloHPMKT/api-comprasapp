@@ -15,7 +15,7 @@ describe('MongoUserRepository', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('accounts');
+    const accountCollection = MongoHelper.getCollection('users');
     await accountCollection.deleteMany({});
   });
 
@@ -57,5 +57,25 @@ describe('MongoUserRepository', () => {
     });
     const isUser = await sut.verify('valid_email@mail.com');
     expect(isUser).toBe(false);
+  });
+
+  it('Should return an user on success', async () => {
+    const sut = makeSut();
+    const account = await sut.create({
+      id: expect.any(String),
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password',
+      avatar: null,
+      accountId: 'any_account_id',
+      createdAt: expect.any(Date),
+    });
+    expect(account).toBeTruthy();
+    expect(account.id).toBeTruthy();
+    expect(account.name).toBe('any_name');
+    expect(account.email).toBe('any_email@mail.com');
+    expect(account.password).toBe('any_password');
+    expect(account.avatar).toBeNull();
+    expect(account.accountId).toBe('any_account_id');
   });
 });
