@@ -1,9 +1,15 @@
 import express, { Application } from 'express';
+import setUpMiddlewares from '../configs/middlewares';
 
 export class App {
-  private readonly app: Application;
+  public readonly app: Application;
   constructor() {
     this.app = express();
+    this.setMiddlewares();
+  }
+
+  setMiddlewares() {
+    setUpMiddlewares(this.app);
   }
 
   public initServer(port: string | number) {
