@@ -8,14 +8,15 @@ import { AddAccountRepository } from '@/modules/account/data/protocols/add-accou
 import {
   VerifyEmailService,
   AddUserService,
-} from '@/shared/services/protocols';
+} from '@/shared/services/user/protocols';
+import { AddAccountService } from '@/shared/services/account/protocols/add-account';
 
 export class AddSignupUseCase implements AddSignup {
   constructor(
     private readonly encrypter: Encrypter,
     private readonly verifyEmalService: VerifyEmailService,
     private readonly addUserService: AddUserService,
-    private readonly addAccountRepository: AddAccountRepository,
+    private readonly addAccountService: AddAccountService,
   ) {}
 
   async add(params: SignupModel.Params): Promise<SignupModel.Result> {
@@ -38,7 +39,7 @@ export class AddSignupUseCase implements AddSignup {
     const { user, account } = this.createUserAccount(userData);
 
     const userAccount = await this.addUserService.addUser(user);
-    await this.addAccountRepository.add(account);
+    await this.addAccountService.addAccount(account);
 
     return userAccount;
   }

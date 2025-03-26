@@ -7,11 +7,12 @@ import { AddAccountRepository } from '@/modules/account/data/protocols/add-accou
 import {
   VerifyEmailService,
   AddUserService,
-} from '@/shared/services/protocols';
+} from '@/shared/services/user/protocols';
+import { AddAccountService } from '@/shared/services/account/protocols/add-account';
 
-const makeAddAccount = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
-    async add(data: AddAccountModel.Params): Promise<void> {
+const makeAddAccount = (): AddAccountService => {
+  class AddAccountRepositoryStub implements AddAccountService {
+    async addAccount(data: AddAccountModel.Params): Promise<void> {
       return new Promise((resolve) => resolve());
     }
   }
@@ -80,7 +81,7 @@ type SutTypes = {
   encrypterStub: Encrypter;
   verifyEmailRepositoryStub: VerifyEmailService;
   addUserRepositoryStub: AddUserService;
-  addAccountRepositoryStub: AddAccountRepository;
+  addAccountRepositoryStub: AddAccountService;
 };
 
 describe('AddSignupUseCase', () => {
@@ -208,7 +209,7 @@ describe('AddSignupUseCase', () => {
 
   it('should call AddAccountRepository with correct values', async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
-    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add');
+    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'addAccount');
     const params = {
       name: 'anyname',
       email: 'anyemail@mail.com',
@@ -228,7 +229,7 @@ describe('AddSignupUseCase', () => {
   it('should throw if AddAccountRepository throws', async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     jest
-      .spyOn(addAccountRepositoryStub, 'add')
+      .spyOn(addAccountRepositoryStub, 'addAccount')
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error())),
       );
