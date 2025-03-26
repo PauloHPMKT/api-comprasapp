@@ -1,18 +1,18 @@
 import { User } from '@/modules/user/domain/entities/User';
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { InvalidParamError } from '@/shared/presentation/errors';
-import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
 import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
 import { AddSignup } from '../../domain/usecases/add-signup';
 import { SignupModel } from '../../domain/models/add-signup';
 import { Encrypter } from '../protocols/encrypter';
-import { VerifyEmailRepository } from '../protocols/verify-email-repository';
+import { VerifyEmailService } from '@/shared/services/protocols/verify-email';
+import { AddUserService } from '@/shared/services/protocols/add-user';
 
 export class AddSignupUseCase implements AddSignup {
   constructor(
     private readonly encrypter: Encrypter,
-    private readonly verifyEmailRepository: VerifyEmailRepository,
-    private readonly addUserRepository: AddUserRepository,
+    private readonly verifyEmalService: VerifyEmailService,
+    private readonly addUserService: AddUserService,
     private readonly addAccountRepository: AddAccountRepository,
   ) {}
 
@@ -21,7 +21,7 @@ export class AddSignupUseCase implements AddSignup {
       throw new InvalidParamError('passwordConfirmation');
     }
 
-    const isUser = await this.verifyEmailRepository.verify(params.email);
+    const isUser = await this.verifyEmalService.verifyEmail(params.email);
     if (isUser) {
       throw new Error('Email already exists');
     }
@@ -35,7 +35,7 @@ export class AddSignupUseCase implements AddSignup {
 
     const { user, account } = this.createUserAccount(userData);
 
-    const userAccount = await this.addUserRepository.create(user);
+    const userAccount = await this.addUserService.addUser(user);
     await this.addAccountRepository.add(account);
 
     return userAccount;

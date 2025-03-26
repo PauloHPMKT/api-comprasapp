@@ -1,11 +1,11 @@
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { UserModel } from '@/modules/user/domain/models/user-model';
-import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
 import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
 import { Encrypter } from '../protocols/encrypter';
 import { AddSignupUseCase } from './add-signup';
-import { VerifyEmailRepository } from '../protocols/verify-email-repository';
 import { AddAccountModel } from '@/modules/account/domain/models/add-account-model';
+import { AddUserService } from '@/shared/services/protocols/add-user';
+import { VerifyEmailService } from '@/shared/services/protocols/verify-email';
 
 const makeAddAccount = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
@@ -16,9 +16,9 @@ const makeAddAccount = (): AddAccountRepository => {
   return new AddAccountRepositoryStub();
 };
 
-const makeAddUser = (): AddUserRepository => {
-  class AddSignupRepositoryStub implements AddUserRepository {
-    async create(data: UserModel.Params): Promise<UserModel.Params> {
+const makeAddUser = (): AddUserService => {
+  class AddSignupRepositoryStub implements AddUserService {
+    async addUser(data: UserModel.Params): Promise<UserModel.Params> {
       return new Promise((resolve) =>
         resolve({
           id: 'valid_id',
@@ -44,9 +44,9 @@ const makeEncrypter = (): Encrypter => {
   return new EncrypterStub();
 };
 
-const makeVerifyEmail = (): VerifyEmailRepository => {
-  class VerifyEmailRepositoryStub implements VerifyEmailRepository {
-    async verify(email: string): Promise<boolean> {
+const makeVerifyEmail = (): VerifyEmailService => {
+  class VerifyEmailRepositoryStub implements VerifyEmailService {
+    async verifyEmail(email: string): Promise<boolean> {
       return new Promise((resolve) => resolve(false));
     }
   }
@@ -76,8 +76,8 @@ const makeSut = (): SutTypes => {
 type SutTypes = {
   sut: AddSignupUseCase;
   encrypterStub: Encrypter;
-  verifyEmailRepositoryStub: VerifyEmailRepository;
-  addUserRepositoryStub: AddUserRepository;
+  verifyEmailRepositoryStub: VerifyEmailService;
+  addUserRepositoryStub: AddUserService;
   addAccountRepositoryStub: AddAccountRepository;
 };
 
@@ -106,7 +106,7 @@ describe('AddSignupUseCase', () => {
   it('should thorw if VerifyEmailRepository returns true', async () => {
     const { sut, verifyEmailRepositoryStub } = makeSut();
     jest
-      .spyOn(verifyEmailRepositoryStub, 'verify')
+      .spyOn(verifyEmailRepositoryStub, 'verifyEmail')
       .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
     const params = {
       name: 'anyname',
@@ -168,7 +168,7 @@ describe('AddSignupUseCase', () => {
 
   it('should call AddUserRepository with correct values', async () => {
     const { sut, addUserRepositoryStub } = makeSut();
-    const createUserSpy = jest.spyOn(addUserRepositoryStub, 'create');
+    const createUserSpy = jest.spyOn(addUserRepositoryStub, 'addUser');
     const params = {
       name: 'anyname',
       email: 'anyemail@mail.com',
@@ -190,7 +190,7 @@ describe('AddSignupUseCase', () => {
   it('should throw if AddUserRepository throws', async () => {
     const { sut, addUserRepositoryStub } = makeSut();
     jest
-      .spyOn(addUserRepositoryStub, 'create')
+      .spyOn(addUserRepositoryStub, 'addUser')
       .mockReturnValueOnce(
         new Promise((resolve, reject) => reject(new Error())),
       );
