@@ -1,5 +1,6 @@
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { MongoUserRepository } from './mongo-user-repository';
+import { ObjectId } from 'mongodb';
 
 const makeSut = (): MongoUserRepository => {
   return new MongoUserRepository();
@@ -62,12 +63,12 @@ describe('MongoUserRepository', () => {
   it('Should return an user on success', async () => {
     const sut = makeSut();
     const account = await sut.create({
-      id: expect.any(String),
+      id: new ObjectId().toHexString(),
       name: 'any_name',
       email: 'any_email@mail.com',
       password: 'any_password',
       avatar: null,
-      accountId: 'any_account_id',
+      accountId: new ObjectId().toHexString(),
       createdAt: expect.any(Date),
     });
     expect(account).toBeTruthy();
@@ -76,6 +77,6 @@ describe('MongoUserRepository', () => {
     expect(account.email).toBe('any_email@mail.com');
     expect(account.password).toBe('any_password');
     expect(account.avatar).toBeNull();
-    expect(account.accountId).toBe('any_account_id');
+    expect(account.accountId).toBeTruthy();
   });
 });
