@@ -41,4 +41,21 @@ describe('MongoUserRepository', () => {
     const isUser = await sut.verify('valid_email@mail.com');
     expect(isUser).toBe(true);
   });
+
+  it('Should return false if email not exists', async () => {
+    const sut = makeSut();
+    jest.spyOn(sut, 'verify').mockResolvedValueOnce(false);
+    const getCollection = MongoHelper.getCollection('users');
+    await getCollection.insertOne({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+      avatar: null,
+      accountId: 'valid_account_id',
+      createdAt: new Date('2025-12-10'),
+    });
+    const isUser = await sut.verify('valid_email@mail.com');
+    expect(isUser).toBe(false);
+  });
 });
