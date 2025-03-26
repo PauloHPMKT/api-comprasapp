@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:dev": "tsx watch ./src/main/server.ts",
     "test": "jest --passWithNoTests --silent",
     "test:staged": "npm test --passWithNoTests --findRelatedTests --silent",
     "test:ci": "npm test -- --coverage --no-cache --runInBand",
@@ -18,6 +19,7 @@
     "@swc/core": "^1.11.8",
     "@swc/jest": "^0.2.37",
     "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
@@ -34,6 +36,7 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
     "mongodb": "^6.15.0"
   }
 }
