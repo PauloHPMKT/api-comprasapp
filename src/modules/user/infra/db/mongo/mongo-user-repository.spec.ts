@@ -25,4 +25,20 @@ describe('MongoUserRepository', () => {
     expect(sut).toBeTruthy();
     expect(sut).toBeInstanceOf(MongoUserRepository);
   });
+
+  it('Should return true if email exists', async () => {
+    const sut = makeSut();
+    const getCollection = MongoHelper.getCollection('users');
+    await getCollection.insertOne({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+      avatar: null,
+      accountId: 'valid_account_id',
+      createdAt: new Date('2025-12-10'),
+    });
+    const isUser = await sut.verify('valid_email@mail.com');
+    expect(isUser).toBe(true);
+  });
 });
