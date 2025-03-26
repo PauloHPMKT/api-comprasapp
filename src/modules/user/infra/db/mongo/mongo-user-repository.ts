@@ -1,9 +1,9 @@
+import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { UserModel } from '../../../domain/models/user-model';
 import {
   VerifyEmailRepository,
   AddUserRepository,
 } from '../../../data/protocols';
-import { MongoHelper } from '../helper/mongo-client';
 
 export class MongoUserRepository
   implements VerifyEmailRepository, AddUserRepository

@@ -1,4 +1,4 @@
-import { MongoHelper } from '../helper/mongo-client';
+import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { MongoUserRepository } from './mongo-user-repository';
 
 const makeSut = (): MongoUserRepository => {
