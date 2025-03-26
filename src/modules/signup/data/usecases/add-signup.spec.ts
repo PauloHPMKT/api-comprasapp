@@ -1,11 +1,13 @@
+import { AddSignupUseCase } from './add-signup';
+import { Encrypter } from '../protocols/encrypter';
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { UserModel } from '@/modules/user/domain/models/user-model';
-import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
-import { Encrypter } from '../protocols/encrypter';
-import { AddSignupUseCase } from './add-signup';
 import { AddAccountModel } from '@/modules/account/domain/models/add-account-model';
-import { AddUserService } from '@/shared/services/protocols/add-user';
-import { VerifyEmailService } from '@/shared/services/protocols/verify-email';
+import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
+import {
+  VerifyEmailService,
+  AddUserService,
+} from '@/shared/services/protocols';
 
 const makeAddAccount = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {

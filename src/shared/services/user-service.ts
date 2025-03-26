@@ -1,7 +1,8 @@
-import { VerifyEmailRepository } from '@/modules/user/data/protocols/verify-email-repository';
-import { AddUserRepository } from '@/modules/user/data/protocols/add-user-repository';
-import { VerifyEmailService } from './protocols/verify-email';
-import { AddUserService } from './protocols/add-user';
+import {
+  VerifyEmailRepository,
+  AddUserRepository,
+} from '@/modules/user/data/protocols';
+import { VerifyEmailService, AddUserService } from './protocols';
 
 export class UserService implements VerifyEmailService, AddUserService {
   constructor(

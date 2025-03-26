@@ -1,12 +1,14 @@
+import { Encrypter } from '../protocols/encrypter';
+import { AddSignup } from '../../domain/usecases/add-signup';
+import { SignupModel } from '../../domain/models/add-signup';
 import { User } from '@/modules/user/domain/entities/User';
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { InvalidParamError } from '@/shared/presentation/errors';
 import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
-import { AddSignup } from '../../domain/usecases/add-signup';
-import { SignupModel } from '../../domain/models/add-signup';
-import { Encrypter } from '../protocols/encrypter';
-import { VerifyEmailService } from '@/shared/services/protocols/verify-email';
-import { AddUserService } from '@/shared/services/protocols/add-user';
+import {
+  VerifyEmailService,
+  AddUserService,
+} from '@/shared/services/protocols';
 
 export class AddSignupUseCase implements AddSignup {
   constructor(
