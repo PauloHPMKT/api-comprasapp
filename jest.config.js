@@ -6,6 +6,7 @@ const config = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
+    '!src/**/protocols/**',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
