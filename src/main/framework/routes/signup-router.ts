@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { expressAdapter } from '../adapters/express-adapter';
+import { makeSignupControllerFactory } from '@/main/factories/modules/signup/presentation/signup-factory';
 
 export class SignupRouter {
   private router: Router;
@@ -8,8 +10,9 @@ export class SignupRouter {
   }
 
   public getRouter() {
-    return this.router.post('/signup', (req, res) => {
-      res.status(201).send();
-    });
+    return this.router.post(
+      '/signup',
+      expressAdapter(makeSignupControllerFactory()),
+    );
   }
 }
