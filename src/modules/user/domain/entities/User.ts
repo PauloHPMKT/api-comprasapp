@@ -11,7 +11,7 @@ export type UserProps = {
 };
 
 export class User extends Entity<UserProps> {
-  private constructor(
+  constructor(
     public readonly props: UserProps,
     id?: UniqueEntityId,
   ) {
@@ -19,10 +19,6 @@ export class User extends Entity<UserProps> {
     this.avatar = this.props.avatar;
     this.props.accountId = props.accountId ?? null;
     this.props.createdAt = props.createdAt ?? new Date();
-  }
-
-  static create(props: UserProps, id?: UniqueEntityId): User {
-    return new User(props, id);
   }
 
   get name(): string {

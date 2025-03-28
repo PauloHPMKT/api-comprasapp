@@ -4,7 +4,6 @@ import { SignupModel } from '../../domain/models/add-signup';
 import { User } from '@/modules/user/domain/entities/User';
 import { Account } from '@/modules/account/domain/entities/Acount';
 import { InvalidParamError } from '@/shared/presentation/errors';
-import { AddAccountRepository } from '@/modules/account/data/protocols/add-account-repository';
 import {
   VerifyEmailService,
   AddUserService,
@@ -45,7 +44,7 @@ export class AddSignupUseCase implements AddSignup {
   }
 
   private createUserAccount(params: SignupModel.Params) {
-    const createUser = User.create({
+    const createUser = new User({
       name: params.name,
       email: params.email,
       password: params.password,
