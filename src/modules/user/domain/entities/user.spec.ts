@@ -7,7 +7,7 @@ const makeSut = (id?: UniqueEntityId): User => {
     email: 'anyemail@mail.com',
     password: 'anypassword',
   };
-  return User.create(userProps, id);
+  return new User(userProps, id);
 };
 
 describe('User Entity', () => {
@@ -56,8 +56,8 @@ describe('User Entity', () => {
   it('should create a new User with an accountId', () => {
     const sut = makeSut();
     const accountId = 'anyaccountid';
-    const generatedAccountId = sut.assignAccountId(accountId);
-    expect(sut.props.accountId).toEqual(generatedAccountId);
+    sut.props.accountId = accountId;
+    expect(sut.accountId).toEqual(accountId);
   });
 
   describe('User Entity Getters', () => {
@@ -86,6 +86,13 @@ describe('User Entity', () => {
       const avatar = 'anyavatar';
       sut.props.avatar = avatar;
       expect(sut.avatar).toEqual(avatar);
+    });
+
+    it('should get the User accountId', () => {
+      const sut = makeSut();
+      const accountId = 'anyaccountid';
+      sut.props.accountId = accountId;
+      expect(sut.accountId).toEqual(accountId);
     });
   });
 

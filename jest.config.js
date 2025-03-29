@@ -6,6 +6,7 @@ const config = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
+    '!src/**/protocols/**',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -13,7 +14,7 @@ const config = {
   coverageDirectory: 'coverage',
   roots: ['<rootDir>/src'],
   testEnvironment: 'node',
-  //preset: '@shelf/jest-mongodb',
+  preset: '@shelf/jest-mongodb',
   transform: {
     '^.+\\.(t|j)sx?$': '@swc/jest',
   },
