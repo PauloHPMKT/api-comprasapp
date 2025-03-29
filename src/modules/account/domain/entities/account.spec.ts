@@ -5,7 +5,7 @@ const makeSut = (id?: UniqueEntityId): Account => {
   const accountProps: AccountProps = {
     userId: 'anyuserId',
   };
-  return Account.create(accountProps, id);
+  return new Account(accountProps, id);
 };
 
 describe('Account Entity', () => {

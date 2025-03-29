@@ -49,7 +49,7 @@ export class AddSignupUseCase implements AddSignup {
       email: params.email,
       password: params.password,
     });
-    const account = Account.create({ userId: createUser.id }).toJSON();
+    const account = new Account({ userId: createUser.id }).toJSON();
     createUser.assignAccountId(account.id);
 
     const user = createUser.toJSON();
