@@ -39,6 +39,7 @@
     "@commitlint/config-conventional": "^19.8.0",
     "bcrypt": "^5.1.1",
     "express": "^4.21.2",
-    "mongodb": "^6.15.0"
+    "mongodb": "^6.15.0",
+    "morgan": "^1.10.0"
   }
 }
