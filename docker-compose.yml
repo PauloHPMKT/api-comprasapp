@@ -1,0 +1,38 @@
+services:
+  comprasapp-api:
+    build: .
+    container_name: comprasapp-api
+    entrypoint: sh ./.docker/entrypoint.sh
+    ports:
+      - "3005:3005"
+    volumes:
+      - .:/usr/compras-app/app
+    tty: true
+    restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - comprasapp
+
+  db:
+    image: mongo:4.4
+    container_name: mongo-db
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo-dbdata:/data/db
+      - mongo-configdb:/data/configdb
+    environment:
+      MONGO_INITDB_DATABASE: comprasapp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - comprasapp
+
+volumes:
+  mongo-dbdata:
+  mongo-configdb:
+
+networks:
+  comprasapp:
+    driver: bridge
