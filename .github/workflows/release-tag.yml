@@ -46,7 +46,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git tag $VERSION
-          git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git $VERSION
+          # git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git $VERSION
           git push orgin $VERSION
 
       - name: Verificar tags remotas
