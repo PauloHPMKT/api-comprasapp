@@ -1,0 +1,56 @@
+name: Create Release Tag
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+        with:
+         fetch-depth: 0
+
+      - name: Define new version
+        run: |
+          LAST_TAG=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          echo "Última versão encontrada: $LAST_TAG"
+          
+          if [[ -z "$LAST_TAG" ]]; then
+            NEW_VERSION="v1.0.0"
+          else
+            # Quebra a string em partes MAJOR.MINOR.PATCH
+            IFS='.' read -r MAJOR MINOR PATCH <<<"${LAST_TAG//v/}"
+
+            # Se o PATCH for menor que 10, apenas o incrementa
+            if [[ "$PATCH" -lt 10 ]]; then
+              PATCH=$((PATCH + 1))
+            else
+              # Se chegou a 10, reseta o PATCH e incrementa o MINOR
+              PATCH=0
+              MINOR=$((MINOR + 1))
+            fi
+
+            Se quiser que ao chegar em 10.10 passe para 2.0.0, descomente abaixo:
+            if [[ "$MINOR" -eq 10 ]]; then
+              MINOR=0
+              MAJOR=$((MAJOR + 1))
+            fi
+
+            NEW_VERSION="v$MAJOR.$MINOR.$PATCH"
+          fi
+          
+          echo "Nova versão: $NEW_VERSION"
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      - name: push new tag
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag $VERSION
+          git push origin $VERSION
