@@ -46,10 +46,8 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Adicionando URL explícita para evitar o erro de 'origin' não encontrado
-          git remote set-url origin https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git
           git tag $VERSION
-          git push origin $VERSION
+          git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git $VERSION
 
       - name: Verificar tags remotas
         run: git fetch --tags && git tag -l
