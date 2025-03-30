@@ -53,4 +53,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
           git tag $VERSION
-          git push origin $VERSION
+          git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git $VERSION
