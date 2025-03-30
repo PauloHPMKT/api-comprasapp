@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   workflow_run:
     workflows: ["Create Release Tag"]
-    types: 
+    types:
       - completed
 
 jobs:
@@ -33,5 +33,5 @@ jobs:
         content: .
         push: true
         tags: |
-          paulodevmais/comprasapp-api:latest
-          paulodevamis/comprasapp-api:${{ env.VERSION }}
+          paulodevmais/comprasapp:latest
+          paulodevamis/comprasapp:${{ env.VERSION }}
