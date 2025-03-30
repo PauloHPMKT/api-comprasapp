@@ -13,7 +13,10 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Extrair versão da tag
+      - name: Wait to register tag
+        run: sleep 5
+
+      - name: Exctract version from tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Login no Docker Hub
