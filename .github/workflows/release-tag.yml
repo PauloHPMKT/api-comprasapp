@@ -23,19 +23,13 @@ jobs:
           if [[ -z "$LAST_TAG" ]]; then
             NEW_VERSION="v1.0.0"
           else
-            # Quebrando a string em partes MAJOR.MINOR.PATCH
             IFS='.' read -r MAJOR MINOR PATCH <<<"${LAST_TAG//v/}"
-
-            # Se o PATCH for menor que 10, apenas o incrementa
             if [[ "$PATCH" -lt 10 ]]; then
               PATCH=$((PATCH + 1))
             else
-              # Se chegou a 10, reseta o PATCH e incrementa o MINOR
               PATCH=0
               MINOR=$((MINOR + 1))
             fi
-
-            # Quando chegar em 10.10 passe para 2.0.0, descomente abaixo:
             if [[ "$MINOR" -eq 10 ]]; then
               MINOR=0
               MAJOR=$((MAJOR + 1))
@@ -47,10 +41,12 @@ jobs:
           echo "Nova versão: $NEW_VERSION"
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-      - name: Push new tag
+      - name: push new tag
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git tag $VERSION
+          git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git $VERSION
 
-          git tag ${{ env.VERSION }}  # Aqui está a correção
-          git push https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git ${{ env.VERSION }}
+      - name: Verificar tags remotas
+        run: git fetch --tags && git tag -l
