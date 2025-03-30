@@ -7,6 +7,6 @@ MongoHelper.connect(env.mongoUrl)
     const port = env.port;
     const app = new App();
     app.initServer(port);
-    console.log('Connected to MongoDB');
+    console.log('Connected to MongoDB!!!');
   })
   .catch(console.error);
