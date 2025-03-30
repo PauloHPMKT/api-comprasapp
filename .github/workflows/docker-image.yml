@@ -3,7 +3,7 @@ name: CI Docker image
 on:
   push:
     tags:
-      - 'v*'  # Aciona a action apenas quando uma tag v* for criada
+      - 'v*'
 
 jobs:
   build-and-push:
@@ -13,9 +13,8 @@ jobs:
     - name: Checkout código
       uses: actions/checkout@v4
 
-    - name: Exibir informações da tag e versão
+    - name: Extrair versão da tag
       run: |
-        echo "GITHUB_REF=${GITHUB_REF}"
         echo "Extrair versão da tag..."
         VERSION=${GITHUB_REF#refs/tags/v}
         echo "VERSÃO EXTRAÍDA: $VERSION"
