@@ -3,25 +3,31 @@ name: CI Docker image
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # Aciona a action apenas quando uma tag v* for criada
 
 jobs:
-
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Exctract tag version
-      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+    - name: Checkout código
+      uses: actions/checkout@v4
 
-    - name: Login Docker hub
+    - name: Exibir informações da tag e versão
+      run: |
+        echo "GITHUB_REF=${GITHUB_REF}"
+        echo "Extrair versão da tag..."
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "VERSÃO EXTRAÍDA: $VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Login no Docker Hub
       uses: docker/login-action@v3.4.0
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Build and push Docker images
+    - name: Construir e enviar a imagem Docker
       uses: docker/build-push-action@v6.15.0
       with:
         context: .
@@ -29,4 +35,3 @@ jobs:
         tags: |
           paulodevmais/comprasapp:latest
           paulodevmais/comprasapp:${{ env.VERSION }}
-        
