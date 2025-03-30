@@ -43,9 +43,13 @@ jobs:
 
       - name: push new tag
         run: |
-          git tag $VERSION
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git push orgin $VERSION
+          # Adicionando URL explícita para evitar o erro de 'origin' não encontrado
+          git remote set-url origin https://x-access-token:${{ secrets.TAG_GITHUB_TOKEN }}@github.com/PauloHPMKT/api-comprasapp.git
+          git tag $VERSION
+          git push origin $VERSION
 
       - name: Verificar tags remotas
         run: git fetch --tags && git tag -l
