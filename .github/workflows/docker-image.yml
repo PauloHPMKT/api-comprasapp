@@ -14,13 +14,12 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Verificar se a tag existe
+      - name: Buscar última tag criada
         run: |
           git fetch --tags
-          git tag -l
-
-      - name: Exctract version from tag
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          LAST_TAG=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
+          echo "Última versão encontrada: $LAST_TAG"
+          echo "VERSION=$LAST_TAG" >> $GITHUB_ENV
 
       - name: Login no Docker Hub
         uses: docker/login-action@v3
@@ -28,8 +27,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Construir e publicar imagem Docker
-        uses: docker/build-push-action@v5
+      - name: Build e push da imagem Docker
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
