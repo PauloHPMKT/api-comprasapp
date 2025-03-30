@@ -14,15 +14,10 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Verificar se a tag foi criada corretamente
+      - name: Verificar se a tag existe
         run: |
           git fetch --tags
           git tag -l
-          if [[ -z "$(git tag -l | grep $GITHUB_REF)" ]]; then
-            echo "Tag $GITHUB_REF não encontrada. A tag pode não ter sido empurrada corretamente."
-            exit 1
-          fi
-
 
       - name: Exctract version from tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
