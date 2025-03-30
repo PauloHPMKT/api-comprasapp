@@ -10,27 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout código
-      uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-    - name: Extrair versão da tag
-      run: |
-        echo "Extrair versão da tag..."
-        VERSION=${GITHUB_REF#refs/tags/v}
-        echo "VERSÃO EXTRAÍDA: $VERSION"
-        echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Extrair versão da tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-    - name: Login no Docker Hub
-      uses: docker/login-action@v3.4.0
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-    - name: Construir e enviar a imagem Docker
-      uses: docker/build-push-action@v6.15.0
-      with:
-        context: .
-        push: true
-        tags: |
-          paulodevmais/comprasapp:latest
-          paulodevmais/comprasapp:${{ env.VERSION }}
+      - name: Construir e publicar imagem Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            paulodevmais/comprasapp:latest
+            paulodevmais/comprasapp:${{ env.VERSION }}
