@@ -1,7 +1,10 @@
-import { PurchaseList } from './PurchaseList';
+import { ProductProps, PurchaseList } from './PurchaseList';
 
 const makeSut = (): PurchaseList => {
-  const sut = new PurchaseList();
+  const purchaseList: ProductProps = {
+    title: 'List title',
+  };
+  const sut = new PurchaseList(purchaseList);
   return sut;
 };
 
@@ -11,5 +14,11 @@ describe('PurchaseList', () => {
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(PurchaseList);
     expect(sut).toBeTruthy();
+  });
+
+  it('should create a list by name', () => {
+    const sut = makeSut();
+    const listName = 'List title';
+    expect(sut.props.title).toEqual(listName);
   });
 });

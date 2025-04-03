@@ -1,5 +1,5 @@
 export type ProductProps = {
-  name: string;
+  title: string;
 };
 
 export class PurchaseList {
