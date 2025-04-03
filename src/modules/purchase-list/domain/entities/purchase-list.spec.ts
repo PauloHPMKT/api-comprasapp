@@ -15,6 +15,7 @@ const makeSut = (): PurchaseList => {
         price: 20,
       },
     ],
+    userId: 'anyuserid',
   };
   const sut = new PurchaseList(purchaseList);
   return sut;
@@ -51,5 +52,14 @@ describe('PurchaseList', () => {
     expect(sut.props.products).not.toBeUndefined();
     expect(sut.props.products).not.toBeNull();
     expect(sut.props.products).toEqual(products);
+  });
+
+  it('ensure a purchase list is created with a users id reference', () => {
+    const sut = makeSut();
+    const userId = 'anyuserid';
+    expect(sut.props.userId).not.toBeUndefined();
+    expect(sut.props.userId).not.toBeNull();
+    expect(typeof sut.props.userId).toEqual('string');
+    expect(sut.props.userId).toEqual(userId);
   });
 });
