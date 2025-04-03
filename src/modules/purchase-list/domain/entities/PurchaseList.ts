@@ -1,6 +1,7 @@
 export type ProductProps = {
   title: string;
   products: Products.toCreate[];
+  userId: string;
 };
 
 export class PurchaseList {
