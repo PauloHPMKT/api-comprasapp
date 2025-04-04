@@ -99,4 +99,10 @@ describe('PurchaseList', () => {
     expect(sut.props.createdAt).not.toBeUndefined();
     expect(sut.props.createdAt).not.toBeNull();
   });
+
+  it('should create a purchase list with updatedAt null', () => {
+    const sut = makeSut();
+    expect(sut.props.updatedAt).toBeNull();
+    expect(sut.props.updatedAt).not.toBeUndefined();
+  });
 });
