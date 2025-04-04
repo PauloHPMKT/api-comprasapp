@@ -1,3 +1,6 @@
+import Entity from '@/shared/seedworks/domain/entity/entity';
+import { UniqueEntityId } from '@/shared/seedworks/domain/values-objects/unique-entity-id.vo';
+
 export type ProductProps = {
   title: string;
   description?: string | null;
@@ -7,8 +10,12 @@ export type ProductProps = {
   updatedAt?: Date;
 };
 
-export class PurchaseList {
-  constructor(public readonly props: ProductProps) {
+export class PurchaseList extends Entity<ProductProps> {
+  constructor(
+    public readonly props: ProductProps,
+    id?: UniqueEntityId,
+  ) {
+    super(props, id);
     this.props = {
       ...props,
       products: props.products.map((product) => ({
