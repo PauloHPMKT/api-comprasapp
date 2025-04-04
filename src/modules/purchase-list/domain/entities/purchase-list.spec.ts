@@ -34,6 +34,12 @@ describe('PurchaseList', () => {
     expect(sut.props.title).toEqual(listName);
   });
 
+  it('should create a purchase list with description null', () => {
+    const sut = makeSut();
+    expect(sut.props.description).toBeNull();
+    expect(sut.props.description).not.toBeUndefined();
+  });
+
   it('should create a purchase list with a list of products', () => {
     const sut = makeSut();
     const products = [
