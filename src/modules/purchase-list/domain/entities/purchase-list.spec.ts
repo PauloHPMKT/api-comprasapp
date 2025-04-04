@@ -92,4 +92,11 @@ describe('PurchaseList', () => {
     expect(sut.props.products).toEqual(expectedProducts);
     expect(sut.props.products[0].price).toBeNull();
   });
+
+  it('should create a purchase list with a valid Date', () => {
+    const sut = makeSut();
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
+    expect(sut.props.createdAt).not.toBeUndefined();
+    expect(sut.props.createdAt).not.toBeNull();
+  });
 });
