@@ -1,9 +1,9 @@
-import { ProductProps, PurchaseList } from './PurchaseList';
+import { ProductProps, Products, PurchaseList } from './PurchaseList';
 
-const makeSut = (): PurchaseList => {
+const makeSut = (customProducts?: Products.toCreate[]): PurchaseList => {
   const purchaseList: ProductProps = {
     title: 'List title',
-    products: [
+    products: customProducts || [
       {
         name: 'Product 1',
         quantity: 2,
@@ -17,8 +17,7 @@ const makeSut = (): PurchaseList => {
     ],
     userId: 'anyuserid',
   };
-  const sut = new PurchaseList(purchaseList);
-  return sut;
+  return new PurchaseList(purchaseList);
 };
 
 describe('PurchaseList', () => {
@@ -61,5 +60,36 @@ describe('PurchaseList', () => {
     expect(sut.props.userId).not.toBeNull();
     expect(typeof sut.props.userId).toEqual('string');
     expect(sut.props.userId).toEqual(userId);
+  });
+
+  it('should be able to create a purchase list with product price null', () => {
+    const customProducts = [
+      {
+        name: 'Product 1',
+        quantity: 2,
+      },
+      {
+        name: 'Product 2',
+        quantity: 1,
+        price: 20,
+      },
+    ];
+
+    const sut = makeSut(customProducts);
+    const expectedProducts = [
+      {
+        name: 'Product 1',
+        quantity: 2,
+        price: null,
+      },
+      {
+        name: 'Product 2',
+        quantity: 1,
+        price: 20,
+      },
+    ];
+
+    expect(sut.props.products).toEqual(expectedProducts);
+    expect(sut.props.products[0].price).toBeNull();
   });
 });
