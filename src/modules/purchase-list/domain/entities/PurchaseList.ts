@@ -2,6 +2,7 @@ export type ProductProps = {
   title: string;
   products: Products.toCreate[];
   userId: string;
+  createdAt?: Date;
 };
 
 export class PurchaseList {
@@ -13,6 +14,7 @@ export class PurchaseList {
         price: product.price ?? null,
       })),
     };
+    this.props.createdAt = this.props.createdAt ?? new Date();
   }
 }
 
