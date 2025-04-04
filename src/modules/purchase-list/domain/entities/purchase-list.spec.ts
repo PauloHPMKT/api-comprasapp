@@ -1,6 +1,10 @@
+import { UniqueEntityId } from '@/shared/seedworks/domain/values-objects/unique-entity-id.vo';
 import { ProductProps, Products, PurchaseList } from './PurchaseList';
 
-const makeSut = (customProducts?: Products.toCreate[]): PurchaseList => {
+const makeSut = (
+  customProducts?: Products.toCreate[],
+  id?: UniqueEntityId,
+): PurchaseList => {
   const purchaseList: ProductProps = {
     title: 'List title',
     products: customProducts || [
@@ -17,7 +21,7 @@ const makeSut = (customProducts?: Products.toCreate[]): PurchaseList => {
     ],
     userId: 'anyuserid',
   };
-  return new PurchaseList(purchaseList);
+  return new PurchaseList(purchaseList, id);
 };
 
 describe('PurchaseList', () => {
@@ -110,5 +114,13 @@ describe('PurchaseList', () => {
     const sut = makeSut();
     expect(sut.props.updatedAt).toBeNull();
     expect(sut.props.updatedAt).not.toBeUndefined();
+  });
+
+  it('should create a purchase list with a valid id', () => {
+    const id = new UniqueEntityId('5c84559c9ea984bd9b1f2bc6');
+    const sut = makeSut([], id);
+    expect(sut.id).not.toBeUndefined();
+    expect(sut.id).not.toBeNull();
+    expect(typeof sut.id).toEqual('string');
   });
 });
