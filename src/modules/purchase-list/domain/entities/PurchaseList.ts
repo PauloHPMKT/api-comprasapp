@@ -16,16 +16,19 @@ export class PurchaseList extends Entity<ProductProps> {
     id?: UniqueEntityId,
   ) {
     super(props, id);
-    this.props = {
-      ...props,
-      products: props.products.map((product) => ({
-        ...product,
-        price: product.price ?? null,
-      })),
-    };
+    this.props.products = props.products.map((product) =>
+      PurchaseList.createProduct(product),
+    );
     this.props.description = this.props.description ?? null;
     this.props.createdAt = this.props.createdAt ?? new Date();
     this.props.updatedAt = this.props.updatedAt ?? null;
+  }
+
+  static createProduct(product: Products.toCreate): Products.toCreate {
+    return {
+      ...product,
+      price: product.price ?? null,
+    };
   }
 }
 
