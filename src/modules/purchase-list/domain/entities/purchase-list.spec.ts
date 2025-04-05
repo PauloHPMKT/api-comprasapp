@@ -136,5 +136,10 @@ describe('PurchaseList', () => {
       const sut = makeSut();
       expect(sut.title).toBe('List title');
     });
+
+    it('should get the PurchaseList description', () => {
+      const sut = makeSut();
+      expect(sut.description).toBeNull();
+    });
   });
 });
