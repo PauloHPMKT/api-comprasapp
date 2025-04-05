@@ -19,9 +19,9 @@ export class PurchaseList extends Entity<ProductProps> {
     this.props.products = props.products.map((product) =>
       PurchaseList.createProduct(product),
     );
-    this.props.description = this.props.description ?? null;
-    this.props.createdAt = this.props.createdAt ?? new Date();
-    this.props.updatedAt = this.props.updatedAt ?? null;
+    this.description = this.props.description;
+    this.props.createdAt = props.createdAt ?? new Date();
+    this.props.updatedAt = props.updatedAt ?? null;
   }
 
   static createProduct(product: Products.toCreate): Products.toCreate {
@@ -41,6 +41,10 @@ export class PurchaseList extends Entity<ProductProps> {
 
   get products(): Products.toCreate[] {
     return this.props.products;
+  }
+
+  private set description(description: string | null) {
+    this.props.description = description ?? null;
   }
 }
 
