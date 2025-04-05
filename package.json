@@ -6,6 +6,8 @@
   "scripts": {
     "start:dev": "tsx watch ./src/main/server.ts",
     "test": "jest --passWithNoTests --silent",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test --passWithNoTests --findRelatedTests --silent",
     "test:ci": "npm test -- --coverage --no-cache --runInBand",
     "prepare": "husky"
