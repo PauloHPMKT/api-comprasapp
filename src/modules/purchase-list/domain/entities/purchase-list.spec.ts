@@ -131,7 +131,7 @@ describe('PurchaseList', () => {
     expect(typeof sut.id).toEqual('string');
   });
 
-  describe('PurchaseList Entity Getters', () => {
+  describe('PurchaseList Entity Getters and Setters', () => {
     it('should get the PurchaseList title', () => {
       const sut = makeSut();
       expect(sut.title).toBe('List title');
@@ -159,6 +159,13 @@ describe('PurchaseList', () => {
       expect(sut.products).toEqual(products);
       expect(sut.products).not.toBeUndefined();
       expect(sut.products).not.toBeNull();
+    });
+
+    it('should set the PurchaseList description', () => {
+      const sut = makeSut();
+      const description = 'New description';
+      sut['description'] = description;
+      expect(sut['description']).toEqual(description);
     });
   });
 });
