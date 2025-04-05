@@ -23,5 +23,12 @@ export class CreatePurchaseListController extends Controller {
         body: new MissingParamError('title'),
       };
     }
+
+    if (!httpRequest.body.products) {
+      return {
+        statusCode: 400,
+        body: new MissingParamError('products'),
+      };
+    }
   }
 }
