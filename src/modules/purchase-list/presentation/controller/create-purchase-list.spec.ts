@@ -17,6 +17,7 @@ describe('CreatePurchaseListController', () => {
     const sut = makeSut();
     const httpRequest = {
       body: {
+        title: undefined,
         description: 'any description',
         products: [
           {
