@@ -1,5 +1,6 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreatePurchaseListController } from './create-purchase-list';
+import { HttpRequest } from '@/shared/presentation/types/http';
 
 const makeSut = (): CreatePurchaseListController => {
   return new CreatePurchaseListController();
@@ -52,5 +53,26 @@ describe('CreatePurchaseListController', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('products'));
+  });
+
+  it('should return 400 if no producst name is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        title: 'any title',
+        description: 'any description',
+        products: [
+          {
+            name: undefined,
+            quantity: 2,
+            unitPrice: null,
+            totalPrice: null,
+          },
+        ],
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toEqual(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
 });
