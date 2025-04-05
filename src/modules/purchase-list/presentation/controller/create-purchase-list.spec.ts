@@ -1,6 +1,16 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreatePurchaseListController } from './create-purchase-list';
 
+export const mockDecodeToken = (authorization?: string): string | null => {
+  if (!authorization.startsWith('Bearer ')) return null;
+  const fakeToken = authorization.split(' ')[1];
+
+  if (fakeToken !== 'valid_token') return null;
+
+  // deve retornar o objeto do token decodificado
+  return 'mocked_user_id';
+};
+
 const makeSut = (): CreatePurchaseListController => {
   return new CreatePurchaseListController();
 };
@@ -34,6 +44,9 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
+      headers: {
+        authorization: 'Bearer valid_token',
+      },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
@@ -47,6 +60,9 @@ describe('CreatePurchaseListController', () => {
         title: 'any title',
         description: 'any description',
         products: undefined,
+      },
+      headers: {
+        authorization: 'Bearer valid_token',
       },
     };
     const httpResponse = await sut.handle(httpRequest);
@@ -69,6 +85,9 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
+      headers: {
+        authorization: 'Bearer valid_token',
+      },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
@@ -90,9 +109,36 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
+      headers: {
+        authorization: 'Bearer valid_token',
+      },
     };
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('quantity'));
+  });
+
+  it('should return 400 if no userId is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        title: 'any title',
+        description: 'any description',
+        products: [
+          {
+            name: 'Product 1',
+            quantity: 2,
+            unitPrice: null,
+            totalPrice: null,
+          },
+        ],
+      },
+      headers: {
+        authorization: 'Bearer invalid_token',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toEqual(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('userId'));
   });
 });
