@@ -130,4 +130,11 @@ describe('PurchaseList', () => {
     expect(sut.id).not.toBeNull();
     expect(typeof sut.id).toEqual('string');
   });
+
+  describe('PurchaseList Entity Getters', () => {
+    it('should get the PurchaseList title', () => {
+      const sut = makeSut();
+      expect(sut.title).toBe('List title');
+    });
+  });
 });
