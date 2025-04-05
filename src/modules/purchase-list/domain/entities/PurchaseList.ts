@@ -30,6 +30,10 @@ export class PurchaseList extends Entity<ProductProps> {
       price: product.price ?? null,
     };
   }
+
+  get title(): string {
+    return this.props.title;
+  }
 }
 
 export namespace Products {
@@ -39,3 +43,23 @@ export namespace Products {
     price?: number;
   };
 }
+
+const purchaseList = new PurchaseList({
+  title: 'List title',
+  description: 'any description',
+  products: [
+    {
+      name: 'Product 1',
+      quantity: 2,
+      price: null,
+    },
+    {
+      name: 'Product 2',
+      quantity: 1,
+      price: 20,
+    },
+  ],
+  userId: 'anyuserid',
+});
+
+console.log(purchaseList.toJSON());
