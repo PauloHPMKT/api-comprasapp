@@ -30,5 +30,17 @@ export class CreatePurchaseListController extends Controller {
         body: new MissingParamError(error),
       };
     }
+
+    const deepRequiredFields = ['name'];
+    const deepError = this.validateDeepRequiredFields(
+      httpRequest,
+      deepRequiredFields,
+    );
+    if (deepError) {
+      return {
+        statusCode: 400,
+        body: new MissingParamError(deepError),
+      };
+    }
   }
 }
