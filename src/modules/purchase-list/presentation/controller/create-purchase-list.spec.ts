@@ -229,4 +229,37 @@ describe('CreatePurchaseListController', () => {
       userId: 'mocked_user_id',
     });
   });
+
+  it('should throw if AddPurchaseList throws', async () => {
+    const { sut, addPurchaseListStub } = makeSut();
+    jest.spyOn(addPurchaseListStub, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      body: {
+        title: 'any title',
+        description: null,
+        products: [
+          {
+            name: 'Product 1',
+            quantity: 2,
+            unitPrice: null,
+            totalPrice: null,
+          },
+          {
+            name: 'Product 2',
+            quantity: 1,
+            unitPrice: 20,
+            totalPrice: 20,
+          },
+        ],
+      },
+      headers: {
+        authorization: 'Bearer valid_token',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toEqual(500);
+    expect(httpResponse.body).toEqual(new Error('Internal server error'));
+  });
 });
