@@ -4,16 +4,17 @@ import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { badRequest } from '@/shared/presentation/helper/http-responses';
 import { mockDecodeToken } from './create-purchase-list.spec';
+import { AddPurchaseList } from '../../data/usecases/add-purchase-list';
 
 export class CreatePurchaseListController extends Controller {
-  constructor() {
+  constructor(private readonly addPurchaseList: AddPurchaseList) {
     super();
   }
 
   async handle(
     httpRequest: HttpRequest<PurchaseListModel.Params>,
   ): Promise<HttpResponse> {
-    const { title, description, products } = httpRequest.body;
+    const { title, description = null, products } = httpRequest.body;
     const authorization = httpRequest.headers?.authorization;
     const userId = mockDecodeToken(authorization);
     if (!userId) {
@@ -34,5 +35,12 @@ export class CreatePurchaseListController extends Controller {
     if (deepError) {
       return badRequest(new MissingParamError(deepError));
     }
+
+    await this.addPurchaseList.add({
+      title,
+      description,
+      products,
+      userId,
+    });
   }
 }
