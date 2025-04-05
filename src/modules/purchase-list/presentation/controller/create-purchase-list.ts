@@ -31,7 +31,7 @@ export class CreatePurchaseListController extends Controller {
       };
     }
 
-    const deepRequiredFields = ['name'];
+    const deepRequiredFields = ['name', 'quantity'];
     const deepError = this.validateDeepRequiredFields(
       httpRequest,
       deepRequiredFields,
