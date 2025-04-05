@@ -27,7 +27,8 @@ export class PurchaseList extends Entity<ProductProps> {
   static createProduct(product: Products.toCreate): Products.toCreate {
     return {
       ...product,
-      price: product.price ?? null,
+      unitPrice: product.unitPrice ?? null,
+      totalPrice: product.totalPrice ?? null,
     };
   }
 
@@ -52,7 +53,8 @@ export namespace Products {
   export type toCreate = {
     name: string;
     quantity: number;
-    price?: number;
+    unitPrice?: number | null;
+    totalPrice?: number | null;
   };
 }
 
@@ -63,12 +65,14 @@ const purchaseList = new PurchaseList({
     {
       name: 'Product 1',
       quantity: 2,
-      price: null,
+      unitPrice: null,
+      totalPrice: null,
     },
     {
       name: 'Product 2',
       quantity: 1,
-      price: 20,
+      unitPrice: 20,
+      totalPrice: 20,
     },
   ],
   userId: 'anyuserid',

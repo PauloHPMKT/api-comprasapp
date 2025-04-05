@@ -11,12 +11,14 @@ const makeSut = (
       {
         name: 'Product 1',
         quantity: 2,
-        price: 10,
+        unitPrice: 10,
+        totalPrice: 20,
       },
       {
         name: 'Product 2',
         quantity: 1,
-        price: 20,
+        unitPrice: 20,
+        totalPrice: 20,
       },
     ],
     userId: 'anyuserid',
@@ -57,12 +59,14 @@ describe('PurchaseList', () => {
       {
         name: 'Product 1',
         quantity: 2,
-        price: 10,
+        unitPrice: 10,
+        totalPrice: 20,
       },
       {
         name: 'Product 2',
         quantity: 1,
-        price: 20,
+        unitPrice: 20,
+        totalPrice: 20,
       },
     ];
     expect(sut.props.products).not.toBeUndefined();
@@ -88,7 +92,8 @@ describe('PurchaseList', () => {
       {
         name: 'Product 2',
         quantity: 1,
-        price: 20,
+        unitPrice: 20,
+        totalPrice: 20,
       },
     ];
 
@@ -97,17 +102,19 @@ describe('PurchaseList', () => {
       {
         name: 'Product 1',
         quantity: 2,
-        price: null,
+        unitPrice: null,
+        totalPrice: null,
       },
       {
         name: 'Product 2',
         quantity: 1,
-        price: 20,
+        unitPrice: 20,
+        totalPrice: 20,
       },
     ];
 
     expect(sut.props.products).toEqual(expectedProducts);
-    expect(sut.props.products[0].price).toBeNull();
+    expect(sut.props.products[0].unitPrice).toBeNull();
   });
 
   it('should create a purchase list with a valid Date', () => {
@@ -148,12 +155,14 @@ describe('PurchaseList', () => {
         {
           name: 'Product 1',
           quantity: 2,
-          price: 10,
+          unitPrice: 10,
+          totalPrice: 20,
         },
         {
           name: 'Product 2',
           quantity: 1,
-          price: 20,
+          unitPrice: 20,
+          totalPrice: 20,
         },
       ];
       expect(sut.products).toEqual(products);
