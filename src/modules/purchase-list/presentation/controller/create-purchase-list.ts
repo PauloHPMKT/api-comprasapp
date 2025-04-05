@@ -16,18 +16,18 @@ interface Products {
 }
 
 export class CreatePurchaseListController extends Controller {
-  async handle(httpRequest: HttpRequest<CreateListDto>): Promise<HttpResponse> {
-    if (!httpRequest.body.title) {
-      return {
-        statusCode: 400,
-        body: new MissingParamError('title'),
-      };
-    }
+  constructor() {
+    super();
+  }
 
-    if (!httpRequest.body.products) {
+  async handle(httpRequest: HttpRequest<CreateListDto>): Promise<HttpResponse> {
+    const { title, description, products } = httpRequest.body;
+    const requiredFields = ['title', 'products'];
+    const error = this.validateRequiredFields(httpRequest, requiredFields);
+    if (error) {
       return {
         statusCode: 400,
-        body: new MissingParamError('products'),
+        body: new MissingParamError(error),
       };
     }
   }
