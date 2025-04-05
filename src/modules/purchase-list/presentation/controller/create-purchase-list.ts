@@ -2,7 +2,10 @@ import { MissingParamError } from '@/shared/presentation/errors';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
-import { badRequest } from '@/shared/presentation/helper/http-responses';
+import {
+  badRequest,
+  serverError,
+} from '@/shared/presentation/helper/http-responses';
 import { mockDecodeToken } from './create-purchase-list.spec';
 import { AddPurchaseList } from '../../data/usecases/add-purchase-list';
 
@@ -45,10 +48,7 @@ export class CreatePurchaseListController extends Controller {
       });
     } catch (error) {
       console.error(error);
-      return {
-        statusCode: 500,
-        body: new Error('Internal server error'),
-      };
+      return serverError();
     }
   }
 }
