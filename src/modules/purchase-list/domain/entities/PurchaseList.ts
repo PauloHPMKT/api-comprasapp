@@ -38,6 +38,10 @@ export class PurchaseList extends Entity<ProductProps> {
   get description(): string | null {
     return this.props.description;
   }
+
+  get products(): Products.toCreate[] {
+    return this.props.products;
+  }
 }
 
 export namespace Products {
