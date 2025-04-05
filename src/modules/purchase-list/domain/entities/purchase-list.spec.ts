@@ -141,5 +141,24 @@ describe('PurchaseList', () => {
       const sut = makeSut();
       expect(sut.description).toBeNull();
     });
+
+    it('should get the PurchaseList products', () => {
+      const sut = makeSut();
+      const products = [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          price: 10,
+        },
+        {
+          name: 'Product 2',
+          quantity: 1,
+          price: 20,
+        },
+      ];
+      expect(sut.products).toEqual(products);
+      expect(sut.products).not.toBeUndefined();
+      expect(sut.products).not.toBeNull();
+    });
   });
 });
