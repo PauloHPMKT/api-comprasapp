@@ -2,6 +2,7 @@ import { MissingParamError } from '@/shared/presentation/errors';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
+import { badRequest } from '@/shared/presentation/helper/http-responses';
 
 export class CreatePurchaseListController extends Controller {
   constructor() {
@@ -15,10 +16,7 @@ export class CreatePurchaseListController extends Controller {
     const requiredFields = ['title', 'products'];
     const error = this.validateRequiredFields(httpRequest, requiredFields);
     if (error) {
-      return {
-        statusCode: 400,
-        body: new MissingParamError(error),
-      };
+      return badRequest(new MissingParamError(error));
     }
 
     const deepRequiredFields = ['name', 'quantity'];
@@ -27,10 +25,7 @@ export class CreatePurchaseListController extends Controller {
       deepRequiredFields,
     );
     if (deepError) {
-      return {
-        statusCode: 400,
-        body: new MissingParamError(deepError),
-      };
+      return badRequest(new MissingParamError(deepError));
     }
   }
 }

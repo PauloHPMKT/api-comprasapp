@@ -1,6 +1,5 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreatePurchaseListController } from './create-purchase-list';
-import { HttpRequest } from '@/shared/presentation/types/http';
 
 const makeSut = (): CreatePurchaseListController => {
   return new CreatePurchaseListController();
