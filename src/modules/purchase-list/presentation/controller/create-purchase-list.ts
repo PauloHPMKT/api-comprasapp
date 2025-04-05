@@ -14,33 +14,41 @@ export class CreatePurchaseListController extends Controller {
   async handle(
     httpRequest: HttpRequest<PurchaseListModel.Params>,
   ): Promise<HttpResponse> {
-    const { title, description = null, products } = httpRequest.body;
-    const authorization = httpRequest.headers?.authorization;
-    const userId = mockDecodeToken(authorization);
-    if (!userId) {
-      return badRequest(new MissingParamError('userId'));
-    }
+    try {
+      const { title, description = null, products } = httpRequest.body;
+      const authorization = httpRequest.headers?.authorization;
+      const userId = mockDecodeToken(authorization);
+      if (!userId) {
+        return badRequest(new MissingParamError('userId'));
+      }
 
-    const requiredFields = ['title', 'products'];
-    const error = this.validateRequiredFields(httpRequest, requiredFields);
-    if (error) {
-      return badRequest(new MissingParamError(error));
-    }
+      const requiredFields = ['title', 'products'];
+      const error = this.validateRequiredFields(httpRequest, requiredFields);
+      if (error) {
+        return badRequest(new MissingParamError(error));
+      }
 
-    const deepRequiredFields = ['name', 'quantity'];
-    const deepError = this.validateDeepRequiredFields(
-      httpRequest,
-      deepRequiredFields,
-    );
-    if (deepError) {
-      return badRequest(new MissingParamError(deepError));
-    }
+      const deepRequiredFields = ['name', 'quantity'];
+      const deepError = this.validateDeepRequiredFields(
+        httpRequest,
+        deepRequiredFields,
+      );
+      if (deepError) {
+        return badRequest(new MissingParamError(deepError));
+      }
 
-    await this.addPurchaseList.add({
-      title,
-      description,
-      products,
-      userId,
-    });
+      await this.addPurchaseList.add({
+        title,
+        description,
+        products,
+        userId,
+      });
+    } catch (error) {
+      console.error(error);
+      return {
+        statusCode: 500,
+        body: new Error('Internal server error'),
+      };
+    }
   }
 }
