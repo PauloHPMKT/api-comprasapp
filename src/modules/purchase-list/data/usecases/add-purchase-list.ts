@@ -22,7 +22,7 @@ export class AddPurchaseListUseCase implements AddPurchaseList {
       description,
       products,
       userId,
-    });
+    }).toJSON();
 
     const createList =
       await this.addPurchaseListRepository.addList(purchaseList);

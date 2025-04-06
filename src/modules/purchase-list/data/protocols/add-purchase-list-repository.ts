@@ -1,3 +1,7 @@
+import { PurchaseListRepoModel } from '../models/purchase-list';
+
 export interface AddPurchaseListRepository {
-  addList(data: any): Promise<any>;
+  addList(
+    data: PurchaseListRepoModel.Params,
+  ): Promise<PurchaseListRepoModel.Result>;
 }

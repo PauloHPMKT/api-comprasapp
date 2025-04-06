@@ -1,9 +1,11 @@
 import { PurchaseList } from '../../domain/entities/PurchaseList';
+import { PurchaseListRepoModel } from '../models/purchase-list';
 import { AddPurchaseListRepository } from '../protocols/add-purchase-list-repository';
 import { VerifyListRepository } from '../protocols/verify-list-repository';
 import { AddPurchaseListUseCase } from './add-purchase-list';
 
 const mockPurchaseList = {
+  id: 'valid_list_id',
   title: 'valid_list_title',
   description: null,
   products: [
@@ -21,12 +23,34 @@ const mockPurchaseList = {
     },
   ],
   userId: 'valid_user_id',
+  createdAt: new Date('2025-10-01'),
+  updatedAt: null,
 };
 
 jest.mock('../../domain/entities/PurchaseList', () => {
   return {
     PurchaseList: jest.fn().mockImplementation(() => {
-      return mockPurchaseList;
+      return {
+        toJSON: () => ({
+          title: 'valid_list_title',
+          description: null,
+          products: [
+            {
+              name: 'Product 1',
+              quantity: 2,
+              unitPrice: null,
+              totalPrice: null,
+            },
+            {
+              name: 'Product 2',
+              quantity: 1,
+              unitPrice: 20,
+              totalPrice: 20,
+            },
+          ],
+          userId: 'valid_user_id',
+        }),
+      };
     }),
   };
 });
@@ -42,7 +66,9 @@ const makeVerifyListStub = (): VerifyListRepository => {
 
 const makeAddPurchaseListRepository = (): AddPurchaseListRepository => {
   class AddPurchaseListRepositoryStub implements AddPurchaseListRepository {
-    async addList(data: any): Promise<any> {
+    async addList(
+      data: PurchaseListRepoModel.Params,
+    ): Promise<PurchaseListRepoModel.Result> {
       return Promise.resolve(mockPurchaseList);
     }
   }
@@ -101,9 +127,7 @@ describe('AddPurchaseListUseCase', () => {
     const { sut, addPurchaseListRepositoryStub } = makeSut();
     jest
       .spyOn(addPurchaseListRepositoryStub, 'addList')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockReturnValueOnce(Promise.reject(new Error()));
     const params = {
       title: 'anytitle',
       description: 'anydescription',
