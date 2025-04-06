@@ -1,6 +1,6 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreatePurchaseListController } from './create-purchase-list';
-import { AddPurchaseList } from '../../data/usecases/add-purchase-list';
+import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 
 export const mockDecodeToken = (authorization?: string): string | null => {
   if (!authorization.startsWith('Bearer ')) return null;

@@ -7,7 +7,7 @@ import { MissingParamError } from '@/shared/presentation/errors';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
-import { AddPurchaseList } from '../../data/usecases/add-purchase-list';
+import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 import { mockDecodeToken } from './create-purchase-list.spec';
 
 export class CreatePurchaseListController extends Controller {
