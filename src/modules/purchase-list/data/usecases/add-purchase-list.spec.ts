@@ -1,5 +1,15 @@
 import { AddPurchaseListRepository } from '../protocols/add-purchase-list-repository';
+import { VerifyListRepository } from '../protocols/verify-list-repository';
 import { AddPurchaseListUseCase } from './add-purchase-list';
+
+const makeVerifyListStub = (): VerifyListRepository => {
+  class VerifyListStub implements VerifyListRepository {
+    async verify(title: string): Promise<boolean> {
+      return new Promise((resolve) => resolve(false));
+    }
+  }
+  return new VerifyListStub();
+};
 
 const makeAddPurchaseListRepository = (): AddPurchaseListRepository => {
   class AddPurchaseListRepositoryStub implements AddPurchaseListRepository {
@@ -32,17 +42,23 @@ const makeAddPurchaseListRepository = (): AddPurchaseListRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const verifyListStub = makeVerifyListStub();
   const addPurchaseListRepositoryStub = makeAddPurchaseListRepository();
-  const sut = new AddPurchaseListUseCase(addPurchaseListRepositoryStub);
+  const sut = new AddPurchaseListUseCase(
+    addPurchaseListRepositoryStub,
+    verifyListStub,
+  );
   return {
     sut,
     addPurchaseListRepositoryStub,
+    verifyListStub,
   };
 };
 
 type SutTypes = {
   sut: AddPurchaseListUseCase;
   addPurchaseListRepositoryStub: AddPurchaseListRepository;
+  verifyListStub: VerifyListRepository;
 };
 
 describe('AddPurchaseListUseCase', () => {
@@ -71,5 +87,29 @@ describe('AddPurchaseListUseCase', () => {
     };
     sut.add(params);
     expect(addSpy).toHaveBeenCalledWith(params);
+  });
+
+  it('should return a exception if a purchase list has the same title', async () => {
+    const { sut, verifyListStub } = makeSut();
+    jest
+      .spyOn(verifyListStub, 'verify')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(true)));
+    const params = {
+      title: 'anytitle',
+      description: 'anydescription',
+      products: [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          unitPrice: 10,
+          totalPrice: 20,
+        },
+      ],
+      userId: 'anyuserid',
+    };
+    const response = sut.add(params);
+    await expect(response).rejects.toThrow(
+      new Error('A purchase list with this title already exists'),
+    );
   });
 });
