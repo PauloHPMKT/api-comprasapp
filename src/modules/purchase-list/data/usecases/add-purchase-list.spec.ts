@@ -97,6 +97,30 @@ describe('AddPurchaseListUseCase', () => {
     expect(addSpy).toHaveBeenCalledWith(params);
   });
 
+  it('should throw if a repository throws', async () => {
+    const { sut, addPurchaseListRepositoryStub } = makeSut();
+    jest
+      .spyOn(addPurchaseListRepositoryStub, 'addList')
+      .mockReturnValueOnce(
+        new Promise((resolve, reject) => reject(new Error())),
+      );
+    const params = {
+      title: 'anytitle',
+      description: 'anydescription',
+      products: [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          unitPrice: 10,
+          totalPrice: 20,
+        },
+      ],
+      userId: 'anyuserid',
+    };
+    const promise = sut.add(params);
+    await expect(promise).rejects.toThrow();
+  });
+
   it('should return a exception if a purchase list has the same title', async () => {
     const { sut, verifyListStub } = makeSut();
     jest
