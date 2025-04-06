@@ -4,6 +4,7 @@ import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import {
   badRequest,
+  created,
   serverError,
 } from '@/shared/presentation/helper/http-responses';
 import { mockDecodeToken } from './create-purchase-list.spec';
@@ -40,12 +41,14 @@ export class CreatePurchaseListController extends Controller {
         return badRequest(new MissingParamError(deepError));
       }
 
-      await this.addPurchaseList.add({
+      const purchaseList = await this.addPurchaseList.add({
         title,
         description,
         products,
         userId,
       });
+
+      return created(purchaseList);
     } catch (error) {
       console.error(error);
       return serverError();
