@@ -1,14 +1,14 @@
-import { MissingParamError } from '@/shared/presentation/errors';
-import { Controller } from '@/shared/presentation/protocols/controller';
-import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
-import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import {
   badRequest,
   created,
   serverError,
 } from '@/shared/presentation/helper/http-responses';
-import { mockDecodeToken } from './create-purchase-list.spec';
+import { MissingParamError } from '@/shared/presentation/errors';
+import { Controller } from '@/shared/presentation/protocols/controller';
+import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
+import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../data/usecases/add-purchase-list';
+import { mockDecodeToken } from './create-purchase-list.spec';
 
 export class CreatePurchaseListController extends Controller {
   constructor(private readonly addPurchaseList: AddPurchaseList) {

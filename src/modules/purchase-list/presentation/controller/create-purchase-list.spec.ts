@@ -262,4 +262,55 @@ describe('CreatePurchaseListController', () => {
     expect(httpResponse.statusCode).toEqual(500);
     expect(httpResponse.body).toEqual(new Error('Internal server error'));
   });
+
+  it('should return 201 if a purchase list is created on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        title: 'any title',
+        description: null,
+        products: [
+          {
+            name: 'Product 1',
+            quantity: 2,
+            unitPrice: null,
+            totalPrice: null,
+          },
+          {
+            name: 'Product 2',
+            quantity: 1,
+            unitPrice: 20,
+            totalPrice: 20,
+          },
+        ],
+      },
+      headers: {
+        authorization: 'Bearer valid_token',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toEqual(201);
+    expect(httpResponse.body).toEqual({
+      id: 'any_id',
+      title: 'valid_title',
+      description: null,
+      products: [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          unitPrice: null,
+          totalPrice: null,
+        },
+        {
+          name: 'Product 2',
+          quantity: 1,
+          unitPrice: 20,
+          totalPrice: 20,
+        },
+      ],
+      userId: 'mocked_user_id',
+      createdAt: new Date('2025-01-01'),
+      updatedAt: null,
+    });
+  });
 });
