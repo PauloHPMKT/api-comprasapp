@@ -151,4 +151,23 @@ describe('AddPurchaseListUseCase', () => {
       userId: 'anyuserid',
     });
   });
+
+  it('should return a purchase list on success', async () => {
+    const { sut } = makeSut();
+    const params = {
+      title: 'anytitle',
+      description: 'anydescription',
+      products: [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          unitPrice: 10,
+          totalPrice: 20,
+        },
+      ],
+      userId: 'anyuserid',
+    };
+    const response = await sut.add(params);
+    expect(response).toEqual(mockPurchaseList);
+  });
 });
