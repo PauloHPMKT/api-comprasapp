@@ -69,7 +69,7 @@ describe('AddPurchaseListUseCase', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('should call a repository with correct values', () => {
+  it('should call a repository with correct values', async () => {
     const { sut } = makeSut();
     const addSpy = jest.spyOn(sut, 'add');
     const params = {
@@ -85,7 +85,7 @@ describe('AddPurchaseListUseCase', () => {
       ],
       userId: 'anyuserid',
     };
-    sut.add(params);
+    await sut.add(params);
     expect(addSpy).toHaveBeenCalledWith(params);
   });
 
