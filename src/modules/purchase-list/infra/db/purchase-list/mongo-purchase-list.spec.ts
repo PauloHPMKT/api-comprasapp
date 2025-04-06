@@ -46,4 +46,26 @@ describe('MongoPurchaseListRepository', () => {
     const isList = await sut.verify('anytitle');
     expect(isList).toBe(true);
   });
+
+  it('should return false if a purchase list does not exist with the same title', async () => {
+    const sut = makeSut();
+    jest.spyOn(sut, 'verify').mockResolvedValueOnce(false);
+    const getCollection = MongoHelper.getCollection('purchase-list');
+    await getCollection.insertOne({
+      id: 'valid_id',
+      title: 'anytitle',
+      description: 'anydescription',
+      products: [
+        {
+          name: 'Product 1',
+          quantity: 2,
+          unitPrice: 10,
+          totalPrice: 20,
+        },
+      ],
+      userId: 'anyuserid',
+    });
+    const isList = await sut.verify('anytitle');
+    expect(isList).toBe(false);
+  });
 });
