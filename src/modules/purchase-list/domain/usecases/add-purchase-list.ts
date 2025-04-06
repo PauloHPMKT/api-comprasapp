@@ -1,3 +1,5 @@
+import { PurchaseListModel } from '../models/create-purchase-list';
+
 export interface AddPurchaseList {
-  add(data: any): Promise<any>;
+  add(data: PurchaseListModel.Params): Promise<PurchaseListModel.Result>;
 }

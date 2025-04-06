@@ -1,3 +1,4 @@
+import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 import { AddPurchaseListRepository } from '../protocols/add-purchase-list-repository';
 
@@ -6,7 +7,7 @@ export class AddPurchaseListUseCase implements AddPurchaseList {
     private readonly addPurchaseListRepository: AddPurchaseListRepository,
   ) {}
 
-  async add(data: any): Promise<any> {
+  async add(data: PurchaseListModel.Params): Promise<PurchaseListModel.Result> {
     await this.addPurchaseListRepository.addList(data);
     return new Promise((resolve) =>
       resolve({

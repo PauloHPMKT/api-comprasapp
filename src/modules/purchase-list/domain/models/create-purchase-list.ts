@@ -12,6 +12,7 @@ export namespace PurchaseListModel {
     title: string;
     description: string | null;
     products: Products.toCreate[];
+    userId: string;
     createdAt: Date;
     updatedAt: Date | null;
   };

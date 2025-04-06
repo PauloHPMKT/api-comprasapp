@@ -1,6 +1,7 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreatePurchaseListController } from './create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
+import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 
 export const mockDecodeToken = (authorization?: string): string | null => {
   if (!authorization.startsWith('Bearer ')) return null;
@@ -14,7 +15,9 @@ export const mockDecodeToken = (authorization?: string): string | null => {
 
 const makeAddPurchaseList = (): AddPurchaseList => {
   class AddPurchaseListStub implements AddPurchaseList {
-    async add(data: any): Promise<any> {
+    async add(
+      data: PurchaseListModel.Params,
+    ): Promise<PurchaseListModel.Result> {
       return new Promise((resolve) =>
         resolve({
           id: 'any_id',
