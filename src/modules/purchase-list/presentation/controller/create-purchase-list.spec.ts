@@ -133,7 +133,7 @@ describe('CreatePurchaseListController', () => {
         authorization: 'Bearer valid_token',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
@@ -180,7 +180,7 @@ describe('CreatePurchaseListController', () => {
         authorization: 'Bearer invalid_token',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('userId'));
   });
@@ -211,7 +211,7 @@ describe('CreatePurchaseListController', () => {
         authorization: 'Bearer valid_token',
       },
     };
-    await sut.handle(httpRequest);
+    await sut.handle(httpRequest as any);
     expect(addPurchaseListSpy).toHaveBeenCalledWith({
       title: 'any title',
       description: null,
@@ -261,7 +261,7 @@ describe('CreatePurchaseListController', () => {
         authorization: 'Bearer valid_token',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(500);
     expect(httpResponse.body).toEqual(new Error('Internal server error'));
   });
@@ -291,7 +291,7 @@ describe('CreatePurchaseListController', () => {
         authorization: 'Bearer valid_token',
       },
     };
-    const httpResponse = await sut.handle(httpRequest);
+    const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(201);
     expect(httpResponse.body).toEqual({
       id: 'any_id',

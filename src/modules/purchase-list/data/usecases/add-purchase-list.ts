@@ -1,3 +1,4 @@
+import { PurchaseList } from '../../domain/entities/PurchaseList';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 import { AddPurchaseListRepository } from '../protocols/add-purchase-list-repository';
@@ -10,13 +11,21 @@ export class AddPurchaseListUseCase implements AddPurchaseList {
   ) {}
 
   async add(data: PurchaseListModel.Params): Promise<PurchaseListModel.Result> {
-    const { title, description, products } = data;
+    const { title, description, products, userId } = data;
     const isListTitle = await this.verifyListRepository.verify(title);
     if (isListTitle) {
       throw new Error('A purchase list with this title already exists');
     }
 
-    await this.addPurchaseListRepository.addList(data);
+    const purchaseList = new PurchaseList({
+      title,
+      description,
+      products,
+      userId,
+    });
+
+    const createList =
+      await this.addPurchaseListRepository.addList(purchaseList);
     return new Promise((resolve) =>
       resolve({
         id: 'valid_id',
