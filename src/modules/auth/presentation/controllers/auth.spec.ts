@@ -100,4 +100,24 @@ describe('AuthController', () => {
     expect(response.statusCode).toBe(500);
     expect(response.body).toEqual(new ServerError());
   });
+
+  it('should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password',
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({
+      user: {
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email',
+      },
+      access_token: 'any_token',
+    });
+  });
 });
