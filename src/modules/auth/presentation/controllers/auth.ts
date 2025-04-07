@@ -4,15 +4,18 @@ import {
   serverError,
 } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
-import { HttpResponse } from '@/shared/presentation/types/http';
+import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { SignIn } from '../../domain/usecases/auth-signin';
+import { AuthSignInModel } from '../../domain/models/auth-signin';
 
 export class AuthController extends Controller {
   constructor(private readonly authSignIn: SignIn) {
     super();
   }
 
-  async handle(httpRequest: any): Promise<HttpResponse> {
+  async handle(
+    httpRequest: HttpRequest<AuthSignInModel.Params>,
+  ): Promise<HttpResponse> {
     try {
       const { email, password } = httpRequest.body;
 

@@ -1,4 +1,4 @@
-import { MissingParamError } from '@/shared/presentation/errors';
+import { MissingParamError, ServerError } from '@/shared/presentation/errors';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
 import { SignIn } from '../../domain/usecases/auth-signin';
 import { AuthController } from './auth';
@@ -52,7 +52,7 @@ describe('AuthController', () => {
         password: 'any_password',
       },
     };
-    const response = await sut.handle(httpRequest);
+    const response = await sut.handle(httpRequest as any);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new MissingParamError('email'));
   });
@@ -64,7 +64,7 @@ describe('AuthController', () => {
         email: 'any_email',
       },
     };
-    const response = await sut.handle(httpRequest);
+    const response = await sut.handle(httpRequest as any);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new MissingParamError('password'));
   });
@@ -83,5 +83,21 @@ describe('AuthController', () => {
       email: 'any_email',
       password: 'any_password',
     });
+  });
+
+  it('should return 500 if AuthSignIn throws', async () => {
+    const { sut, authSignInStub } = makeSut();
+    jest.spyOn(authSignInStub, 'signIn').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password',
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual(new ServerError());
   });
 });
