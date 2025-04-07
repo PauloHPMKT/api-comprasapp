@@ -7,7 +7,14 @@ const makeAuthSignInUseCase = (): SignIn => {
   class AuthSignInStub implements SignIn {
     async signIn(
       data: AuthSignInModel.Params,
-    ): Promise<AuthSignInModel.Result> {
+    ): Promise<AuthSignInModel.Result | null> {
+      if (
+        data.email === 'invalid_email' ||
+        data.password === 'invalid_password'
+      ) {
+        return null;
+      }
+
       return new Promise((resolve) =>
         resolve({
           user: {
@@ -99,6 +106,20 @@ describe('AuthController', () => {
     const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(500);
     expect(response.body).toEqual(new ServerError());
+  });
+
+  it('should return 401 if invalid credentials are provided', async () => {
+    const { sut, authSignInStub } = makeSut();
+    jest.spyOn(authSignInStub, 'signIn').mockResolvedValueOnce(null); // Simula credenciais inválidas
+    const httpRequest = {
+      body: {
+        email: 'invalid_email',
+        password: 'invalid_password',
+      },
+    };
+    const response = await sut.handle(httpRequest);
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual(new Error('Invalid credentials'));
   });
 
   it('should return 200 if valid data is provided', async () => {
