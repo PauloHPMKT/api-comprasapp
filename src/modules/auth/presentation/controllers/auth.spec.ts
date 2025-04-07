@@ -110,7 +110,7 @@ describe('AuthController', () => {
 
   it('should return 401 if invalid credentials are provided', async () => {
     const { sut, authSignInStub } = makeSut();
-    jest.spyOn(authSignInStub, 'signIn').mockResolvedValueOnce(null); // Simula credenciais inválidas
+    jest.spyOn(authSignInStub, 'signIn').mockResolvedValueOnce(null);
     const httpRequest = {
       body: {
         email: 'invalid_email',
