@@ -3,6 +3,7 @@ import {
   badRequest,
   ok,
   serverError,
+  unauthorized,
 } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
@@ -27,8 +28,14 @@ export class AuthController extends Controller {
       }
 
       const signInData = await this.authSignIn.signIn({ email, password });
+
+      if (!signInData) {
+        return unauthorized(new Error('Invalid credentials'));
+      }
+
       return ok(signInData);
     } catch (error) {
+      console.error(error);
       return serverError();
     }
   }
