@@ -4,9 +4,17 @@ import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpResponse } from '@/shared/presentation/types/http';
 
 export class AuthController extends Controller {
+  constructor() {
+    super();
+  }
+
   async handle(httpRequest: any): Promise<HttpResponse> {
-    if (!httpRequest.body.email) {
-      return badRequest(new MissingParamError('email'));
+    const { email, password } = httpRequest.body;
+
+    const requiredFields = ['email', 'password'];
+    const error = this.validateRequiredFields(httpRequest, requiredFields);
+    if (error) {
+      return badRequest(new MissingParamError(error));
     }
   }
 }
