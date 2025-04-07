@@ -1,5 +1,8 @@
 import { MissingParamError } from '@/shared/presentation/errors';
-import { badRequest } from '@/shared/presentation/helper/http-responses';
+import {
+  badRequest,
+  serverError,
+} from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpResponse } from '@/shared/presentation/types/http';
 import { SignIn } from '../../domain/usecases/auth-signin';
@@ -10,14 +13,18 @@ export class AuthController extends Controller {
   }
 
   async handle(httpRequest: any): Promise<HttpResponse> {
-    const { email, password } = httpRequest.body;
+    try {
+      const { email, password } = httpRequest.body;
 
-    const requiredFields = ['email', 'password'];
-    const error = this.validateRequiredFields(httpRequest, requiredFields);
-    if (error) {
-      return badRequest(new MissingParamError(error));
+      const requiredFields = ['email', 'password'];
+      const error = this.validateRequiredFields(httpRequest, requiredFields);
+      if (error) {
+        return badRequest(new MissingParamError(error));
+      }
+
+      await this.authSignIn.signIn({ email, password });
+    } catch (error) {
+      return serverError();
     }
-
-    await this.authSignIn.signIn({ email, password });
   }
 }
