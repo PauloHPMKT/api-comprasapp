@@ -22,7 +22,7 @@ export class App {
   }
 
   initRoutes() {
-    const routes = [this.router.signupRoutes];
+    const routes = [this.router.signupRoutes, this.router.purchaseListRoutes];
     routes.forEach((route) => this.app.use('/api', route));
   }
 

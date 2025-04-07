@@ -3,16 +3,6 @@ import { CreatePurchaseListController } from './create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 
-export const mockDecodeToken = (authorization?: string): string | null => {
-  if (!authorization.startsWith('Bearer ')) return null;
-  const fakeToken = authorization.split(' ')[1];
-
-  if (fakeToken !== 'valid_token') return null;
-
-  // deve retornar o objeto do token decodificado
-  return 'mocked_user_id';
-};
-
 const makeAddPurchaseList = (): AddPurchaseList => {
   class AddPurchaseListStub implements AddPurchaseList {
     async add(
@@ -89,9 +79,6 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
-      headers: {
-        authorization: 'Bearer valid_token',
-      },
     };
     const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(400);
@@ -104,9 +91,6 @@ describe('CreatePurchaseListController', () => {
       body: {
         title: 'any title',
         description: 'any description',
-      },
-      headers: {
-        authorization: 'Bearer valid_token',
       },
     };
     const httpResponse = await sut.handle(httpRequest as any);
@@ -129,9 +113,6 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
-      headers: {
-        authorization: 'Bearer valid_token',
-      },
     };
     const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(400);
@@ -152,37 +133,10 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
-      headers: {
-        authorization: 'Bearer valid_token',
-      },
     };
     const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(400);
     expect(httpResponse.body).toEqual(new MissingParamError('quantity'));
-  });
-
-  it('should return 400 if no userId is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        title: 'any title',
-        description: 'any description',
-        products: [
-          {
-            name: 'Product 1',
-            quantity: 2,
-            unitPrice: null,
-            totalPrice: null,
-          },
-        ],
-      },
-      headers: {
-        authorization: 'Bearer invalid_token',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest as any);
-    expect(httpResponse.statusCode).toEqual(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('userId'));
   });
 
   it('should call AddPurchaseList with correct values', async () => {
@@ -206,9 +160,7 @@ describe('CreatePurchaseListController', () => {
             totalPrice: 20,
           },
         ],
-      },
-      headers: {
-        authorization: 'Bearer valid_token',
+        userId: 'mocked_user_id',
       },
     };
     await sut.handle(httpRequest as any);
@@ -257,9 +209,6 @@ describe('CreatePurchaseListController', () => {
           },
         ],
       },
-      headers: {
-        authorization: 'Bearer valid_token',
-      },
     };
     const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toEqual(500);
@@ -286,9 +235,6 @@ describe('CreatePurchaseListController', () => {
             totalPrice: 20,
           },
         ],
-      },
-      headers: {
-        authorization: 'Bearer valid_token',
       },
     };
     const httpResponse = await sut.handle(httpRequest as any);

@@ -1,0 +1,16 @@
+POST http://localhost:3005/api/purchase-list/add
+Content-Type: application/json
+
+{
+  "title": "anytitle",
+  "description": "anydescription",
+  "products": [
+    {
+      "name": "Product 1",
+      "quantity": 2,
+      "unitPrice": 10,
+      "totalPrice": 20,
+    },
+  ],
+  "userId": "anyuserid"
+}
