@@ -1,15 +1,40 @@
 import { MissingParamError } from '@/shared/presentation/errors';
+import { AuthSignInModel } from '../../domain/models/auth-signin';
+import { SignIn } from '../../domain/usecases/auth-signin';
 import { AuthController } from './auth';
 
+const makeAuthSignInUseCase = (): SignIn => {
+  class AuthSignInStub implements SignIn {
+    async signIn(
+      data: AuthSignInModel.Params,
+    ): Promise<AuthSignInModel.Result> {
+      return new Promise((resolve) =>
+        resolve({
+          user: {
+            id: 'any_id',
+            name: 'any_name',
+            email: 'any_email',
+          },
+          access_token: 'any_token',
+        }),
+      );
+    }
+  }
+  return new AuthSignInStub();
+};
+
 const makeSut = (): SutTypes => {
-  const sut = new AuthController();
+  const authSignInStub = makeAuthSignInUseCase();
+  const sut = new AuthController(authSignInStub);
   return {
     sut,
+    authSignInStub,
   };
 };
 
 type SutTypes = {
   sut: AuthController;
+  authSignInStub: SignIn;
 };
 
 describe('AuthController', () => {
@@ -42,5 +67,21 @@ describe('AuthController', () => {
     const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual(new MissingParamError('password'));
+  });
+
+  it('should call AuthSignIn with correct values', async () => {
+    const { sut, authSignInStub } = makeSut();
+    const signInSpy = jest.spyOn(authSignInStub, 'signIn');
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password',
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(signInSpy).toHaveBeenCalledWith({
+      email: 'any_email',
+      password: 'any_password',
+    });
   });
 });
