@@ -1,6 +1,7 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import {
   badRequest,
+  ok,
   serverError,
 } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
@@ -25,7 +26,8 @@ export class AuthController extends Controller {
         return badRequest(new MissingParamError(error));
       }
 
-      await this.authSignIn.signIn({ email, password });
+      const signInData = await this.authSignIn.signIn({ email, password });
+      return ok(signInData);
     } catch (error) {
       return serverError();
     }
