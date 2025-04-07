@@ -2,9 +2,10 @@ import { MissingParamError } from '@/shared/presentation/errors';
 import { badRequest } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpResponse } from '@/shared/presentation/types/http';
+import { SignIn } from '../../domain/usecases/auth-signin';
 
 export class AuthController extends Controller {
-  constructor() {
+  constructor(private readonly authSignIn: SignIn) {
     super();
   }
 
@@ -16,5 +17,7 @@ export class AuthController extends Controller {
     if (error) {
       return badRequest(new MissingParamError(error));
     }
+
+    await this.authSignIn.signIn({ email, password });
   }
 }
