@@ -9,8 +9,8 @@ Content-Type: application/json
       "name": "Product 1",
       "quantity": 2,
       "unitPrice": 10,
-      "totalPrice": 20,
-    },
+      "totalPrice": 20
+    }
   ],
-  "userId": "anyuserid"
+  "userId": "b8565741f66e14f7606aa551"
 }
