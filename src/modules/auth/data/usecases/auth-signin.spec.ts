@@ -59,13 +59,25 @@ describe('AuthSigninUseCase', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('should return null if credentials are invalid', async () => {
-    const { sut } = makeSut();
-    const params = {
-      email: 'invalid_email@mail.com',
+  it('should return null if user is invalid', async () => {
+    const { sut, findUserByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(findUserByEmailRepositoryStub, 'findByEmail')
+      .mockResolvedValueOnce(null);
+    const user = await sut.signIn({
+      email: 'invalid_email',
       password: 'invalid_password',
-    };
-    const result = await sut.signIn(params);
-    expect(result).toBeNull();
+    });
+    expect(user).toBeNull();
+  });
+
+  it('should return null if password not match', async () => {
+    const { sut, compareHashStub } = makeSut();
+    jest.spyOn(compareHashStub, 'compareHash').mockResolvedValueOnce(false);
+    const user = await sut.signIn({
+      email: 'valid_email@mail.com',
+      password: 'invalid_password',
+    });
+    expect(user).toBeNull();
   });
 });
