@@ -1,5 +1,5 @@
 import { AuthSignInModel } from '../../domain/models/auth-signin';
-import { ValidateUserSignIn } from '../../domain/usecases/auth-signin';
+import { ValidateUserSignIn } from '../../domain/usecases/validate-user';
 import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 

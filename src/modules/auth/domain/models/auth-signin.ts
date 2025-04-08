@@ -7,4 +7,11 @@ export namespace AuthSignInModel {
   }
 
   export type Result = Omit<ReturnType<User['toJSON']>, 'password'>;
+
+  export type SignIn = Result;
+
+  export type SignInResult = {
+    user: Result;
+    access_token: string;
+  };
 }
