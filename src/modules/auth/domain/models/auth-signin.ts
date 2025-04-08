@@ -1,17 +1,10 @@
+import { User } from '@/modules/user/domain/entities/User';
+
 export namespace AuthSignInModel {
   export interface Params {
     email: string;
     password: string;
   }
 
-  export type Result = {
-    user: User;
-    access_token: string;
-  };
-
-  interface User {
-    id: string;
-    name: string;
-    email: string;
-  }
+  export type Result = Omit<ReturnType<User['toJSON']>, 'password'>;
 }
