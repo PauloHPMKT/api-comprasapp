@@ -1,7 +1,31 @@
 import { MissingParamError, ServerError } from '@/shared/presentation/errors';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
-import { ValidateUserSignIn } from '../../domain/usecases/auth-signin';
+import { ValidateUserSignIn } from '../../domain/usecases/validate-user';
 import { AuthController } from './auth';
+import { SignIn } from '../../domain/usecases/signin';
+
+const makeSignIn = (): SignIn => {
+  class SignInUseCaseStub implements SignIn {
+    async login(
+      data: AuthSignInModel.SignIn,
+    ): Promise<AuthSignInModel.SignInResult> {
+      return new Promise((resolve) =>
+        resolve({
+          user: {
+            id: 'valid_id',
+            name: 'valid_username',
+            email: 'valid_email@mail.com',
+            avatar: null,
+            accountId: 'valid_account_id',
+            createdAt: new Date('2025-01-01'),
+          },
+          access_token: 'valid_token',
+        }),
+      );
+    }
+  }
+  return new SignInUseCaseStub();
+};
 
 const makeValidateUser = (): ValidateUserSignIn => {
   class ValidateUser implements ValidateUserSignIn {
@@ -31,17 +55,20 @@ const makeValidateUser = (): ValidateUserSignIn => {
 };
 
 const makeSut = (): SutTypes => {
+  const signInStub = makeSignIn();
   const validateUserStub = makeValidateUser();
-  const sut = new AuthController(validateUserStub);
+  const sut = new AuthController(validateUserStub, signInStub);
   return {
     sut,
-    validateUserStub: validateUserStub,
+    validateUserStub,
+    signInStub,
   };
 };
 
 type SutTypes = {
   sut: AuthController;
   validateUserStub: ValidateUserSignIn;
+  signInStub: SignIn;
 };
 
 describe('AuthController', () => {
@@ -133,6 +160,29 @@ describe('AuthController', () => {
     const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
+      user: {
+        id: 'valid_id',
+        name: 'valid_username',
+        email: 'valid_email@mail.com',
+        avatar: null,
+        accountId: 'valid_account_id',
+        createdAt: new Date('2025-01-01'),
+      },
+      access_token: 'valid_token',
+    });
+  });
+
+  it('should call SignIn with correct values', async () => {
+    const { sut, signInStub } = makeSut();
+    const signInSpy = jest.spyOn(signInStub, 'login');
+    const httpRequest = {
+      body: {
+        email: 'any_email',
+        password: 'any_password',
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(signInSpy).toHaveBeenCalledWith({
       id: 'valid_id',
       name: 'valid_username',
       email: 'valid_email@mail.com',
