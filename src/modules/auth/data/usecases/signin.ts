@@ -17,7 +17,7 @@ export class SignInUseCase implements SignIn {
       createdAt: data.createdAt,
     };
 
-    await this.generateWebtoken.sign(payload);
+    const token = await this.generateWebtoken.sign(payload);
 
     return new Promise((resolve) =>
       resolve({
