@@ -80,4 +80,21 @@ describe('AuthSigninUseCase', () => {
     });
     expect(user).toBeNull();
   });
+
+  it('should return user data if password match', async () => {
+    const { sut } = makeSut();
+    const params = {
+      email: 'valid_email@mail.com',
+      password: 'valid_password',
+    };
+    const result = await sut.signIn(params);
+    expect(result).toEqual({
+      id: 'valid_id',
+      name: 'valid_username',
+      email: 'valid_email@mail.com',
+      avatar: null,
+      accountId: 'valid_account_id',
+      createdAt: new Date('2025-01-01'),
+    });
+  });
 });

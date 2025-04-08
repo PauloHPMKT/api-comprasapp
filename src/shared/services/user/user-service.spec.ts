@@ -3,6 +3,27 @@ import {
   VerifyEmailRepository,
   AddUserRepository,
 } from '@/modules/user/data/protocols';
+import { FindUserByEmailRepository } from './protocols/find-user-by-email';
+import { UserModel } from '@/modules/user/domain/models/user-model';
+
+const makeFindUserByEmailRepository = (): FindUserByEmailRepository => {
+  class FindUserByEmailRepositoryStub implements FindUserByEmailRepository {
+    async findByEmail(email: string): Promise<UserModel.Params | null> {
+      return new Promise((resolve) =>
+        resolve({
+          id: 'any_id',
+          name: 'any_name',
+          email: 'any_email@mail.com',
+          password: 'hashed_password',
+          avatar: null,
+          accountId: 'any_account_id',
+          createdAt: new Date('2025-01-01'),
+        }),
+      );
+    }
+  }
+  return new FindUserByEmailRepositoryStub();
+};
 
 const makeVerifyEmailRepository = (): VerifyEmailRepository => {
   class VerifyEmailRepositoryStub implements VerifyEmailRepository {
@@ -33,13 +54,19 @@ const makeAddUserRepository = (): AddUserRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const findUserByEmailRepositoryStub = makeFindUserByEmailRepository();
   const verifyEmailRepositoryStub = makeVerifyEmailRepository();
   const addUserRepositoryStub = makeAddUserRepository();
-  const sut = new UserService(verifyEmailRepositoryStub, addUserRepositoryStub);
+  const sut = new UserService(
+    verifyEmailRepositoryStub,
+    addUserRepositoryStub,
+    findUserByEmailRepositoryStub,
+  );
   return {
     sut,
     verifyEmailRepositoryStub,
     addUserRepositoryStub,
+    findUserByEmailRepositoryStub,
   };
 };
 
@@ -47,6 +74,7 @@ type SutTypes = {
   sut: UserService;
   verifyEmailRepositoryStub: VerifyEmailRepository;
   addUserRepositoryStub: AddUserRepository;
+  findUserByEmailRepositoryStub: FindUserByEmailRepository;
 };
 
 describe('UserService', () => {
@@ -79,5 +107,25 @@ describe('UserService', () => {
     };
     await sut.addUser(userData);
     expect(createUserSpy).toHaveBeenCalledWith(userData);
+  });
+
+  it('should return a valid user if findUserByEmailRepository returns a user', async () => {
+    const { sut, findUserByEmailRepositoryStub } = makeSut();
+    const findUserSpy = jest.spyOn(
+      findUserByEmailRepositoryStub,
+      'findByEmail',
+    );
+    const fakeEmail = 'any_email@mail.com';
+    const user = await sut.findByEmail(fakeEmail);
+    expect(findUserSpy).toHaveBeenCalledWith(fakeEmail);
+    expect(user).toEqual({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'hashed_password',
+      avatar: null,
+      accountId: 'any_account_id',
+      createdAt: new Date('2025-01-01'),
+    });
   });
 });

@@ -17,12 +17,12 @@ const makeAuthSignInUseCase = (): SignIn => {
 
       return new Promise((resolve) =>
         resolve({
-          user: {
-            id: 'any_id',
-            name: 'any_name',
-            email: 'any_email',
-          },
-          access_token: 'any_token',
+          id: 'valid_id',
+          name: 'valid_username',
+          email: 'valid_email@mail.com',
+          avatar: null,
+          accountId: 'valid_account_id',
+          createdAt: new Date('2025-01-01'),
         }),
       );
     }
@@ -133,12 +133,12 @@ describe('AuthController', () => {
     const response = await sut.handle(httpRequest);
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({
-      user: {
-        id: 'any_id',
-        name: 'any_name',
-        email: 'any_email',
-      },
-      access_token: 'any_token',
+      id: 'valid_id',
+      name: 'valid_username',
+      email: 'valid_email@mail.com',
+      avatar: null,
+      accountId: 'valid_account_id',
+      createdAt: new Date('2025-01-01'),
     });
   });
 });
