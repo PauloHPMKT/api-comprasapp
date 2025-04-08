@@ -1,5 +1,5 @@
 import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
-import { ValidateUserUseCase } from './auth-signin';
+import { ValidateUserUseCase } from './validate-user';
 import { UserModel } from '@/modules/user/domain/models/user-model';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 
