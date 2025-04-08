@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { GenerateToken } from '../../data/protocols/generate-token';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
-import { UserPayload } from '../../domain/types/user-payload';
+import { UserPayload } from '../../data/types/user-payload';
 
 export class JwtGenerateToken implements GenerateToken {
   sign(payload: AuthSignInModel.SignIn): string {
