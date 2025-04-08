@@ -23,16 +23,16 @@ export class AuthSigninUseCase implements SignIn {
       if (comparePassword) {
         user.password = undefined;
 
-        return new Promise((resolve) =>
-          resolve({
-            id: 'valid_id',
-            name: 'valid_username',
-            email: 'valid_email@mail.com',
-            avatar: null,
-            accountId: 'valid_account_id',
-            createdAt: new Date('2025-01-01'),
-          }),
-        );
+        const validUser = {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          accountId: user.accountId,
+          createdAt: user.createdAt,
+        };
+
+        return validUser;
       }
     }
     return null;

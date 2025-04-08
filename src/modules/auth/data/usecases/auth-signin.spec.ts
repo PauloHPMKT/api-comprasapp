@@ -89,11 +89,11 @@ describe('AuthSigninUseCase', () => {
     };
     const result = await sut.signIn(params);
     expect(result).toEqual({
-      id: 'valid_id',
-      name: 'valid_username',
-      email: 'valid_email@mail.com',
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email@mail.com',
       avatar: null,
-      accountId: 'valid_account_id',
+      accountId: 'any_account_id',
       createdAt: new Date('2025-01-01'),
     });
   });
