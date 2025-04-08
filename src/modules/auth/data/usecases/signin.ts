@@ -17,13 +17,11 @@ export class SignInUseCase implements SignIn {
       createdAt: data.createdAt,
     };
 
-    const token = await this.generateWebtoken.sign(payload);
+    const token = this.generateWebtoken.sign(payload);
 
-    return new Promise((resolve) =>
-      resolve({
-        user: payload,
-        access_token: 'valid_token',
-      }),
-    );
+    return {
+      user: payload,
+      access_token: token,
+    };
   }
 }

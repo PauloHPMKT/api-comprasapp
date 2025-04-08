@@ -1,3 +1,3 @@
 export interface GenerateToken {
-  sign(payload: any): Promise<string>;
+  sign(payload: any): string;
 }
