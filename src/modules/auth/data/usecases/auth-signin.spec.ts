@@ -43,20 +43,13 @@ describe('AuthSigninUseCase', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('should throw if user is not found', async () => {
-    const { sut, findUserByEmailRepositoryStub } = makeSut();
-    jest
-      .spyOn(findUserByEmailRepositoryStub, 'findByEmail')
-      .mockImplementationOnce(() => {
-        throw new Error('User not found with this email');
-      });
+  it('should return null if credentials are invalid', async () => {
+    const { sut } = makeSut();
     const params = {
       email: 'invalid_email@mail.com',
-      password: 'any_password',
+      password: 'invalid_password',
     };
-    const promise = sut.signIn(params);
-    await expect(promise).rejects.toThrow(
-      new Error('User not found with this email'),
-    );
+    const result = await sut.signIn(params);
+    expect(result).toBeNull();
   });
 });
