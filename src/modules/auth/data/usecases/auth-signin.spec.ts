@@ -1,6 +1,16 @@
 import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
 import { AuthSigninUseCase } from './auth-signin';
 import { UserModel } from '@/modules/user/domain/models/user-model';
+import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
+
+const makeCompareHash = (): CompareCrypto => {
+  class CompareHashStub implements CompareCrypto {
+    async compareHash(value: string, hash: string): Promise<boolean> {
+      return new Promise((resolve) => resolve(true));
+    }
+  }
+  return new CompareHashStub();
+};
 
 const makeFindUserByEmail = (): FindUserByEmailRepository => {
   class FindUserByEmailStub implements FindUserByEmailRepository {
@@ -22,17 +32,23 @@ const makeFindUserByEmail = (): FindUserByEmailRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const compareHashStub = makeCompareHash();
   const findUserByEmailRepositoryStub = makeFindUserByEmail();
-  const sut = new AuthSigninUseCase(findUserByEmailRepositoryStub);
+  const sut = new AuthSigninUseCase(
+    findUserByEmailRepositoryStub,
+    compareHashStub,
+  );
   return {
     sut,
     findUserByEmailRepositoryStub,
+    compareHashStub,
   };
 };
 
 type SutTypes = {
   sut: AuthSigninUseCase;
   findUserByEmailRepositoryStub: FindUserByEmailRepository;
+  compareHashStub: CompareCrypto;
 };
 
 describe('AuthSigninUseCase', () => {
