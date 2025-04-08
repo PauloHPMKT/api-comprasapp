@@ -10,8 +10,8 @@ export class AuthSigninUseCase implements SignIn {
   async signIn(data: AuthSignInModel.Params): Promise<AuthSignInModel.Result> {
     const { email, password } = data;
     const user = await this.findUserByEmailRepository.findByEmail(email);
-    if (!user) {
-      throw new Error('User not found with this email');
+    if (!user || user.password !== password) {
+      return null;
     }
 
     return new Promise((resolve) =>
