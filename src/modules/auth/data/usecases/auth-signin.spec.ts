@@ -1,5 +1,5 @@
 import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
-import { AuthSigninUseCase } from './auth-signin';
+import { ValidateUserUseCase } from './auth-signin';
 import { UserModel } from '@/modules/user/domain/models/user-model';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 
@@ -34,7 +34,7 @@ const makeFindUserByEmail = (): FindUserByEmailRepository => {
 const makeSut = (): SutTypes => {
   const compareHashStub = makeCompareHash();
   const findUserByEmailRepositoryStub = makeFindUserByEmail();
-  const sut = new AuthSigninUseCase(
+  const sut = new ValidateUserUseCase(
     findUserByEmailRepositoryStub,
     compareHashStub,
   );
@@ -46,7 +46,7 @@ const makeSut = (): SutTypes => {
 };
 
 type SutTypes = {
-  sut: AuthSigninUseCase;
+  sut: ValidateUserUseCase;
   findUserByEmailRepositoryStub: FindUserByEmailRepository;
   compareHashStub: CompareCrypto;
 };
@@ -55,7 +55,7 @@ describe('AuthSigninUseCase', () => {
   it('should be defined', () => {
     const { sut } = makeSut();
     expect(sut).toBeDefined();
-    expect(sut).toBeInstanceOf(AuthSigninUseCase);
+    expect(sut).toBeInstanceOf(ValidateUserUseCase);
     expect(sut).toBeTruthy();
   });
 
@@ -64,7 +64,7 @@ describe('AuthSigninUseCase', () => {
     jest
       .spyOn(findUserByEmailRepositoryStub, 'findByEmail')
       .mockResolvedValueOnce(null);
-    const user = await sut.signIn({
+    const user = await sut.validate({
       email: 'invalid_email',
       password: 'invalid_password',
     });
@@ -74,7 +74,7 @@ describe('AuthSigninUseCase', () => {
   it('should return null if password not match', async () => {
     const { sut, compareHashStub } = makeSut();
     jest.spyOn(compareHashStub, 'compareHash').mockResolvedValueOnce(false);
-    const user = await sut.signIn({
+    const user = await sut.validate({
       email: 'valid_email@mail.com',
       password: 'invalid_password',
     });
@@ -87,7 +87,7 @@ describe('AuthSigninUseCase', () => {
       email: 'valid_email@mail.com',
       password: 'valid_password',
     };
-    const result = await sut.signIn(params);
+    const result = await sut.validate(params);
     expect(result).toEqual({
       id: 'any_id',
       name: 'any_name',

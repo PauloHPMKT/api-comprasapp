@@ -1,15 +1,15 @@
 import { AuthSignInModel } from '../../domain/models/auth-signin';
-import { SignIn } from '../../domain/usecases/auth-signin';
+import { ValidateUserSignIn } from '../../domain/usecases/auth-signin';
 import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 
-export class AuthSigninUseCase implements SignIn {
+export class ValidateUserUseCase implements ValidateUserSignIn {
   constructor(
     private readonly findUserByEmailRepository: FindUserByEmailRepository,
     private readonly encrypter: CompareCrypto,
   ) {}
 
-  async signIn(
+  async validate(
     data: AuthSignInModel.Params,
   ): Promise<AuthSignInModel.Result | null> {
     const { email, password } = data;
@@ -21,8 +21,6 @@ export class AuthSigninUseCase implements SignIn {
       );
 
       if (comparePassword) {
-        user.password = undefined;
-
         const validUser = {
           id: user.id,
           name: user.name,

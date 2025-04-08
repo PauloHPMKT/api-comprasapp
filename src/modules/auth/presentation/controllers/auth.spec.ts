@@ -1,11 +1,11 @@
 import { MissingParamError, ServerError } from '@/shared/presentation/errors';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
-import { SignIn } from '../../domain/usecases/auth-signin';
+import { ValidateUserSignIn } from '../../domain/usecases/auth-signin';
 import { AuthController } from './auth';
 
-const makeAuthSignInUseCase = (): SignIn => {
-  class AuthSignInStub implements SignIn {
-    async signIn(
+const makeValidateUser = (): ValidateUserSignIn => {
+  class ValidateUser implements ValidateUserSignIn {
+    async validate(
       data: AuthSignInModel.Params,
     ): Promise<AuthSignInModel.Result | null> {
       if (
@@ -27,21 +27,21 @@ const makeAuthSignInUseCase = (): SignIn => {
       );
     }
   }
-  return new AuthSignInStub();
+  return new ValidateUser();
 };
 
 const makeSut = (): SutTypes => {
-  const authSignInStub = makeAuthSignInUseCase();
-  const sut = new AuthController(authSignInStub);
+  const validateUserStub = makeValidateUser();
+  const sut = new AuthController(validateUserStub);
   return {
     sut,
-    authSignInStub,
+    validateUserStub: validateUserStub,
   };
 };
 
 type SutTypes = {
   sut: AuthController;
-  authSignInStub: SignIn;
+  validateUserStub: ValidateUserSignIn;
 };
 
 describe('AuthController', () => {
@@ -77,8 +77,8 @@ describe('AuthController', () => {
   });
 
   it('should call AuthSignIn with correct values', async () => {
-    const { sut, authSignInStub } = makeSut();
-    const signInSpy = jest.spyOn(authSignInStub, 'signIn');
+    const { sut, validateUserStub } = makeSut();
+    const signInSpy = jest.spyOn(validateUserStub, 'validate');
     const httpRequest = {
       body: {
         email: 'any_email',
@@ -93,8 +93,8 @@ describe('AuthController', () => {
   });
 
   it('should return 500 if AuthSignIn throws', async () => {
-    const { sut, authSignInStub } = makeSut();
-    jest.spyOn(authSignInStub, 'signIn').mockImplementationOnce(() => {
+    const { sut, validateUserStub } = makeSut();
+    jest.spyOn(validateUserStub, 'validate').mockImplementationOnce(() => {
       throw new Error();
     });
     const httpRequest = {
@@ -109,8 +109,8 @@ describe('AuthController', () => {
   });
 
   it('should return 401 if invalid credentials are provided', async () => {
-    const { sut, authSignInStub } = makeSut();
-    jest.spyOn(authSignInStub, 'signIn').mockResolvedValueOnce(null);
+    const { sut, validateUserStub } = makeSut();
+    jest.spyOn(validateUserStub, 'validate').mockResolvedValueOnce(null);
     const httpRequest = {
       body: {
         email: 'invalid_email',

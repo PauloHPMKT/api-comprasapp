@@ -7,11 +7,11 @@ import {
 } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
-import { SignIn } from '../../domain/usecases/auth-signin';
+import { ValidateUserSignIn } from '../../domain/usecases/auth-signin';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
 
 export class AuthController extends Controller {
-  constructor(private readonly authSignIn: SignIn) {
+  constructor(private readonly validateUser: ValidateUserSignIn) {
     super();
   }
 
@@ -27,7 +27,7 @@ export class AuthController extends Controller {
         return badRequest(new MissingParamError(error));
       }
 
-      const signInData = await this.authSignIn.signIn({ email, password });
+      const signInData = await this.validateUser.validate({ email, password });
 
       if (!signInData) {
         return unauthorized(new Error('Invalid credentials'));
