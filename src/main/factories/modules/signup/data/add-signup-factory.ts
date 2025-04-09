@@ -4,6 +4,7 @@ import { BcryptAdapter } from '@/modules/signup/infra/cryptography/bcrypt-adapte
 import { MongoUserRepository } from '@/modules/user/infra/db/mongo/mongo-user-repository';
 import { AccountService } from '@/shared/services/account/account-service';
 import { UserService } from '@/shared/services/user/user-service';
+import { makeUserServiceFactory } from '../../services/user/user-service-factory';
 
 const makeBcryptAdapterFactory = (): BcryptAdapter => {
   const salt = 12;
@@ -11,10 +12,7 @@ const makeBcryptAdapterFactory = (): BcryptAdapter => {
 };
 
 const makeUserServicesFactory = () => {
-  const userRepository = new MongoUserRepository();
-  const verifyEmailRepository = userRepository;
-  const addUserRepository = userRepository;
-  const userService = new UserService(verifyEmailRepository, addUserRepository);
+  const userService = makeUserServiceFactory();
 
   return {
     verifyEmailService: userService,

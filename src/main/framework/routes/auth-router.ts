@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { expressAdapter } from '../adapters/express-adapter';
-import { makeAuthControllerFactory } from '@/main/factories/modules/signup/presentation/auth-factory';
+import { makeAuthControllerFactory } from '@/main/factories/modules/auth/presentation/auth-factory';
 
 export class AuthRouter {
   private router: Router;

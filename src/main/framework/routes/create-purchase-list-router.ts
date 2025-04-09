@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { expressAdapter } from '../adapters/express-adapter';
-import { makeCreatePurchaseListController } from '@/main/factories/modules/signup/presentation/create-purchase-list';
+import { makeCreatePurchaseListController } from '@/main/factories/modules/purchase-list/presentation/create-purchase-list';
 
 export class PurchaseListRoutes {
   private router: Router;
