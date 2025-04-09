@@ -26,6 +26,7 @@ export class AddPurchaseListUseCase implements AddPurchaseList {
 
     const createList =
       await this.addPurchaseListRepository.addList(purchaseList);
+
     return createList;
   }
 }

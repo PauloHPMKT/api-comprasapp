@@ -8,9 +8,8 @@ import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
-import { mockDecodeToken } from './create-purchase-list.spec';
 
-export class CreatePurchaseListController extends Controller {
+export class CreatePurchaseListController extends Controller<PurchaseListModel.Params> {
   constructor(private readonly addPurchaseList: AddPurchaseList) {
     super();
   }
@@ -19,12 +18,7 @@ export class CreatePurchaseListController extends Controller {
     httpRequest: HttpRequest<PurchaseListModel.Params>,
   ): Promise<HttpResponse> {
     try {
-      const { title, description = null, products } = httpRequest.body;
-      const authorization = httpRequest.headers?.authorization;
-      const userId = mockDecodeToken(authorization);
-      if (!userId) {
-        return badRequest(new MissingParamError('userId'));
-      }
+      const { title, description = null, products, userId } = httpRequest.body;
 
       const requiredFields = ['title', 'products'];
       const error = this.validateRequiredFields(httpRequest, requiredFields);

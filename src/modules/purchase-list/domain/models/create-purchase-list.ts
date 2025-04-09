@@ -5,7 +5,7 @@ export namespace PurchaseListModel {
     title: string;
     description?: string | null;
     products: Products.toCreate[];
-    userId: string;
+    userId?: string;
   }
 
   export type Result = {

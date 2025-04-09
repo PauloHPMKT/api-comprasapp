@@ -1,20 +1,34 @@
 import {
   VerifyEmailRepository,
   AddUserRepository,
+  FindUserByEmailRepository,
 } from '@/modules/user/data/protocols';
-import { VerifyEmailService, AddUserService } from './protocols';
+import {
+  VerifyEmailService,
+  AddUserService,
+  FindUserByEmailService,
+} from './protocols';
+import { UserModel } from '@/modules/user/domain/models/user-model';
+import { SignupModel } from '@/modules/signup/domain/models/add-signup';
 
-export class UserService implements VerifyEmailService, AddUserService {
+export class UserService
+  implements VerifyEmailService, AddUserService, FindUserByEmailService
+{
   constructor(
     private readonly verifyEmailRepository: VerifyEmailRepository,
     private readonly addUserRepository: AddUserRepository,
+    private readonly findUserByEmailRepository: FindUserByEmailRepository,
   ) {}
 
   async verifyEmail(email: string): Promise<boolean> {
     return this.verifyEmailRepository.verify(email);
   }
 
-  async addUser(user: any): Promise<any> {
+  async addUser(user: UserModel.Params): Promise<UserModel.Params> {
     return this.addUserRepository.create(user);
+  }
+
+  async findByEmail(email: string): Promise<UserModel.Params | null> {
+    return this.findUserByEmailRepository.findByEmail(email);
   }
 }

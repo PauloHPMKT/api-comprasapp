@@ -5,6 +5,9 @@ jest.mock('bcrypt', () => ({
   async hash(): Promise<string> {
     return new Promise((resolve) => resolve('hash'));
   },
+  async compare(): Promise<boolean> {
+    return new Promise((resolve) => resolve(true));
+  },
 }));
 
 const salt = 12;
@@ -34,5 +37,27 @@ describe('Bcrypt', () => {
       .mockImplementationOnce(() => Promise.reject(new Error()));
     const promise = sut.encrypt('any_value');
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should return true on compare method success', async () => {
+    const sut = makeSut();
+    const compareSpy = jest.spyOn(bcrypt, 'compare');
+    await sut.compareHash('any_value', 'hash');
+    expect(compareSpy).toHaveBeenCalledWith('any_value', 'hash');
+  });
+
+  it('should return false if compare method fails', async () => {
+    const sut = makeSut();
+    jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementationOnce(() => Promise.resolve(false));
+    const isValid = await sut.compareHash('any_value', 'hash');
+    expect(isValid).toBe(false);
+  });
+
+  it('Should return true on success', async () => {
+    const sut = makeSut();
+    const isValid = await sut.compareHash('any_value', 'hash');
+    expect(isValid).toBe(true);
   });
 });

@@ -57,25 +57,3 @@ export namespace Products {
     totalPrice?: number | null;
   };
 }
-
-const purchaseList = new PurchaseList({
-  title: 'List title',
-  description: 'any description',
-  products: [
-    {
-      name: 'Product 1',
-      quantity: 2,
-      unitPrice: null,
-      totalPrice: null,
-    },
-    {
-      name: 'Product 2',
-      quantity: 1,
-      unitPrice: 20,
-      totalPrice: 20,
-    },
-  ],
-  userId: 'anyuserid',
-});
-
-console.log(purchaseList.toJSON());

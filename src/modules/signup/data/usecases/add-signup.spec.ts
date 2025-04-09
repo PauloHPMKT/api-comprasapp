@@ -1,6 +1,5 @@
 import { AddSignupUseCase } from './add-signup';
 import { Encrypter } from '../protocols/encrypter';
-import { Account } from '@/modules/account/domain/entities/Acount';
 import { UserModel } from '@/modules/user/domain/models/user-model';
 import { AddAccountModel } from '@/modules/account/domain/models/add-account-model';
 import {
