@@ -1,7 +1,6 @@
+import { ObjectId } from 'mongodb';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { MongoAccountRepository } from './mongo-account-repository';
-import { Account } from '@/modules/account/domain/entities/Acount';
-import { ObjectId } from 'mongodb';
 import { AddAccountModel } from '@/modules/account/domain/models/add-account-model';
 
 const makeSut = (): MongoAccountRepository => {

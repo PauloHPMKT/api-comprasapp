@@ -9,6 +9,7 @@ import {
   FindUserByEmailService,
 } from './protocols';
 import { UserModel } from '@/modules/user/domain/models/user-model';
+import { SignupModel } from '@/modules/signup/domain/models/add-signup';
 
 export class UserService
   implements VerifyEmailService, AddUserService, FindUserByEmailService
@@ -23,7 +24,7 @@ export class UserService
     return this.verifyEmailRepository.verify(email);
   }
 
-  async addUser(user: any): Promise<any> {
+  async addUser(user: UserModel.Params): Promise<UserModel.Params> {
     return this.addUserRepository.create(user);
   }
 

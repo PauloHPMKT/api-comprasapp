@@ -1,6 +1,6 @@
+import { ObjectId } from 'mongodb';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { MongoPurchaseListRepository } from './mongo-purchase-list';
-import { ObjectId } from 'mongodb';
 
 const makeSut = (): MongoPurchaseListRepository => {
   return new MongoPurchaseListRepository();

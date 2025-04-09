@@ -36,7 +36,7 @@ const makeVerifyEmailRepository = (): VerifyEmailRepository => {
 
 const makeAddUserRepository = (): AddUserRepository => {
   class AddUserRepositoryStub implements AddUserRepository {
-    async create(user: any): Promise<any> {
+    async create(user: UserModel.Params): Promise<UserModel.Params> {
       return new Promise((resolve) =>
         resolve({
           id: 'valid_id',
@@ -98,6 +98,7 @@ describe('UserService', () => {
     const { sut, addUserRepositoryStub } = makeSut();
     const createUserSpy = jest.spyOn(addUserRepositoryStub, 'create');
     const userData = {
+      id: 'valid_id',
       name: 'valid_name',
       email: 'valid_email@mail.com',
       password: 'valid_password',

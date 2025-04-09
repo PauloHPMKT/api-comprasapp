@@ -9,7 +9,7 @@ import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 
-export class CreatePurchaseListController extends Controller {
+export class CreatePurchaseListController extends Controller<PurchaseListModel.Params> {
   constructor(private readonly addPurchaseList: AddPurchaseList) {
     super();
   }

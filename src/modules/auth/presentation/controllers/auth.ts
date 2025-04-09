@@ -11,7 +11,7 @@ import { ValidateUserSignIn } from '../../domain/usecases/validate-user';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
 import { SignIn } from '../../domain/usecases/signin';
 
-export class AuthController extends Controller {
+export class AuthController extends Controller<AuthSignInModel.Params> {
   constructor(
     private readonly validateUser: ValidateUserSignIn,
     private readonly signIn: SignIn,
