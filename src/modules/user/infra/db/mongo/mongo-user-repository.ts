@@ -4,9 +4,10 @@ import {
   VerifyEmailRepository,
   AddUserRepository,
 } from '../../../data/protocols';
+import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
 
 export class MongoUserRepository
-  implements VerifyEmailRepository, AddUserRepository
+  implements VerifyEmailRepository, AddUserRepository, FindUserByEmailRepository
 {
   async verify(email: string): Promise<boolean> {
     const userCollection = MongoHelper.getCollection('users');
@@ -27,6 +28,12 @@ export class MongoUserRepository
     });
 
     const user = await userCollection.findOne({ _id: insertedId });
+    return MongoHelper.map(user);
+  }
+
+  async findByEmail(email: string): Promise<UserModel.Params | null> {
+    const userCollection = MongoHelper.getCollection('users');
+    const user = await userCollection.findOne({ email });
     return MongoHelper.map(user);
   }
 }
