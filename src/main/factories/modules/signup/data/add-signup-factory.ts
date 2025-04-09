@@ -1,9 +1,7 @@
 import { MongoAccountRepository } from '@/modules/account/infra/db/mongo/mongo-account-repository';
 import { AddSignupUseCase } from '@/modules/signup/data/usecases/add-signup';
 import { BcryptAdapter } from '@/modules/signup/infra/cryptography/bcrypt-adapter';
-import { MongoUserRepository } from '@/modules/user/infra/db/mongo/mongo-user-repository';
 import { AccountService } from '@/shared/services/account/account-service';
-import { UserService } from '@/shared/services/user/user-service';
 import { makeUserServiceFactory } from '../../services/user/user-service-factory';
 
 const makeBcryptAdapterFactory = (): BcryptAdapter => {

@@ -1,11 +1,11 @@
 import { AuthSignInModel } from '../../domain/models/auth-signin';
 import { ValidateUserSignIn } from '../../domain/usecases/validate-user';
-import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
+import { FindUserByEmailService } from '@/shared/services/user/protocols';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 
 export class ValidateUserUseCase implements ValidateUserSignIn {
   constructor(
-    private readonly findUserByEmailRepository: FindUserByEmailRepository,
+    private readonly findUserByEmailRepository: FindUserByEmailService,
     private readonly encrypter: CompareCrypto,
   ) {}
 

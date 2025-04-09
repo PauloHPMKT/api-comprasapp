@@ -1,4 +1,4 @@
-import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
+import { FindUserByEmailService } from '@/shared/services/user/protocols';
 import { ValidateUserUseCase } from './validate-user';
 import { UserModel } from '@/modules/user/domain/models/user-model';
 import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
@@ -12,8 +12,8 @@ const makeCompareHash = (): CompareCrypto => {
   return new CompareHashStub();
 };
 
-const makeFindUserByEmail = (): FindUserByEmailRepository => {
-  class FindUserByEmailStub implements FindUserByEmailRepository {
+const makeFindUserByEmail = (): FindUserByEmailService => {
+  class FindUserByEmailStub implements FindUserByEmailService {
     async findByEmail(email: string): Promise<UserModel.Params> {
       return new Promise((resolve) =>
         resolve({
@@ -47,7 +47,7 @@ const makeSut = (): SutTypes => {
 
 type SutTypes = {
   sut: ValidateUserUseCase;
-  findUserByEmailRepositoryStub: FindUserByEmailRepository;
+  findUserByEmailRepositoryStub: FindUserByEmailService;
   compareHashStub: CompareCrypto;
 };
 

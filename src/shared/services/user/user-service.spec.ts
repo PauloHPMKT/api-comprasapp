@@ -3,11 +3,11 @@ import {
   VerifyEmailRepository,
   AddUserRepository,
 } from '@/modules/user/data/protocols';
-import { FindUserByEmailRepository } from './protocols/find-user-by-email';
+import { FindUserByEmailService } from './protocols';
 import { UserModel } from '@/modules/user/domain/models/user-model';
 
-const makeFindUserByEmailRepository = (): FindUserByEmailRepository => {
-  class FindUserByEmailRepositoryStub implements FindUserByEmailRepository {
+const makeFindUserByEmailRepository = (): FindUserByEmailService => {
+  class FindUserByEmailRepositoryStub implements FindUserByEmailService {
     async findByEmail(email: string): Promise<UserModel.Params | null> {
       return new Promise((resolve) =>
         resolve({
@@ -74,7 +74,7 @@ type SutTypes = {
   sut: UserService;
   verifyEmailRepositoryStub: VerifyEmailRepository;
   addUserRepositoryStub: AddUserRepository;
-  findUserByEmailRepositoryStub: FindUserByEmailRepository;
+  findUserByEmailRepositoryStub: FindUserByEmailService;
 };
 
 describe('UserService', () => {

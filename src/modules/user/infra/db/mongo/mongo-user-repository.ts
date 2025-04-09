@@ -3,8 +3,8 @@ import { UserModel } from '../../../domain/models/user-model';
 import {
   VerifyEmailRepository,
   AddUserRepository,
+  FindUserByEmailRepository,
 } from '../../../data/protocols';
-import { FindUserByEmailRepository } from '@/shared/services/user/protocols/find-user-by-email';
 
 export class MongoUserRepository
   implements VerifyEmailRepository, AddUserRepository, FindUserByEmailRepository

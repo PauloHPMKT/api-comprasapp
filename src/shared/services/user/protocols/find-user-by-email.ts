@@ -1,5 +1,5 @@
 import { UserModel } from '@/modules/user/domain/models/user-model';
 
-export interface FindUserByEmailRepository {
+export interface FindUserByEmailService {
   findByEmail(email: string): Promise<UserModel.Params>;
 }

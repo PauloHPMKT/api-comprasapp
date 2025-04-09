@@ -1,13 +1,17 @@
 import {
   VerifyEmailRepository,
   AddUserRepository,
+  FindUserByEmailRepository,
 } from '@/modules/user/data/protocols';
-import { VerifyEmailService, AddUserService } from './protocols';
+import {
+  VerifyEmailService,
+  AddUserService,
+  FindUserByEmailService,
+} from './protocols';
 import { UserModel } from '@/modules/user/domain/models/user-model';
-import { FindUserByEmailRepository } from './protocols/find-user-by-email';
 
 export class UserService
-  implements VerifyEmailService, AddUserService, FindUserByEmailRepository
+  implements VerifyEmailService, AddUserService, FindUserByEmailService
 {
   constructor(
     private readonly verifyEmailRepository: VerifyEmailRepository,
