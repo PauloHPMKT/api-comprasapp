@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import request from 'supertest';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { App } from '../app';
@@ -18,26 +19,33 @@ describe('CreatePurchaseListRouter', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('purchase-list');
-    await accountCollection.deleteMany({});
+    const collection = MongoHelper.getCollection('purchase-list');
+    await collection.deleteMany({});
   });
 
-  it('Should return a purchase-list on success', async () => {
-    const { app } = makeSut();
-    await request(app)
-      .post('/api/purchase-list/add')
-      .send({
-        title: 'anytitle',
-        description: 'anydescription',
-        products: [
-          {
-            name: `Product ${Math.round(Math.random() * 100)}`,
-            quantity: 2,
-            unitPrice: 10,
-            totalPrice: 20,
-          },
-        ],
-      })
-      .expect(201);
+  describe('CreatePurchaseListRouter', () => {
+    it('Should return a purchase-list on success', async () => {
+      const { app } = makeSut();
+      jest.spyOn(jwt, 'verify').mockReturnValue({
+        sub: '653ad17f9f76a71b9dc2bfe2',
+      } as any);
+
+      await request(app)
+        .post('/api/purchase-list/add')
+        .set('Authorization', 'Bearer fake_token')
+        .send({
+          title: `Product ${Math.round(Math.random() * 100)}`,
+          description: 'Compra da semana',
+          products: [
+            {
+              name: 'Banana',
+              quantity: 3,
+              unitPrice: 2,
+              totalPrice: 6,
+            },
+          ],
+        })
+        .expect(201);
+    });
   });
 });

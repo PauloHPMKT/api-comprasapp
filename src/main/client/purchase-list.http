@@ -5,7 +5,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "title3",
+  "title": "title5",
   "description": "anydescription",
   "products": [
     {
