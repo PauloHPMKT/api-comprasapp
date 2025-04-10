@@ -1,8 +1,11 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDViYjE1OGRiZmQ4MzBjMWI2NzEwY2QiLCJuYW1lIjoiUGV0ZXIiLCJlbWFpbCI6InBldGVyY2V0ZXJhQG1haWwuY29tIiwiYXZhdGFyIjpudWxsLCJhY2NvdW50SWQiOiJhNDBjZWM1ODQ0ZTY0ZmE2MWIzOTAzMmYiLCJjcmVhdGVkQXQiOiIyMDI1LTAzLTMwVDE2OjUxOjIwLjUzOVoiLCJpYXQiOjE3NDQyNDQ3NDEsImV4cCI6MTc0NDMzMTE0MX0.DJJFGWMJPcm1FrhIEVYu0HGxNjH3WhwXMSghjqmzwLQ
+
 POST http://localhost:3005/api/purchase-list/add
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "title": "anytitle",
+  "title": "title3",
   "description": "anydescription",
   "products": [
     {
@@ -11,6 +14,5 @@ Content-Type: application/json
       "unitPrice": 10,
       "totalPrice": 20
     }
-  ],
-  "userId": "b8565741f66e14f7606aa551"
+  ]
 }
