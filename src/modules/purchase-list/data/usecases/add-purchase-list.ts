@@ -12,7 +12,7 @@ export class AddPurchaseListUseCase implements AddPurchaseList {
 
   async add(data: PurchaseListModel.Params): Promise<PurchaseListModel.Result> {
     const { title, description, products, userId } = data;
-    const isListTitle = await this.verifyListRepository.verify(title);
+    const isListTitle = await this.verifyListRepository.verify(title, userId);
     if (isListTitle) {
       throw new Error('A purchase list with this title already exists');
     }

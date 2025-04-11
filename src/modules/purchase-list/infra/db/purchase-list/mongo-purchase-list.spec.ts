@@ -30,6 +30,7 @@ describe('MongoPurchaseListRepository', () => {
   it('should return true if a purchase list exists with the same title', async () => {
     const sut = makeSut();
     const getCollection = MongoHelper.getCollection('purchase-list');
+    const objectId = new ObjectId();
     await getCollection.insertOne({
       id: 'valid_id',
       title: 'anytitle',
@@ -42,9 +43,9 @@ describe('MongoPurchaseListRepository', () => {
           totalPrice: 20,
         },
       ],
-      userId: 'anyuserid',
+      userId: objectId,
     });
-    const isList = await sut.verify('anytitle');
+    const isList = await sut.verify('anytitle', objectId.toHexString());
     expect(isList).toBe(true);
   });
 
@@ -66,7 +67,7 @@ describe('MongoPurchaseListRepository', () => {
       ],
       userId: 'anyuserid',
     });
-    const isList = await sut.verify('anytitle');
+    const isList = await sut.verify('anytitle', 'valid_id');
     expect(isList).toBe(false);
   });
 
