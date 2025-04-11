@@ -6,11 +6,15 @@ import {
 import { MissingParamError } from '@/shared/presentation/errors';
 import { Controller } from '@/shared/presentation/protocols/controller';
 import { HttpRequest, HttpResponse } from '@/shared/presentation/types/http';
+import { DecodeTokenService } from '@/shared/services/auth/protocols/decode-token-service';
 import { PurchaseListModel } from '../../domain/models/create-purchase-list';
 import { AddPurchaseList } from '../../domain/usecases/add-purchase-list';
 
 export class CreatePurchaseListController extends Controller<PurchaseListModel.Params> {
-  constructor(private readonly addPurchaseList: AddPurchaseList) {
+  constructor(
+    private readonly addPurchaseList: AddPurchaseList,
+    private readonly decodeTokenService: DecodeTokenService,
+  ) {
     super();
   }
 
@@ -18,7 +22,14 @@ export class CreatePurchaseListController extends Controller<PurchaseListModel.P
     httpRequest: HttpRequest<PurchaseListModel.Params>,
   ): Promise<HttpResponse> {
     try {
-      const { title, description = null, products, userId } = httpRequest.body;
+      const { title, description = null, products } = httpRequest.body;
+      const { authorization } = httpRequest.headers;
+      const token = authorization.split(' ')[1];
+
+      const { sub: userId } = this.decodeTokenService.decodeToken(token);
+      if (!userId) {
+        return badRequest(new MissingParamError('userId'));
+      }
 
       const requiredFields = ['title', 'products'];
       const error = this.validateRequiredFields(httpRequest, requiredFields);

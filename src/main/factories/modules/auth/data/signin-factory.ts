@@ -1,7 +1,7 @@
 import { SignInUseCase } from '@/modules/auth/data/usecases/signin';
-import { JwtGenerateToken } from '@/modules/auth/infra/jwt/jwt-generate-token';
+import { JwtAdapter } from '@/modules/auth/infra/jwt/jwt-adapter';
 
 export const makeSignInFactory = (): SignInUseCase => {
-  const jwtAdapter = new JwtGenerateToken();
+  const jwtAdapter = new JwtAdapter();
   return new SignInUseCase(jwtAdapter);
 };

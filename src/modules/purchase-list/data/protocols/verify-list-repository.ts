@@ -1,3 +1,3 @@
 export interface VerifyListRepository {
-  verify(title: string): Promise<boolean>;
+  verify(title: string, userId: string): Promise<boolean>;
 }

@@ -1,3 +1,5 @@
+import { UserModel } from '@/modules/user/domain/models/user-model';
+
 export interface AddUserService {
-  addUser(user: any): Promise<any>;
+  addUser(user: UserModel.Params): Promise<UserModel.Params>;
 }

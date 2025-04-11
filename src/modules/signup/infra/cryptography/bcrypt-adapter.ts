@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { Encrypter } from '../../data/protocols/encrypter';
 import { CompareCrypto } from '../../data/protocols/compare-crypto';
 

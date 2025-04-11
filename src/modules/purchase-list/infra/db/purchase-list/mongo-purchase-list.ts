@@ -6,10 +6,10 @@ import { PurchaseListRepoModel } from '@/modules/purchase-list/data/models/purch
 export class MongoPurchaseListRepository
   implements VerifyListRepository, AddPurchaseListRepository
 {
-  async verify(title: string): Promise<boolean> {
+  async verify(title: string, userId: string): Promise<boolean> {
     const purchaseList = await MongoHelper.getCollection(
       'purchase-list',
-    ).findOne({ title });
+    ).findOne({ title, userId: MongoHelper.toObjectId(userId) });
     return !!purchaseList;
   }
 

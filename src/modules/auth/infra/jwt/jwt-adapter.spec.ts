@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { JwtGenerateToken } from './jwt-generate-token';
+import { JwtAdapter } from './jwt-adapter';
 import { AuthSignInModel } from '../../domain/models/auth-signin';
 
 jest.mock('jsonwebtoken', () => ({
@@ -16,15 +16,15 @@ const makeSut = () => {
     createdAt: new Date('2025-01-01'),
   };
 
-  const sut = new JwtGenerateToken();
+  const sut = new JwtAdapter();
   return { sut, mockPayload };
 };
 
-describe('JwtGenerateToken', () => {
+describe('JwtAdapter', () => {
   it('should be defined', () => {
     const { sut } = makeSut();
     expect(sut).toBeDefined();
-    expect(sut).toBeInstanceOf(JwtGenerateToken);
+    expect(sut).toBeInstanceOf(JwtAdapter);
     expect(sut).toBeTruthy();
   });
 

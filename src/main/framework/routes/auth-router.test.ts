@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import request from 'supertest';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { App } from '../app';

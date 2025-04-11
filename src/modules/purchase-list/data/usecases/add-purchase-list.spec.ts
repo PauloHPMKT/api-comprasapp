@@ -57,7 +57,7 @@ jest.mock('../../domain/entities/PurchaseList', () => {
 
 const makeVerifyListStub = (): VerifyListRepository => {
   class VerifyListStub implements VerifyListRepository {
-    async verify(title: string): Promise<boolean> {
+    async verify(title: string, userId: string): Promise<boolean> {
       return new Promise((resolve) => resolve(false));
     }
   }
