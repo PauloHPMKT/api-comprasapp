@@ -1,11 +1,11 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MDViYjE1OGRiZmQ4MzBjMWI2NzEwY2QiLCJuYW1lIjoiUGV0ZXIiLCJlbWFpbCI6InBldGVyY2V0ZXJhQG1haWwuY29tIiwiYXZhdGFyIjpudWxsLCJhY2NvdW50SWQiOiJhNDBjZWM1ODQ0ZTY0ZmE2MWIzOTAzMmYiLCJjcmVhdGVkQXQiOiIyMDI1LTAzLTMwVDE2OjUxOjIwLjUzOVoiLCJpYXQiOjE3NDQyNDQ3NDEsImV4cCI6MTc0NDMzMTE0MX0.DJJFGWMJPcm1FrhIEVYu0HGxNjH3WhwXMSghjqmzwLQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjYjA0ZDgxMjE2MTNkNzhiZWVkMTZmYWMiLCJuYW1lIjoiRGFuaWVsIFBpbGFudHJhIiwiZW1haWwiOiJkYW5pZWxwaWxhbnRyYUBtYWlsLmNvbSIsImF2YXRhciI6bnVsbCwiYWNjb3VudElkIjoiN2I2N2YwOGU1M2E1NDMyNTZlMWEzZjI1IiwiY3JlYXRlZEF0IjoiMjAyNS0wNC0xMFQxNzozMDoyNC42NjJaIiwiaWF0IjoxNzQ0MzA2MjQ4LCJleHAiOjE3NDQzOTI2NDh9.A_JtE483lnjh3DXPAOYmTfIKPPlDt61delKHvKmM20g
 
 POST http://localhost:3005/api/purchase-list/add
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "title": "title5",
+  "title": "title6",
   "description": "anydescription",
   "products": [
     {
