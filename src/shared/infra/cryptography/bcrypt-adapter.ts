@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
-import { Encrypter } from '../../data/protocols/encrypter';
-import { CompareCrypto } from '../../data/protocols/compare-crypto';
+import { Encrypter } from '@/modules/signup/data/protocols/encrypter';
+import { CompareCrypto } from '@/modules/signup/data/protocols/compare-crypto';
 
 export class BcryptAdapter implements Encrypter, CompareCrypto {
   constructor(private readonly salt: number) {}

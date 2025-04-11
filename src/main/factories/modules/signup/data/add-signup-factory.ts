@@ -1,4 +1,4 @@
-import { BcryptAdapter } from '@/modules/signup/infra/cryptography/bcrypt-adapter';
+import { BcryptAdapter } from '@/shared/infra/cryptography/bcrypt-adapter';
 import { makeUserServiceFactory } from '../../services/user/user-service-factory';
 import { makeAccountServiceFactory } from '../../services/account/account-service-factory';
 import { AddSignupUseCase } from '@/modules/signup/data/usecases/add-signup';

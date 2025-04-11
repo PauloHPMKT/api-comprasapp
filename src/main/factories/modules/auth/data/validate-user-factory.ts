@@ -1,5 +1,5 @@
 import { ValidateUserUseCase } from '@/modules/auth/data/usecases/validate-user';
-import { BcryptAdapter } from '@/modules/signup/infra/cryptography/bcrypt-adapter';
+import { BcryptAdapter } from '@/shared/infra/cryptography/bcrypt-adapter';
 import { makeUserServiceFactory } from '../../services/user/user-service-factory';
 
 const salt = 12;
