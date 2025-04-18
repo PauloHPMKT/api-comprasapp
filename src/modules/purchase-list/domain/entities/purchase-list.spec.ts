@@ -13,12 +13,14 @@ const makeSut = (
         quantity: 2,
         unitPrice: 10,
         totalPrice: 20,
+        check: false,
       },
       {
         name: 'Product 2',
         quantity: 1,
         unitPrice: 20,
         totalPrice: 20,
+        check: false,
       },
     ],
     userId: 'anyuserid',
@@ -61,12 +63,14 @@ describe('PurchaseList', () => {
         quantity: 2,
         unitPrice: 10,
         totalPrice: 20,
+        check: false,
       },
       {
         name: 'Product 2',
         quantity: 1,
         unitPrice: 20,
         totalPrice: 20,
+        check: false,
       },
     ];
     expect(sut.props.products).not.toBeUndefined();
@@ -88,12 +92,16 @@ describe('PurchaseList', () => {
       {
         name: 'Product 1',
         quantity: 2,
+        unitPrice: null,
+        totalPrice: null,
+        check: false,
       },
       {
         name: 'Product 2',
         quantity: 1,
         unitPrice: 20,
         totalPrice: 20,
+        check: false,
       },
     ];
 
@@ -104,12 +112,14 @@ describe('PurchaseList', () => {
         quantity: 2,
         unitPrice: null,
         totalPrice: null,
+        check: false,
       },
       {
         name: 'Product 2',
         quantity: 1,
         unitPrice: 20,
         totalPrice: 20,
+        check: false,
       },
     ];
 
@@ -157,12 +167,14 @@ describe('PurchaseList', () => {
           quantity: 2,
           unitPrice: 10,
           totalPrice: 20,
+          check: false,
         },
         {
           name: 'Product 2',
           quantity: 1,
           unitPrice: 20,
           totalPrice: 20,
+          check: false,
         },
       ];
       expect(sut.products).toEqual(products);

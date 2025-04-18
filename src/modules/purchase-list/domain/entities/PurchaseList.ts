@@ -29,6 +29,7 @@ export class PurchaseList extends Entity<ProductProps> {
       ...product,
       unitPrice: product.unitPrice ?? null,
       totalPrice: product.totalPrice ?? null,
+      check: product.check ?? false,
     };
   }
 
@@ -55,5 +56,6 @@ export namespace Products {
     quantity: number;
     unitPrice?: number | null;
     totalPrice?: number | null;
+    check?: boolean;
   };
 }
