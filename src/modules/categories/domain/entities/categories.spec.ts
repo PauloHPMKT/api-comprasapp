@@ -20,9 +20,14 @@ describe('Category Entity', () => {
     expect(sut.props.name).toBe('anycategoryname');
   });
 
-  it('should create a new Category with icon', () => {
+  it('should create a new Category with icon as emoji', () => {
     const sut = makeSut();
     expect(sut.props.icon).toEqual('😀');
     expect(typeof sut.props.icon).toBe('string');
+  });
+
+  it('should create a new Category with a valid date', () => {
+    const sut = makeSut();
+    expect(sut.props.createdAt).toBeInstanceOf(Date);
   });
 });
