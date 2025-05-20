@@ -1,10 +1,12 @@
-import { Category } from './Category';
+import { UniqueEntityId } from '@/shared/seedworks/domain/values-objects/unique-entity-id.vo';
+import { Category, CategoryProps } from './Category';
 
-const makeSut = () => {
-  return new Category({
+const makeSut = (id?: UniqueEntityId) => {
+  const categoryProps: CategoryProps = {
     name: 'anycategoryname',
     icon: '😀',
-  });
+  };
+  return new Category(categoryProps, id);
 };
 
 describe('Category Entity', () => {
@@ -29,5 +31,14 @@ describe('Category Entity', () => {
   it('should create a new Category with a valid date', () => {
     const sut = makeSut();
     expect(sut.props.createdAt).toBeInstanceOf(Date);
+  });
+
+  it('should create a new Category with a valid id', () => {
+    const id = new UniqueEntityId('5c84559c9ea984bd9b1f2bc6');
+    const sut = makeSut(id);
+    expect(sut.id).not.toBeUndefined();
+    expect(sut.id).not.toBeNull();
+    expect(sut.id).toEqual(id.value);
+    expect(sut.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
   });
 });
