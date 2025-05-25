@@ -18,4 +18,21 @@ describe('CreateNewCategoryUseCase', () => {
     expect(sut).toBeInstanceOf(CreateNewCategoryUseCase);
     expect(sut).toBeTruthy();
   });
+
+  it('should create a new category with valid data', async () => {
+    const { sut } = makeSut();
+    const addSpy = jest.spyOn(sut, 'execute');
+    const params = {
+      name: 'newcategory',
+      icon: '🛒',
+    };
+    const result = await sut.execute(params);
+    expect(addSpy).toHaveBeenCalledWith(params);
+    expect(result).toEqual({
+      id: expect.any(String),
+      name: 'newcategory',
+      icon: '🛒',
+      createdAt: expect.any(Date),
+    });
+  });
 });
