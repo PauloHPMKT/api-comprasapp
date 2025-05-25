@@ -6,5 +6,5 @@ export namespace CategoryModel {
     icon: string;
   };
 
-  export type Result = Category;
+  export type Result = ReturnType<Category['toJSON']>;
 }

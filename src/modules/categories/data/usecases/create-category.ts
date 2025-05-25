@@ -3,6 +3,13 @@ import { CreateCategory } from '../../domain/usecases/create-category';
 
 export class CreateNewCategoryUseCase implements CreateCategory {
   async execute(params: CategoryModel.Params): Promise<CategoryModel.Result> {
-    return new Promise((resolve) => resolve(null));
+    return new Promise((resolve) =>
+      resolve({
+        id: 'valid_id',
+        name: 'newcategory',
+        icon: '🛒',
+        createdAt: new Date(),
+      }),
+    );
   }
 }
