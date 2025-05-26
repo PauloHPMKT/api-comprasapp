@@ -1,3 +1,4 @@
+import { MissingParamError } from '@/shared/presentation/errors';
 import { CreateCategoryController } from './create-category';
 
 const makeSut = (): SutTypes => {
@@ -15,5 +16,17 @@ describe('CreateCategoryController', () => {
     expect(sut).toBeDefined();
     expect(sut).toBeInstanceOf(CreateCategoryController);
     expect(sut).toBeTruthy();
+  });
+
+  it('should return 400 if no name is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        icon: '😀',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest as any);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
 });
