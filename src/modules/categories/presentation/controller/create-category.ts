@@ -1,6 +1,7 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import {
   badRequest,
+  created,
   serverError,
 } from '@/shared/presentation/helper/http-responses';
 import { Controller } from '@/shared/presentation/protocols/controller';
@@ -24,10 +25,12 @@ export class CreateCategoryController extends Controller<CategoryModel.Params> {
       }
 
       const { name, icon } = request.body;
-      await this.createCategory.execute({
+      const category = await this.createCategory.execute({
         name,
         icon,
       });
+
+      return created(category);
     } catch (error) {
       console.error(error);
       return serverError();
