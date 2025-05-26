@@ -78,4 +78,20 @@ describe('CreateCategoryController', () => {
       icon: '😀',
     });
   });
+
+  it('should return 500 if CreateCategory throws', async () => {
+    const { sut, createCategoryStub } = makeSut();
+    jest.spyOn(createCategoryStub, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        icon: '😀',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest as any);
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new Error('Internal server error'));
+  });
 });
