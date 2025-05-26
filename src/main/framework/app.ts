@@ -26,6 +26,7 @@ export class App {
       this.router.signupRoutes,
       this.router.purchaseListRoutes,
       this.router.authRoutes,
+      this.router.categoriesRoutes,
     ];
     routes.forEach((route) => this.app.use('/api', route));
   }

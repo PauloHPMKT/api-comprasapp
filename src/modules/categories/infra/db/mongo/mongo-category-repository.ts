@@ -1,8 +1,11 @@
 import { CategoryRepoModel } from '@/modules/categories/data/models/category';
 import { CreateCategoryRepository } from '@/modules/categories/data/protocols/create-category-repository';
+import { VerifyCategoryRepository } from '@/modules/categories/data/protocols/verify-category-repository';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 
-export class MongoCategoryRepository implements CreateCategoryRepository {
+export class MongoCategoryRepository
+  implements CreateCategoryRepository, VerifyCategoryRepository
+{
   async create(
     params: CategoryRepoModel.Params,
   ): Promise<CategoryRepoModel.Result> {
@@ -17,5 +20,9 @@ export class MongoCategoryRepository implements CreateCategoryRepository {
       _id: insertedId,
     });
     return MongoHelper.map(category) as CategoryRepoModel.Result;
+  }
+
+  async verify(params: string): Promise<boolean> {
+    return false;
   }
 }
