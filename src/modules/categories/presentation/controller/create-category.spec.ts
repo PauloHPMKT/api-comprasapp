@@ -1,13 +1,34 @@
 import { MissingParamError } from '@/shared/presentation/errors';
 import { CreateCategoryController } from './create-category';
+import { CreateCategory } from '../../domain/usecases/create-category';
+import { CategoryModel } from '../../domain/models/category';
+
+const makeCreateCategoryStub = () => {
+  class CreateCategoryStub implements CreateCategory {
+    async execute(params: CategoryModel.Params): Promise<CategoryModel.Result> {
+      return {
+        id: 'any_id',
+        name: params.name,
+        icon: params.icon,
+        createdAt: new Date(),
+      };
+    }
+  }
+  return new CreateCategoryStub();
+};
 
 const makeSut = (): SutTypes => {
-  const sut = new CreateCategoryController();
-  return { sut };
+  const createCategoryStub = makeCreateCategoryStub();
+  const sut = new CreateCategoryController(createCategoryStub);
+  return {
+    sut,
+    createCategoryStub,
+  };
 };
 
 interface SutTypes {
   sut: CreateCategoryController;
+  createCategoryStub: CreateCategory;
 }
 
 describe('CreateCategoryController', () => {
@@ -40,5 +61,21 @@ describe('CreateCategoryController', () => {
     const httpResponse = await sut.handle(httpRequest as any);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new MissingParamError('icon'));
+  });
+
+  it('should call CreateCategory with correct values', async () => {
+    const { sut, createCategoryStub } = makeSut();
+    const createCategorySpy = jest.spyOn(createCategoryStub, 'execute');
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        icon: '😀',
+      },
+    };
+    await sut.handle(httpRequest as any);
+    expect(createCategorySpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      icon: '😀',
+    });
   });
 });
