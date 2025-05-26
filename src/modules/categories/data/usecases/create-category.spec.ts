@@ -1,5 +1,26 @@
+import { id } from 'jest.config';
+import { CategoryRepoModel } from '../models/category';
+import { CreateCategoryRepository } from '../protocols/create-category-repository';
 import { VerifyCategoryRepository } from '../protocols/verify-category-repository';
 import { CreateNewCategoryUseCase } from './create-category';
+
+const makeCreateCategoryRepositoryStub = (): CreateCategoryRepository => {
+  class CreateNewCategoryRepositoryStub implements CreateCategoryRepository {
+    create(
+      params: CategoryRepoModel.Params,
+    ): Promise<CategoryRepoModel.Result> {
+      return new Promise((resolve) =>
+        resolve({
+          id: 'valid_id',
+          name: params.name,
+          icon: params.icon,
+          createdAt: new Date(),
+        }),
+      );
+    }
+  }
+  return new CreateNewCategoryRepositoryStub();
+};
 
 const makeVerifyCategoryRepositoryStub = (): VerifyCategoryRepository => {
   class VerifyCategoryRepositoryStub {
@@ -11,17 +32,23 @@ const makeVerifyCategoryRepositoryStub = (): VerifyCategoryRepository => {
 };
 
 const makeSut = (): SutTypes => {
+  const createCategoryRepository = makeCreateCategoryRepositoryStub();
   const verifyCategoryRepositoryStub = makeVerifyCategoryRepositoryStub();
-  const sut = new CreateNewCategoryUseCase(verifyCategoryRepositoryStub);
+  const sut = new CreateNewCategoryUseCase(
+    verifyCategoryRepositoryStub,
+    createCategoryRepository,
+  );
   return {
     sut,
     verifyCategoryRepositoryStub,
+    createCategoryRepository,
   };
 };
 
 interface SutTypes {
   sut: CreateNewCategoryUseCase;
   verifyCategoryRepositoryStub: VerifyCategoryRepository;
+  createCategoryRepository: CreateCategoryRepository;
 }
 
 describe('CreateNewCategoryUseCase', () => {
@@ -71,5 +98,21 @@ describe('CreateNewCategoryUseCase', () => {
     };
     await sut.execute(params);
     expect(verifySpy).toHaveBeenCalledWith('newcategory');
+  });
+
+  it('should call createCategoryRepository with correct values', async () => {
+    const { sut, createCategoryRepository } = makeSut();
+    const verifySpy = jest.spyOn(createCategoryRepository, 'create');
+    const params = {
+      name: 'newcategory',
+      icon: '🛒',
+    };
+    await sut.execute(params);
+    expect(verifySpy).toHaveBeenCalledWith({
+      id: expect.any(String),
+      name: 'newcategory',
+      icon: '🛒',
+      createdAt: expect.any(Date),
+    });
   });
 });
