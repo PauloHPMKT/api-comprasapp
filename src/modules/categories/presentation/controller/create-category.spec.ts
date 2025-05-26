@@ -8,8 +8,8 @@ const makeCreateCategoryStub = () => {
     async execute(params: CategoryModel.Params): Promise<CategoryModel.Result> {
       return {
         id: 'any_id',
-        name: params.name,
-        icon: params.icon,
+        name: 'anycategory',
+        icon: '😀',
         createdAt: new Date(),
       };
     }
