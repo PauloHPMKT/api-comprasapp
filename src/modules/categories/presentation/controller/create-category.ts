@@ -8,14 +8,16 @@ interface CreateCategoryDTO {
   icon: string;
 }
 
-export class CreateCategoryController extends Controller {
-  async handle(request: HttpRequest<CreateCategoryDTO>): Promise<HttpResponse> {
-    if (!request.body.name) {
-      return badRequest(new MissingParamError('name'));
-    }
+export class CreateCategoryController extends Controller<CreateCategoryDTO> {
+  constructor() {
+    super();
+  }
 
-    if (!request.body.icon) {
-      return badRequest(new MissingParamError('icon'));
+  async handle(request: HttpRequest<CreateCategoryDTO>): Promise<HttpResponse> {
+    const requiredFields = ['name', 'icon'];
+    const error = this.validateRequiredFields(request, requiredFields);
+    if (error) {
+      return badRequest(new MissingParamError(error));
     }
   }
 }
