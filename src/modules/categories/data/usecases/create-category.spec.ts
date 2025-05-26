@@ -61,4 +61,15 @@ describe('CreateNewCategoryUseCase', () => {
     const promise = sut.execute(params);
     await expect(promise).rejects.toThrow(new Error('Category already exists'));
   });
+
+  it('should call VerifyCategoryRepository with correct values', async () => {
+    const { sut, verifyCategoryRepositoryStub } = makeSut();
+    const verifySpy = jest.spyOn(verifyCategoryRepositoryStub, 'verify');
+    const params = {
+      name: 'newcategory',
+      icon: '🛒',
+    };
+    await sut.execute(params);
+    expect(verifySpy).toHaveBeenCalledWith('newcategory');
+  });
 });
