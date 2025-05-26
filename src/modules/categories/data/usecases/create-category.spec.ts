@@ -115,4 +115,17 @@ describe('CreateNewCategoryUseCase', () => {
       createdAt: expect.any(Date),
     });
   });
+
+  it('should throw an error if CreateCategoryRepository throws', async () => {
+    const { sut, createCategoryRepository } = makeSut();
+    jest
+      .spyOn(createCategoryRepository, 'create')
+      .mockRejectedValueOnce(new Error('Database error'));
+    const params = {
+      name: 'newcategory',
+      icon: '🛒',
+    };
+    const promise = sut.execute(params);
+    await expect(promise).rejects.toThrow(new Error('Database error'));
+  });
 });
