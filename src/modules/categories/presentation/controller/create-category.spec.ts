@@ -94,4 +94,22 @@ describe('CreateCategoryController', () => {
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new Error('Internal server error'));
   });
+
+  it('should return 201 on success', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        icon: '😀',
+      },
+    };
+    const httpResponse = await sut.handle(httpRequest as any);
+    expect(httpResponse.statusCode).toBe(201);
+    expect(httpResponse.body).toEqual({
+      id: 'any_id',
+      name: 'anycategory',
+      icon: '😀',
+      createdAt: expect.any(Date),
+    });
+  });
 });
