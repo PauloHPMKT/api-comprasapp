@@ -1,10 +1,13 @@
+import { Category } from '../../domain/entities/Category';
 import { CategoryModel } from '../../domain/models/category';
 import { CreateCategory } from '../../domain/usecases/create-category';
+import { CreateCategoryRepository } from '../protocols/create-category-repository';
 import { VerifyCategoryRepository } from '../protocols/verify-category-repository';
 
 export class CreateNewCategoryUseCase implements CreateCategory {
   constructor(
     private readonly verifyCateroryRepository: VerifyCategoryRepository,
+    private readonly createCategoryRepository: CreateCategoryRepository,
   ) {}
 
   async execute(params: CategoryModel.Params): Promise<CategoryModel.Result> {
@@ -14,13 +17,11 @@ export class CreateNewCategoryUseCase implements CreateCategory {
       throw new Error('Category already exists');
     }
 
-    return new Promise((resolve) =>
-      resolve({
-        id: 'valid_id',
-        name: 'newcategory',
-        icon: '🛒',
-        createdAt: new Date(),
-      }),
-    );
+    const category = new Category({
+      name,
+      icon,
+    });
+
+    return await this.createCategoryRepository.create(category.toJSON());
   }
 }
