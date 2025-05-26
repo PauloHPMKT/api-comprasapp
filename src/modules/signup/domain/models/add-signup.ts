@@ -1,5 +1,3 @@
-import { User } from '@/modules/user/domain/entities/User';
-
 export namespace SignupModel {
   export interface Params {
     name: string;
