@@ -13,5 +13,9 @@ export class CreateCategoryController extends Controller {
     if (!request.body.name) {
       return badRequest(new MissingParamError('name'));
     }
+
+    if (!request.body.icon) {
+      return badRequest(new MissingParamError('icon'));
+    }
   }
 }
