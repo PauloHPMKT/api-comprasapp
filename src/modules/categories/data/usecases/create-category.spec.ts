@@ -1,14 +1,27 @@
+import { VerifyCategoryRepository } from '../protocols/verify-category-repository';
 import { CreateNewCategoryUseCase } from './create-category';
 
+const makeVerifyCategoryRepositoryStub = (): VerifyCategoryRepository => {
+  class VerifyCategoryRepositoryStub {
+    async verify(name: string): Promise<boolean> {
+      return false;
+    }
+  }
+  return new VerifyCategoryRepositoryStub();
+};
+
 const makeSut = (): SutTypes => {
-  const sut = new CreateNewCategoryUseCase();
+  const verifyCategoryRepositoryStub = makeVerifyCategoryRepositoryStub();
+  const sut = new CreateNewCategoryUseCase(verifyCategoryRepositoryStub);
   return {
     sut,
+    verifyCategoryRepositoryStub,
   };
 };
 
 interface SutTypes {
   sut: CreateNewCategoryUseCase;
+  verifyCategoryRepositoryStub: VerifyCategoryRepository;
 }
 
 describe('CreateNewCategoryUseCase', () => {
@@ -34,5 +47,18 @@ describe('CreateNewCategoryUseCase', () => {
       icon: '🛒',
       createdAt: expect.any(Date),
     });
+  });
+
+  it('should return an error if category name exists', async () => {
+    const { sut, verifyCategoryRepositoryStub } = makeSut();
+    jest
+      .spyOn(verifyCategoryRepositoryStub, 'verify')
+      .mockResolvedValueOnce(true);
+    const params = {
+      name: 'existingcategory',
+      icon: '🛒',
+    };
+    const promise = sut.execute(params);
+    await expect(promise).rejects.toThrow(new Error('Category already exists'));
   });
 });
