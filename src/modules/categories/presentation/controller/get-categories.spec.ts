@@ -87,4 +87,14 @@ describe('GetCategoriesController', () => {
     await sut.handle();
     expect(executeSpy).toHaveBeenCalled();
   });
+
+  it('should return an empty array if no categories are found', async () => {
+    const getCategoriesUseCase = {
+      execute: jest.fn().mockResolvedValue([]),
+    };
+    const sut = new GetCategoriesController(getCategoriesUseCase);
+    const httpResponse = await sut.handle();
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual([]);
+  });
 });
