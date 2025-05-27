@@ -29,4 +29,10 @@ export class MongoCategoryRepository
     });
     return !!category;
   }
+
+  async findAll(): Promise<any[]> {
+    const categoryCollection = MongoHelper.getCollection('categories');
+    const categories = await categoryCollection.find().toArray();
+    return categories;
+  }
 }
