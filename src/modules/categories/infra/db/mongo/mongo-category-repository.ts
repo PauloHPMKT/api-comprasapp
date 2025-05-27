@@ -22,7 +22,11 @@ export class MongoCategoryRepository
     return MongoHelper.map(category) as CategoryRepoModel.Result;
   }
 
-  async verify(params: string): Promise<boolean> {
-    return false;
+  async verify(categoryName: string): Promise<boolean> {
+    const categoryCollection = MongoHelper.getCollection('categories');
+    const category = await categoryCollection.findOne({
+      name: categoryName,
+    });
+    return !!category;
   }
 }
