@@ -1,7 +1,13 @@
-POST http://localhost:3005/api/category
+@baseUrl = http://localhost:3005/api
+
+### CREATE CATEGORY
+POST {{baseUrl}}/category
 Content-Type: application/json
 
 {
   "name": "Higiene pessoal",
   "icon": "🚿"
 }
+
+### GET CATEGORIES
+GET {{baseUrl}}/categories

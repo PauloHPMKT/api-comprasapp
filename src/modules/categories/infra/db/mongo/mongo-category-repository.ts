@@ -1,10 +1,14 @@
 import { CategoryRepoModel } from '@/modules/categories/data/models/category';
 import { CreateCategoryRepository } from '@/modules/categories/data/protocols/create-category-repository';
+import { GetCategoriesRepository } from '@/modules/categories/data/protocols/get-categories-repository';
 import { VerifyCategoryRepository } from '@/modules/categories/data/protocols/verify-category-repository';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 
 export class MongoCategoryRepository
-  implements CreateCategoryRepository, VerifyCategoryRepository
+  implements
+    CreateCategoryRepository,
+    VerifyCategoryRepository,
+    GetCategoriesRepository
 {
   async create(
     params: CategoryRepoModel.Params,
