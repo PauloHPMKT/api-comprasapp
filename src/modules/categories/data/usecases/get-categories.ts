@@ -11,5 +11,7 @@ export class GetCategoriesUseCase implements GetCategories {
     if (!categories || !categories.length) {
       return [];
     }
+
+    return categories;
   }
 }
