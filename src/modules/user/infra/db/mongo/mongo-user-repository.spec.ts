@@ -20,7 +20,7 @@ describe('MongoUserRepository', () => {
     await accountCollection.deleteMany({});
   });
 
-  it('Should return an user on success', () => {
+  it('Should be defined', () => {
     const sut = makeSut();
     expect(sut).toBeDefined();
     expect(sut).toBeTruthy();

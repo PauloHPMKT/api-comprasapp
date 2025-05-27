@@ -17,7 +17,7 @@ describe('MongoCategoryRepository', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('accounts');
+    const accountCollection = MongoHelper.getCollection('categories');
     await accountCollection.deleteMany({});
   });
 
@@ -30,7 +30,7 @@ describe('MongoCategoryRepository', () => {
 
   it('should add a category on success', async () => {
     const sut = makeSut();
-    const categoryData: CategoryRepoModel.Params = {
+    const categoryData = {
       id: new ObjectId().toHexString(),
       name: 'Test Category',
       icon: '😀',
@@ -73,5 +73,42 @@ describe('MongoCategoryRepository', () => {
     });
     const isCategory = await sut.verify('non_existent_category');
     expect(isCategory).toBe(false);
+  });
+
+  it('should return a list of categories on success', async () => {
+    const sut = makeSut();
+    const categoryCollection = MongoHelper.getCollection('categories');
+    await categoryCollection.insertMany([
+      {
+        id: new ObjectId().toHexString(),
+        name: 'Category 1',
+        icon: '😀',
+        createdAt: new Date('2025-12-10'),
+      },
+      {
+        id: new ObjectId().toHexString(),
+        name: 'Category 2',
+        icon: '😃',
+        createdAt: new Date('2025-12-10'),
+      },
+    ]);
+
+    const categories = await sut.findAll();
+    expect(categories).toBeTruthy();
+    expect(categories.length).toBe(2);
+    expect(categories).toEqual([
+      expect.objectContaining({
+        id: expect.any(String),
+        name: 'Category 1',
+        icon: '😀',
+        createdAt: new Date('2025-12-10'),
+      }),
+      expect.objectContaining({
+        id: expect.any(String),
+        name: 'Category 2',
+        icon: '😃',
+        createdAt: new Date('2025-12-10'),
+      }),
+    ]);
   });
 });
