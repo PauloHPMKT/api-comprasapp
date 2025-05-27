@@ -1,7 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { MongoHelper } from '@/shared/infra/db/helper/mongo-client';
 import { MongoCategoryRepository } from './mongo-category-repository';
-import { CategoryRepoModel } from '@/modules/categories/data/models/category';
 
 const makeSut = (): MongoCategoryRepository => {
   return new MongoCategoryRepository();
@@ -17,8 +16,8 @@ describe('MongoCategoryRepository', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('categories');
-    await accountCollection.deleteMany({});
+    const categoryCollection = MongoHelper.getCollection('categories');
+    await categoryCollection.deleteMany({});
   });
 
   it('should be defined', () => {
