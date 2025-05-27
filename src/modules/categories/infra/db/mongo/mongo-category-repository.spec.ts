@@ -60,4 +60,18 @@ describe('MongoCategoryRepository', () => {
     const isCategory = await sut.verify('valid_name');
     expect(isCategory).toBe(true);
   });
+
+  it('should return false if a category does not exist', async () => {
+    const sut = makeSut();
+    jest.spyOn(sut, 'verify').mockResolvedValueOnce(false);
+    const getCollection = MongoHelper.getCollection('categories');
+    await getCollection.insertOne({
+      id: 'valid_id',
+      name: 'valid_name',
+      icon: '😀',
+      createdAt: new Date('2025-12-10'),
+    });
+    const isCategory = await sut.verify('non_existent_category');
+    expect(isCategory).toBe(false);
+  });
 });
