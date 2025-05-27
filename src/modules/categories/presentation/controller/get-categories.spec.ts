@@ -1,3 +1,4 @@
+import { ServerError } from '@/shared/presentation/errors';
 import { CategoryModel } from '../../domain/models/category';
 import { GetCategories } from '../../domain/usecases/get-categories';
 import { GetCategoriesController } from './get-categories';
@@ -89,12 +90,20 @@ describe('GetCategoriesController', () => {
   });
 
   it('should return an empty array if no categories are found', async () => {
-    const getCategoriesUseCase = {
-      execute: jest.fn().mockResolvedValue([]),
-    };
-    const sut = new GetCategoriesController(getCategoriesUseCase);
+    const { sut, getCategoriesUseCase } = makeSut();
+    jest.spyOn(getCategoriesUseCase, 'execute').mockResolvedValueOnce([]);
     const httpResponse = await sut.handle();
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual([]);
+  });
+
+  it('should handle errors and return 500', async () => {
+    const { sut, getCategoriesUseCase } = makeSut();
+    jest.spyOn(getCategoriesUseCase, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = await sut.handle();
+    expect(httpResponse.statusCode).toBe(500);
+    expect(httpResponse.body).toEqual(new ServerError());
   });
 });
