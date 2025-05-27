@@ -44,4 +44,11 @@ describe('GetCategoriesUseCase', () => {
     await sut.execute();
     expect(getCategoriesRepositoryStub.findAll).toHaveBeenCalledTimes(1);
   });
+
+  it('should return an empty array if no categories are found', async () => {
+    const { sut, getCategoriesRepositoryStub } = makeSut();
+    jest.spyOn(getCategoriesRepositoryStub, 'findAll').mockResolvedValue([]);
+    const categories = await sut.execute();
+    expect(categories).toEqual([]);
+  });
 });
