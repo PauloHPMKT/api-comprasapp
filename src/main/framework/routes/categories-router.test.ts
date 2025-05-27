@@ -32,4 +32,12 @@ describe('Categories Routes', () => {
       })
       .expect(201);
   });
+
+  it('Should return a list of categories', async () => {
+    const { app } = makeSut();
+    const response = await request(app).get('/api/categories').expect(200);
+
+    expect(response.body).toEqual(expect.arrayContaining([]));
+    expect(typeof response.body).toBe('object');
+  });
 });
