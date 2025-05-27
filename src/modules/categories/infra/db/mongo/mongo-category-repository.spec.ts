@@ -47,4 +47,17 @@ describe('MongoCategoryRepository', () => {
     expect(category.icon).toEqual(categoryData.icon);
     expect(category.createdAt).toEqual(new Date('2025-12-10'));
   });
+
+  it('should return true if a category exists', async () => {
+    const sut = makeSut();
+    const getCollection = MongoHelper.getCollection('categories');
+    await getCollection.insertOne({
+      id: 'valid_id',
+      name: 'valid_name',
+      icon: '😀',
+      createdAt: new Date('2025-12-10'),
+    });
+    const isCategory = await sut.verify('valid_name');
+    expect(isCategory).toBe(true);
+  });
 });
