@@ -7,6 +7,9 @@ export class GetCategoriesUseCase implements GetCategories {
   ) {}
 
   async execute(): Promise<any> {
-    await this.getCategoriesRepository.findAll();
+    const categories = await this.getCategoriesRepository.findAll();
+    if (!categories || !categories.length) {
+      return [];
+    }
   }
 }
