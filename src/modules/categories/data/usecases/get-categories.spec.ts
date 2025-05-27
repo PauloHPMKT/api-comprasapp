@@ -51,4 +51,24 @@ describe('GetCategoriesUseCase', () => {
     const categories = await sut.execute();
     expect(categories).toEqual([]);
   });
+
+  it('should return a list of categories on success', async () => {
+    const { sut } = makeSut();
+    const categories = await sut.execute();
+    expect(categories).not.toBe([]);
+    expect(categories).toEqual([
+      {
+        id: '1',
+        name: 'Category 1',
+        icon: '🚿',
+        createdAt: new Date('2023-01-01T00:00:00Z'),
+      },
+      {
+        id: '2',
+        name: 'Category 2',
+        icon: '🥦',
+        createdAt: new Date('2023-01-01T00:00:00Z'),
+      },
+    ]);
+  });
 });
