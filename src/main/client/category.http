@@ -1,0 +1,7 @@
+POST http://localhost:3005/api/category
+Content-Type: application/json
+
+{
+  "name": "Higiene pessoal",
+  "icon": "🚿"
+}
