@@ -20,7 +20,7 @@ export class SignupController extends ControllerHandler<SignupModel.Params> {
     }
 
     return {
-      statusCode: 200,
+      statusCode: 201,
       body: {},
     };
   }
