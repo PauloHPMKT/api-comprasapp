@@ -1,21 +1,18 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
 
+const makeSut = async () => {
+  const moduleRef: TestingModule = await Test.createTestingModule({
+    controllers: [SignupController],
+    providers: [],
+  }).compile();
+  const sut = moduleRef.get<SignupController>(SignupController);
+  return { sut, moduleRef };
+};
+
 describe('SignupController', () => {
-  let signupController: SignupController;
-
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [SignupController],
-      providers: [],
-    }).compile();
-
-    signupController = app.get<SignupController>(SignupController);
-  });
-
-  describe('root', () => {
-    it('should be defined', () => {
-      expect(signupController).toBeDefined();
-    });
+  it('should be defined', async () => {
+    const { sut } = await makeSut();
+    expect(sut).toBeDefined();
   });
 });
