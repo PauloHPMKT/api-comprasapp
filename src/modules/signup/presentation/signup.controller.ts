@@ -10,5 +10,12 @@ export class SignupController {
         body: new Error('Name is required'),
       };
     }
+
+    if (!params.body.email) {
+      return {
+        statusCode: 404,
+        body: new Error('Email is required'),
+      };
+    }
   }
 }
