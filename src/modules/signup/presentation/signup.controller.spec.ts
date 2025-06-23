@@ -14,5 +14,7 @@ describe('SignupController', () => {
   it('should be defined', async () => {
     const { sut } = await makeSut();
     expect(sut).toBeDefined();
+    expect(sut).toBeInstanceOf(SignupController);
+    expect(sut).toBeTruthy();
   });
 });
