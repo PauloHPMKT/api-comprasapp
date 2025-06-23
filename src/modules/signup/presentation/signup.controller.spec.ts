@@ -80,4 +80,18 @@ describe('SignupController', () => {
       new MissingParamError('confirmPassword').message,
     );
   });
+
+  it('should return 201 if all required fields are provided', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(params);
+    expect(response.statusCode).toBe(201);
+  });
 });
