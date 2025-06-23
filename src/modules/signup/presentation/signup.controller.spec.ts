@@ -1,14 +1,26 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
 import { MissingParamError } from '@/shared/errors/missing-param-error';
+import { AddSignup } from '../domain/usecases/add-signup';
+
+const makeAddSignupStub = (): AddSignup => ({
+  execute: jest.fn().mockResolvedValue({}),
+});
 
 const makeSut = async () => {
+  const addSignupStub = makeAddSignupStub();
+
   const moduleRef: TestingModule = await Test.createTestingModule({
     controllers: [SignupController],
-    providers: [],
+    providers: [
+      {
+        provide: 'AddSignup',
+        useValue: addSignupStub,
+      },
+    ],
   }).compile();
   const sut = moduleRef.get<SignupController>(SignupController);
-  return { sut, moduleRef };
+  return { sut, addSignupStub };
 };
 
 describe('SignupController', () => {
@@ -93,5 +105,25 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(201);
+  });
+
+  it('should call AddSignup with correct values', async () => {
+    const { sut, addSignupStub } = await makeSut();
+    const params = {
+      body: {
+        name: 'anyname',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const executeSpy = jest.spyOn(addSignupStub, 'execute');
+    await sut.handle(params);
+    expect(executeSpy).toHaveBeenCalledWith({
+      name: 'anyname',
+      email: 'anyemail@mail.com',
+      password: 'anypassword',
+      confirmPassword: 'anypassword',
+    });
   });
 });
