@@ -1,21 +1,17 @@
 import { Body, Controller, Post } from '@nestjs/common';
+import { badRequest } from './helpers/http-helpers';
+import { MissingParamError } from '@/shared/errors/missing-param-error';
 
 @Controller('signup')
 export class SignupController {
   @Post()
   async handle(@Body() params: any): Promise<any> {
     if (!params.body.name) {
-      return {
-        statusCode: 404,
-        body: new Error('Name is required'),
-      };
+      return badRequest(new MissingParamError('name'));
     }
 
     if (!params.body.email) {
-      return {
-        statusCode: 404,
-        body: new Error('Email is required'),
-      };
+      return badRequest(new MissingParamError('email'));
     }
   }
 }

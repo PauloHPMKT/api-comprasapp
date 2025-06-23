@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
+import { MissingParamError } from '@/shared/errors/missing-param-error';
 
 const makeSut = async () => {
   const moduleRef: TestingModule = await Test.createTestingModule({
@@ -18,7 +19,7 @@ describe('SignupController', () => {
     expect(sut).toBeTruthy();
   });
 
-  it('should return 404 if no name is provided', async () => {
+  it('should return 400 if no name is provided', async () => {
     const { sut } = await makeSut();
     const params = {
       body: {
@@ -29,11 +30,12 @@ describe('SignupController', () => {
       },
     };
     const response = await sut.handle(params);
-    expect(response.statusCode).toBe(404);
-    expect(response.body).toEqual(new Error('Name is required'));
+    console.log(response);
+    expect(response.statusCode).toBe(400);
+    expect(response.message).toEqual(new MissingParamError('name').message);
   });
 
-  it('should return 404 if no email is provided', async () => {
+  it('should return 400 if no email is provided', async () => {
     const { sut } = await makeSut();
     const params = {
       body: {
@@ -44,7 +46,7 @@ describe('SignupController', () => {
       },
     };
     const response = await sut.handle(params);
-    expect(response.statusCode).toBe(404);
-    expect(response.body).toEqual(new Error('Email is required'));
+    expect(response.statusCode).toBe(400);
+    expect(response.message).toEqual(new MissingParamError('email').message);
   });
 });
