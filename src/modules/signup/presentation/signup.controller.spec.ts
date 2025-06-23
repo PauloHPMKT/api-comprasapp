@@ -17,4 +17,19 @@ describe('SignupController', () => {
     expect(sut).toBeInstanceOf(SignupController);
     expect(sut).toBeTruthy();
   });
+
+  it('should return 404 if no name is provided', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      body: {
+        name: '',
+        email: 'anyemail@mail.com',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(params);
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual(new Error('Name is required'));
+  });
 });
