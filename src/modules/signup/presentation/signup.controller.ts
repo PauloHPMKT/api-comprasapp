@@ -22,20 +22,28 @@ export class SignupController extends ControllerHandler<SignupModel.Params> {
   async handle(
     @Body() request: HttpRequest<SignupModel.Params>,
   ): Promise<HttpResponse> {
-    const hasError = this.validateRequiredFields(request);
-    if (hasError) return badRequest(new MissingParamError(hasError));
+    try {
+      const hasError = this.validateRequiredFields(request);
+      if (hasError) return badRequest(new MissingParamError(hasError));
 
-    const { name, email, password, confirmPassword } = request.body;
-    await this.addSignup.execute({
-      name,
-      email,
-      password,
-      confirmPassword,
-    });
+      const { name, email, password, confirmPassword } = request.body;
+      await this.addSignup.execute({
+        name,
+        email,
+        password,
+        confirmPassword,
+      });
 
-    return {
-      statusCode: 201,
-      body: {},
-    };
+      return {
+        statusCode: 201,
+        body: {},
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        statusCode: 500,
+        body: new Error('Internal Server Error'),
+      };
+    }
   }
 }
