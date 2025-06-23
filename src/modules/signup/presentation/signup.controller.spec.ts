@@ -32,4 +32,19 @@ describe('SignupController', () => {
     expect(response.statusCode).toBe(404);
     expect(response.body).toEqual(new Error('Name is required'));
   });
+
+  it('should return 404 if no email is provided', async () => {
+    const { sut } = await makeSut();
+    const params = {
+      body: {
+        name: 'anyname',
+        email: '',
+        password: 'anypassword',
+        confirmPassword: 'anypassword',
+      },
+    };
+    const response = await sut.handle(params);
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual(new Error('Email is required'));
+  });
 });
