@@ -5,3 +5,8 @@ export interface HttpRequest<T = any> {
   headers?: any;
   file?: any;
 }
+
+export interface HttpResponse<T = any> {
+  statusCode: number;
+  body: T;
+}

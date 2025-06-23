@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
+import { HttpResponse } from '../protocols/http';
 
-export const badRequest = (error: Error) => ({
+export const badRequest = (error: Error): HttpResponse => ({
   statusCode: HttpStatus.BAD_REQUEST,
-  message: error.message,
-  error: 'Bad Request',
+  body: error.message || 'Bad Request',
 });

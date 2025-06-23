@@ -31,7 +31,7 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toEqual(new MissingParamError('name').message);
+    expect(response.body).toEqual(new MissingParamError('name').message);
   });
 
   it('should return 400 if no email is provided', async () => {
@@ -46,7 +46,7 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toEqual(new MissingParamError('email').message);
+    expect(response.body).toEqual(new MissingParamError('email').message);
   });
 
   it('should return 400 if no password is provided', async () => {
@@ -61,7 +61,7 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toEqual(new MissingParamError('password').message);
+    expect(response.body).toEqual(new MissingParamError('password').message);
   });
 
   it('should return 400 if no confirmPassword is provided', async () => {
@@ -76,7 +76,7 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toEqual(
+    expect(response.body).toEqual(
       new MissingParamError('confirmPassword').message,
     );
   });
