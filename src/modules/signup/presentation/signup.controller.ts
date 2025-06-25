@@ -1,13 +1,16 @@
 import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { SignupModel } from '../domain/models/signup';
-import { badRequest } from '@/shared/presentation/helpers/http-helpers';
+import { AddSignup } from '../domain/usecases/add-signup';
 import { MissingParamError } from '@/shared/errors/missing-param-error';
 import { ControllerHandler } from '@/shared/presentation/protocols/controller';
+import {
+  badRequest,
+  serverError,
+} from '@/shared/presentation/helpers/http-helpers';
 import {
   HttpRequest,
   HttpResponse,
 } from '@/shared/presentation/protocols/http';
-import { AddSignup } from '../domain/usecases/add-signup';
 
 @Controller('signup')
 export class SignupController extends ControllerHandler<SignupModel.Params> {
@@ -40,10 +43,7 @@ export class SignupController extends ControllerHandler<SignupModel.Params> {
       };
     } catch (error) {
       console.error(error);
-      return {
-        statusCode: 500,
-        body: new Error('Internal Server Error'),
-      };
+      return serverError();
     }
   }
 }

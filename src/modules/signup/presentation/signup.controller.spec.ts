@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SignupController } from './signup.controller';
 import { MissingParamError } from '@/shared/errors/missing-param-error';
 import { AddSignup } from '../domain/usecases/add-signup';
+import { ServerError } from '@/shared/errors/server-error';
 
 const makeAddSignupStub = (): AddSignup => ({
   execute: jest.fn().mockResolvedValue({}),
@@ -142,6 +143,6 @@ describe('SignupController', () => {
     };
     const response = await sut.handle(params);
     expect(response.statusCode).toBe(500);
-    expect(response.body).toEqual(new Error('Internal Server Error'));
+    expect(response.body).toEqual(new ServerError().message);
   });
 });
